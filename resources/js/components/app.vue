@@ -21,7 +21,12 @@
               <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <router-link to="/login" class="nav-link">Login</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/register" class="nav-link"
+                >Register</router-link
+              >
             </li>
             <li class="nav-item dropdown">
               <a
@@ -60,6 +65,10 @@
       </div>
     </nav>
     <!-- NAV -->
+
+    <!-- ROUTER -->
+    <router-view> </router-view>
+    <!-- ROUTER -->
 
     <!-- FOOTER -->
     <footer class="p-3 bg-primary text-light text-center mt-auto">
