@@ -3,7 +3,7 @@
     <!-- NAV -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container">
-        <a class="navbar-brand" href="#">F.A.Q</a>
+        <a href="#" class="navbar-brand">FAQ</a>
         <button
           class="navbar-toggler"
           type="button"

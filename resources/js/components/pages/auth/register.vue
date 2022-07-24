@@ -1,9 +1,9 @@
-<template></template>
+<template>
+    <h1>register</h1>
+</template>
 
 <script>
 export default {
-  data() {
-    return {};
-  },
-};
+    
+}
 </script>
