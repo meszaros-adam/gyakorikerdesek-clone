@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//catch all url-s
+
 Route::fallback( function () {
     return view('welcome');
 });

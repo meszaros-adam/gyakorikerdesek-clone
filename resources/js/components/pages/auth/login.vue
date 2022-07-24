@@ -1,18 +1,29 @@
 <template>
-  <div class="container my-5 p-2 bg-dark text-light">
+  <div class="container my-5 p-5 bg-dark text-light">
     <h1>Login</h1>
     <div class="mb-3">
-      <label for="email" class="form-label">Email address:</label>
-      <input type="email" class="form-control" id="email" />
+      <label for="email" class="form-label">Email:</label>
+      <input
+        v-model="data.email"
+        type="email"
+        class="form-control"
+        id="email"
+      />
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Password:</label>
-      <input type="password" class="form-control" id="password" />
+      <input
+        v-model="data.password"
+        type="password"
+        class="form-control"
+        id="password"
+      />
     </div>
     <div class="d-flex justify-content-around">
-      <b-button variant="primary">Login</b-button>
+      <Button @click="login" :loading="loggingIn" type="primary">Login</Button>
       <div class="mb-3 form-check">
         <input
+          v-model="data.stayLoggedIn"
           type="checkbox"
           class="form-check-input"
           id="logged-in-checkbox"
@@ -26,5 +37,36 @@
 </template>
 
 <script>
-export default {};
+import { useToast } from "vue-toastification";
+export default {
+  setup() {
+    const toast = useToast();
+
+    return { toast };
+  },
+  data() {
+    return {
+      data: {
+        email: "",
+        password: "",
+        stayLoggedIn: false,
+      },
+      loggingIn: false,
+    };
+  },
+  methods: {
+    async login() {
+      if (!this.validateEmail(this.data.email))
+        return this.toast.warning("You must enter a valid email!");
+      if (this.data.password.trim() == "")
+        return this.toast.warning("You must enter a password!");
+
+      this.loggingIn = true;
+
+      const res = await this.callApi("post", "/auth/login", this.data);
+
+      this.loggingIn = false;
+    },
+  },
+};
 </script>
