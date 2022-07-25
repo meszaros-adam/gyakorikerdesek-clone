@@ -117,7 +117,7 @@ export default {
         this.toast.success('Successfull registration')
         this.$router.push('/login')
       }else{
-        this.toast.error(res.msg)
+        this.toast.error(res.data)
       }
 
       this.registrating = false;

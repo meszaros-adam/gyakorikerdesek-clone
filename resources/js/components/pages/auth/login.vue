@@ -23,13 +23,13 @@
       <Button @click="login" :loading="loggingIn" type="primary">Login</Button>
       <div class="mb-3 form-check">
         <input
-          v-model="data.stayLoggedIn"
+          v-model="data.rememberMe"
           type="checkbox"
           class="form-check-input"
           id="logged-in-checkbox"
         />
         <label class="form-check-label" for="logged-in-checkbox"
-          >Stay logged in!</label
+          >Remember Me!</label
         >
       </div>
     </div>
@@ -49,7 +49,7 @@ export default {
       data: {
         email: "",
         password: "",
-        stayLoggedIn: false,
+        rememberMe: false,
       },
       loggingIn: false,
     };
@@ -64,6 +64,12 @@ export default {
       this.loggingIn = true;
 
       const res = await this.callApi("post", "/auth/login", this.data);
+
+      if(res.status==200){
+        this.toast.success('Succesfull login!')
+      }else{
+        this.toast.error(res.data)
+      }
 
       this.loggingIn = false;
     },
