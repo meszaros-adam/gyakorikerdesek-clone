@@ -30,14 +30,14 @@
       />
     </div>
     <div class="mb-3">
-      <label for="email-verification" class="form-label"
-        >Email verification:</label
+      <label for="email-_confirmation" class="form-label"
+        >Email _confirmation:</label
       >
       <input
-        v-model="data.emailVerification"
+        v-model="data.email_confirmation"
         type="email"
         class="form-control"
-        id="email-verification"
+        id="email-_confirmation"
       />
     </div>
     <hr class="bg-primary border-2 border-top border-primary" />
@@ -51,14 +51,14 @@
       />
     </div>
     <div class="mb-3">
-      <label for="password-verification" class="form-label"
-        >Password verification:</label
+      <label for="password-_confirmation" class="form-label"
+        >Password _confirmation:</label
       >
       <input
-        v-model="data.passwordVerification"
+        v-model="data.password_confirmation"
         type="password"
         class="form-control"
-        id="password-verification"
+        id="password-_confirmation"
       />
     </div>
     <Button @click="register()" :loading="registrating" type="primary"
@@ -81,9 +81,9 @@ export default {
         firstName: "",
         lastName: "",
         email: "",
-        emailVerification: "",
+        email_confirmation: "",
         password: "",
-        passwordVerification: "",
+        password_confirmation: "",
       },
       registrating: false,
     };
@@ -96,13 +96,13 @@ export default {
         return this.toast.warning("You need enter last name!");
       if (this.data.email.trim() == "")
         return this.toast.warning("You need enter email!");
-      if (this.data.emailVerification != this.data.email)
+      if (this.data.email_confirmation != this.data.email)
         return this.toast.warning("Emails do not match!");
       if (this.data.password.trim().length < 6)
         return this.toast.warning(
           "Your password must be at least 6 characters!"
         );
-      if (this.data.passwordVerification != this.data.password)
+      if (this.data.password_confirmation != this.data.password)
         return this.toast.warning("Passwords do not match");
 
       //validate email with regex
@@ -112,6 +112,13 @@ export default {
       this.registrating = true;
 
       const res = await this.callApi("post", "/auth/register", this.data);
+
+      if(res.status==201){
+        this.toast.success('Successfull registration')
+        this.$router.push('/login')
+      }else{
+        this.toast.error(res.msg)
+      }
 
       this.registrating = false;
     },

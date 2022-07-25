@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Auth
+
+Route::prefix('/auth')->group(function(){
+    Route::post('/register', [App\Http\Controllers\UserController::class, 'registration']);
+    Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
+});
+
+
 Route::get('/', function () {
     return view('welcome');
 });
