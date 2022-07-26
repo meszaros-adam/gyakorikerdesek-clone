@@ -15,7 +15,8 @@ import "vue-toastification/dist/index.css";
 import App from './components/app.vue'
 
 
-const app = createApp(App)
+const app = createApp()
+app.component('app', App)
 app.use(Toast)
 app.mixin(common)
 app.use(createPinia())

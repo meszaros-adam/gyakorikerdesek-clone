@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/auth')->group(function(){
     Route::post('/register', [App\Http\Controllers\UserController::class, 'registration']);
     Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
+    Route::get('/logout', [App\Http\Controllers\UserController::class, 'logout']);
 });
 
 

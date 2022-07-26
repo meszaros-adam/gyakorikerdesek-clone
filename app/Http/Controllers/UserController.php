@@ -33,9 +33,13 @@ class UserController extends Controller
         ]);
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->rememberMe)) {
-            return response('Succesfull login', 200);
+            return Auth::user();
         } else {
             return response('Login failed', 422);
         }
+    }
+    public function logout(){
+        Auth::logout();
+        return redirect('/login');
     }
 }

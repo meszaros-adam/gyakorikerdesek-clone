@@ -20,15 +20,15 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
-            <li class="nav-item">
+            <li v-if="!user.getUser" class="nav-item">
               <router-link to="/login" class="nav-link">Login</router-link>
             </li>
-            <li class="nav-item">
+            <li v-if="!user.getUser" class="nav-item">
               <router-link to="/register" class="nav-link"
                 >Register</router-link
               >
             </li>
-            <li class="nav-item dropdown">
+            <li v-if="user.getUser" class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -37,14 +37,14 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Dropdown
+                {{user.getUser.first_name}}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#">Action</a></li>
                 <li><a class="dropdown-item" href="#">Another action</a></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                  <a class="dropdown-item" href="/auth/logout">Logout</a>
                 </li>
               </ul>
             </li>
@@ -79,5 +79,14 @@
 </template>
 
 <script>
-export default {};
+import { useUserStore } from "../stores/user";
+export default {
+  props: ['user'],
+  setup(props) {
+    const user = useUserStore();
+    user.setUser(props.user)
+
+    return {user}
+  },
+};
 </script>

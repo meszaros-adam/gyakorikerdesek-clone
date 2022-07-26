@@ -38,6 +38,7 @@
 
 <script>
 import { useToast } from "vue-toastification";
+import { useUserStore } from '../../../stores/user'
 export default {
   setup() {
     const toast = useToast();
@@ -66,7 +67,7 @@ export default {
       const res = await this.callApi("post", "/auth/login", this.data);
 
       if(res.status==200){
-        this.toast.success('Succesfull login!')
+        window.location = "/";
       }else{
         this.toast.error(res.data)
       }
