@@ -4,7 +4,7 @@
     <div class="mb-3">
       <label for="first-name" class="form-label">First name:</label>
       <input
-        v-model="data.firstName"
+        v-model="registrationData.firstName"
         type="text"
         class="form-control"
         id="first-name"
@@ -13,7 +13,7 @@
     <div class="mb-3">
       <label for="last-name" class="form-label">Last name:</label>
       <input
-        v-model="data.lastName"
+        v-model="registrationData.lastName"
         type="text"
         class="form-control"
         id="last-name"
@@ -23,7 +23,7 @@
     <div class="mb-3">
       <label for="email" class="form-label">Email:</label>
       <input
-        v-model="data.email"
+        v-model="registrationData.email"
         type="email"
         class="form-control"
         id="email"
@@ -34,7 +34,7 @@
         >Email _confirmation:</label
       >
       <input
-        v-model="data.email_confirmation"
+        v-model="registrationData.email_confirmation"
         type="email"
         class="form-control"
         id="email-_confirmation"
@@ -44,7 +44,7 @@
     <div class="mb-3">
       <label for="password" class="form-label">Password:</label>
       <input
-        v-model="data.password"
+        v-model="registrationData.password"
         type="password"
         class="form-control"
         id="password"
@@ -55,7 +55,7 @@
         >Password _confirmation:</label
       >
       <input
-        v-model="data.password_confirmation"
+        v-model="registrationData.password_confirmation"
         type="password"
         class="form-control"
         id="password-_confirmation"
@@ -69,59 +69,69 @@
 
 <script>
 import { useToast } from "vue-toastification";
+import { ref } from "vue";
+import { useValidateEmail } from "../../../common";
+import { useCallApi } from "../../../common";
+import { useRouter } from "vue-router";
 export default {
   setup() {
     const toast = useToast();
+    const router = useRouter();
 
-    return { toast };
-  },
-  data() {
-    return {
-      data: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        email_confirmation: "",
-        password: "",
-        password_confirmation: "",
-      },
-      registrating: false,
-    };
-  },
-  methods: {
-    async register() {
-      if (this.data.firstName.trim() == "")
-        return this.toast.warning("You need enter first name!");
-      if (this.data.lastName.trim() == "")
-        return this.toast.warning("You need enter last name!");
-      if (this.data.email.trim() == "")
-        return this.toast.warning("You need enter email!");
-      if (this.data.email_confirmation != this.data.email)
-        return this.toast.warning("Emails do not match!");
-      if (this.data.password.trim().length < 6)
-        return this.toast.warning(
-          "Your password must be at least 6 characters!"
-        );
-      if (this.data.password_confirmation != this.data.password)
-        return this.toast.warning("Passwords do not match");
+    const registrationData = ref({
+      firstName: "",
+      lastName: "",
+      email: "",
+      email_confirmation: "",
+      password: "",
+      password_confirmation: "",
+    });
+
+    const registrating = ref(false);
+
+    async function register() {
+      if (registrationData.value.firstName.trim() == "")
+        return toast.warning("You need enter first name!");
+      if (registrationData.value.lastName.trim() == "")
+        return toast.warning("You need enter last name!");
+      if (registrationData.value.email.trim() == "")
+        return toast.warning("You need enter email!");
+      if (
+        registrationData.value.email_confirmation !=
+        registrationData.value.email
+      )
+        return toast.warning("Emails do not match!");
+      if (registrationData.value.password.trim().length < 6)
+        return toast.warning("Your password must be at least 6 characters!");
+      if (
+        registrationData.value.password_confirmation !=
+        registrationData.value.password
+      )
+        return toast.warning("Passwords do not match");
 
       //validate email with regex
-      if (!this.validateEmail(this.data.email))
-        return this.toast.warning("You must enter a valide email!");
+      if (!useValidateEmail(registrationData.value.email))
+        return toast.warning("You must enter a valide email!");
 
-      this.registrating = true;
+      registrating.value = true;
 
-      const res = await this.callApi("post", "/auth/register", this.data);
+      const res = await useCallApi(
+        "post",
+        "/auth/register",
+        registrationData.value
+      );
 
-      if(res.status==201){
-        this.toast.success('Successfull registration')
-        this.$router.push('/login')
-      }else{
-        this.toast.error(res.data)
+      if (res.status == 201) {
+        toast.success("Successfull registration");
+        router.push("/login");
+      } else {
+        toast.error(res.data);
       }
 
-      this.registrating = false;
-    },
+      registrating.value = false;
+    }
+
+    return { toast, registrationData, registrating, register };
   },
 };
 </script>
