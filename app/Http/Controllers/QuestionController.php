@@ -14,7 +14,7 @@ class QuestionController extends Controller
             'description' =>'required',
         ]);
 
-        Question::create([
+        return Question::create([
             'question' => $request->question,
             'description' => $request->description,
             'user_id' => Auth::user()->id,

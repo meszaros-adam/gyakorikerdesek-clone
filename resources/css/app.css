@@ -1,5 +1,6 @@
-router-link {
+.router-link {
     cursor: pointer;
+    color: aliceblue;
 }
 
 .side-menu {
@@ -17,4 +18,7 @@ h1{
 
 .side-menu li:hover {
     text-decoration: underline;
+}
+.side-menu li a{
+    color: inherit;
 }

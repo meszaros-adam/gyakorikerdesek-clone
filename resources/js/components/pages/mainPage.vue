@@ -3,9 +3,25 @@
     <div class="row g-5">
       <div class="col-md-3 rounded bg-secondary">
         <div class="my-3">
-          <h1>Side Menu</h1>
+          <h1>Menu</h1>
           <ul class="side-menu">
-            <li>Admin Panel</li>
+            <li>
+              <a
+                data-bs-toggle="collapse"
+                href="#collapseExample"
+                role="button"
+              >
+                Admin Panel
+              </a>
+            </li>
+            <div class="collapse" id="collapseExample">
+              <div class="card card-body bg-primary">
+                <router-link class="router-link" to="/admin/categories">Categories</router-link>
+                <router-link class="router-link" to="/admin/questions">Questions</router-link>
+                <router-link class="router-link" to="/admin/users">Users</router-link>
+                <router-link class="router-link" to="/admin/tags">Tags</router-link>
+              </div>
+            </div>
             <li @click="createQuestionModal = true">Create question</li>
             <li>My questions</li>
             <li>My answered questions</li>

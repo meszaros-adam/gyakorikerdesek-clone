@@ -23,6 +23,7 @@ Route::prefix('/auth')->group(function(){
 
 //Questions
 Route::post('/create_question', [App\Http\Controllers\QuestionController::class, 'add']);
+Route::post('/create_category', [App\Http\Controllers\CategoryController::class, 'add']);
 
 
 Route::get('/', function () {
