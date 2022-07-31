@@ -16,4 +16,7 @@ class CategoryController extends Controller
             'name' => $request->name,
         ]);
     }
+    public function get(Request $request){
+        return Category::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
+    }
 }
