@@ -19,9 +19,8 @@
         id="password"
       />
     </div>
-    <div class="d-flex justify-content-around">
-      <Button @click="login" :loading="loggingIn" type="primary">Login</Button>
-      <div class="mb-3 form-check">
+    <div class="d-flex justify-content-end align-items-center">
+      <div class="mx-5 form-check">
         <input
           v-model="loginData.rememberMe"
           type="checkbox"
@@ -32,14 +31,15 @@
           >Remember Me!</label
         >
       </div>
+      <Button @click="login" :loading="loggingIn" type="primary">Login</Button>
     </div>
   </div>
 </template>
 
 <script>
 import { useToast } from "vue-toastification";
-import { useValidateEmail} from "../../../common";
-import {  useCallApi } from  "../../../common";
+import useValidateEmail from "../../composables/useValidateEmail";
+import useCallApi from "../../composables/useCallApi";
 import { ref } from "vue";
 export default {
   setup() {

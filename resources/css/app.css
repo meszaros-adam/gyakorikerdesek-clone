@@ -1,3 +1,20 @@
-router-link{
-    cursor: pointer; 
+router-link {
+    cursor: pointer;
+}
+
+.side-menu {
+    list-style-type: none;
+    font-family: monospace;
+}
+
+h1{
+    font-family: monospace;
+}
+
+.side-menu li {
+    cursor: pointer;
+}
+
+.side-menu li:hover {
+    text-decoration: underline;
 }

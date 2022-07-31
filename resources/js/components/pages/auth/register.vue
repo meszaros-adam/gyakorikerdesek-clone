@@ -61,17 +61,19 @@
         id="password-_confirmation"
       />
     </div>
-    <Button @click="register()" :loading="registrating" type="primary"
-      >Register</Button
-    >
+    <div class="text-end">
+      <Button @click="register()" :loading="registrating" type="primary"
+        >Register</Button
+      >
+    </div>
   </div>
 </template>
 
 <script>
 import { useToast } from "vue-toastification";
 import { ref } from "vue";
-import { useValidateEmail } from "../../../common";
-import { useCallApi } from "../../../common";
+import useValidateEmail from "../../composables/useValidateEmail";
+import useCallApi from "../../composables/useCallApi";
 import { useRouter } from "vue-router";
 export default {
   setup() {
@@ -125,7 +127,7 @@ export default {
         toast.success("Successfull registration");
         router.push("/login");
       } else {
-        toast.error(res.data);
+        toast.error(res.data.message);
       }
 
       registrating.value = false;

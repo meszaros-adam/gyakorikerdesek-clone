@@ -21,6 +21,9 @@ Route::prefix('/auth')->group(function(){
     Route::get('/logout', [App\Http\Controllers\UserController::class, 'logout']);
 });
 
+//Questions
+Route::post('/create_question', [App\Http\Controllers\QuestionController::class, 'add']);
+
 
 Route::get('/', function () {
     return view('welcome');

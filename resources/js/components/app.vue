@@ -3,7 +3,8 @@
     <!-- NAV -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container">
-        <a href="#" class="navbar-brand">FAQ</a>
+        <router-link to="/" class="navbar-brand"
+                >FAQ</router-link>
         <button
           class="navbar-toggler"
           type="button"
@@ -17,9 +18,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
             <li v-if="!user.getUser" class="nav-item">
               <router-link to="/login" class="nav-link">Login</router-link>
             </li>
