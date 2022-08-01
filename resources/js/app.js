@@ -9,6 +9,7 @@ import 'view-ui-plus/dist/styles/viewuiplus.css'
 import ViewUIPlus from 'view-ui-plus'
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 // import the root component App from a single-file component.
 import App from './components/app.vue'

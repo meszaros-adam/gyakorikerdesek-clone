@@ -1,7 +1,28 @@
 <template>
   <div>
     <div class="container my-5 p-5 bg-dark text-light">
-      <Button @click="createCategoryModal = true">Create Category</Button>
+      <Button @click="createCategoryModal = true"
+        ><i class="bi bi-plus-lg"></i> Create Category</Button
+      >
+      <table class="table table-primary table-striped my-3">
+        <thead>
+          <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Functions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(category, c) in categories" :key="c">
+            <th scope="row">{{ category.id }}</th>
+            <td>{{ category.name }}</td>
+            <td>
+              <i title="Edit" class="bi bi-pencil function-icon mx-1"> </i>
+              <i title="Delete" class="bi bi-trash function-icon mx-1"> </i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <!--Create Category Modal-->
     <b-modal v-model="createCategoryModal" hide-footer title="Create Category">
@@ -67,21 +88,23 @@ export default {
     //get categories
     const categories = ref([]);
 
-    const orderBy = 'id'
-    const ordering = 'desc'
-    const itemPerPage = 10
+    const orderBy = "id";
+    const ordering = "desc";
+    const itemPerPage = 10;
 
     async function getCategories() {
-      const res = await useCallApi("get", `/get_categories?orderBy=${orderBy}&ordering=${ordering}&itemPerPage=${itemPerPage}`);
+      const res = await useCallApi(
+        "get",
+        `/get_categories?orderBy=${orderBy}&ordering=${ordering}&itemPerPage=${itemPerPage}`
+      );
 
-      if(res.status == 200){
-        categories.value = res.data.data
-      }else{
-        toast.error('Failed to load categories!')
+      if (res.status == 200) {
+        categories.value = res.data.data;
+      } else {
+        toast.error("Failed to load categories!");
       }
     }
-    getCategories()
-
+    getCategories();
 
     return {
       createCategoryModal,

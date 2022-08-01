@@ -12,7 +12,7 @@ h1{
     font-family: monospace;
 }
 
-.side-menu li {
+.side-menu li, .function-icon {
     cursor: pointer;
 }
 
