@@ -92,7 +92,7 @@ export default {
     const ordering = "desc";
     const itemPerPage = 10;
 
-    async function getCategories() {
+    const getCategories = async () => {
       const res = await useCallApi(
         "get",
         `/get_categories?orderBy=${orderBy}&ordering=${ordering}&itemPerPage=${itemPerPage}`

@@ -16,10 +16,18 @@
             </li>
             <div class="collapse" id="collapseExample">
               <div class="card card-body bg-primary">
-                <router-link class="router-link" to="/admin/categories">Categories</router-link>
-                <router-link class="router-link" to="/admin/questions">Questions</router-link>
-                <router-link class="router-link" to="/admin/users">Users</router-link>
-                <router-link class="router-link" to="/admin/tags">Tags</router-link>
+                <router-link class="router-link" to="/admin/categories"
+                  >Categories</router-link
+                >
+                <router-link class="router-link" to="/admin/questions"
+                  >Questions</router-link
+                >
+                <router-link class="router-link" to="/admin/users"
+                  >Users</router-link
+                >
+                <router-link class="router-link" to="/admin/tags"
+                  >Tags</router-link
+                >
               </div>
             </div>
             <li @click="createQuestionModal = true">Create question</li>
@@ -60,6 +68,16 @@
           placeholder="Description..."
         ></textarea>
       </div>
+      <div class="mb-3">
+        <label for="Category" class="form-label">Category</label>
+        <b-form-select
+          id="Category"
+          v-model="question.category_id"
+          value-field="id"
+          text-field="name"
+          :options="categories"
+        ></b-form-select>
+      </div>
       <div class="d-flex justify-content-end">
         <Button class="mx-2" @click="createQuestionModal = false"
           >Cancel</Button
@@ -84,8 +102,9 @@ export default {
     const question = ref({
       question: "",
       description: "",
+      category_id: "",
     });
-    async function createQuestion() {
+    const createQuestion = async () => {
       if (question.value.question.trim() == "")
         return toast.warning("You must enter a question!");
       if (question.value.question.trim().length < 6)
@@ -103,9 +122,21 @@ export default {
         toast.error(res.data.message);
       }
       creatingQuestion.value = true;
-    }
+    };
 
-    return { createQuestionModal, question, createQuestion };
+    const categories = ref([]);
+    const getCategories = async () => {
+      const res = await useCallApi("get", "/get_all_categories");
+      if ((res.status = 200)) {
+        categories.value = res.data;
+      } else {
+        toast.error(res.data.message);
+      }
+    };
+
+    getCategories();
+
+    return { createQuestionModal, question, createQuestion, categories };
   },
 };
 </script>

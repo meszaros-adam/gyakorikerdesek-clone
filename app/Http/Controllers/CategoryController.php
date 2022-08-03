@@ -19,4 +19,7 @@ class CategoryController extends Controller
     public function get(Request $request){
         return Category::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
     }
+    public function getAll(){
+        return Category::orderBy('name', 'desc')->get();
+    }
 }

@@ -12,12 +12,14 @@ class QuestionController extends Controller
         $this->validate($request,[
             'question' =>'required|min:6',
             'description' =>'required',
+            'category_id' =>'required',
         ]);
 
         return Question::create([
             'question' => $request->question,
             'description' => $request->description,
             'user_id' => Auth::user()->id,
+            'category_id' => $request->category_id,
         ]);
 
     }

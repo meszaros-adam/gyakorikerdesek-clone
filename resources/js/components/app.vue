@@ -3,8 +3,7 @@
     <!-- NAV -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container">
-        <router-link to="/" class="navbar-brand"
-                >FAQ</router-link>
+        <router-link to="/" class="navbar-brand">FAQ</router-link>
         <button
           class="navbar-toggler"
           type="button"
@@ -35,7 +34,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                {{user.getUser.first_name}}
+                {{ user.getUser.first_name }}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#">Action</a></li>
@@ -77,14 +76,19 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import { useUserStore } from "../stores/user";
+import { useToast } from "vue-toastification";
+import useCallApi from "../components/composables/useCallApi";
 export default {
-  props: ['user'],
+  props: ["user"],
   setup(props) {
-    const user = useUserStore();
-    user.setUser(props.user)
+    const toast = useToast();
 
-    return {user}
+    const user = useUserStore();
+    user.setUser(props.user);
+
+    return { user };
   },
 };
 </script>

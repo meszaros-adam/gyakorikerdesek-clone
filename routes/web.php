@@ -27,6 +27,7 @@ Route::post('/create_question', [App\Http\Controllers\QuestionController::class,
 //Category
 Route::post('/create_category', [App\Http\Controllers\CategoryController::class, 'add']);
 Route::get('/get_categories', [App\Http\Controllers\CategoryController::class, 'get']);
+Route::get('/get_all_categories', [App\Http\Controllers\CategoryController::class, 'getAll']);
 
 
 Route::get('/', function () {
