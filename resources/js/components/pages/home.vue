@@ -112,6 +112,11 @@ export default {
           "Your question must be at least six characters long!"
         );
 
+      if (typeof question.value.category_id !== "number")
+        return toast.warning("You must enter one category!");
+
+      console.log(typeof question.value.category_id);
+
       creatingQuestion.value = true;
 
       const res = await useCallApi("post", "/create_question", question.value);

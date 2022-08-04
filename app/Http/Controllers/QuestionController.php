@@ -11,8 +11,7 @@ class QuestionController extends Controller
     public function add(Request $request){
         $this->validate($request,[
             'question' =>'required|min:6',
-            'description' =>'required',
-            'category_id' =>'required',
+            'category_id' =>'required|numeric',
         ]);
 
         return Question::create([

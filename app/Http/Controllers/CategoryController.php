@@ -22,4 +22,14 @@ class CategoryController extends Controller
     public function getAll(){
         return Category::orderBy('name', 'desc')->get();
     }
+    public function edit(Request $request){
+        $this->validate($request,[
+            "name" => 'required|min:3',
+            "id" => 'required|numeric',
+        ]);
+
+        return Category::where('id', $request->id)->update([
+           "name" => $request->name,
+        ]);
+    }
 }
