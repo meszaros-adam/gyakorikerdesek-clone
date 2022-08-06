@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="container my-5 p-5 bg-dark text-light">
-      <Button @click="createModal = true"
-        ><i class="bi bi-plus-lg"></i> Create Category</Button
-      >
+      <Button @click="createModal = true"><i class="bi bi-plus-lg"></i> Create Category</Button>
       <table class="table table-primary table-striped my-3">
         <thead>
           <tr>
@@ -17,13 +15,9 @@
             <th scope="row">{{ category.id }}</th>
             <td>{{ category.name }}</td>
             <td>
-              <i
-                @click="showEditModal(category, c)"
-                title="Edit"
-                class="bi bi-pencil function-icon mx-1"
-              >
+              <i @click="showEditModal(category, c)" title="Edit" class="bi bi-pencil function-icon mx-1">
               </i>
-              <i title="Delete" class="bi bi-trash function-icon mx-1"> </i>
+              <i @click="showDeleteModal(category.id)" title="Delete" class="bi bi-trash function-icon mx-1"> </i>
             </td>
           </tr>
         </tbody>
@@ -33,22 +27,12 @@
     <b-modal v-model="createModal" hide-footer title="Create Category">
       <div class="mb-3">
         <label for="Category" class="form-label">Name</label>
-        <input
-          v-model="category.name"
-          type="string"
-          class="form-control"
-          id="Category"
-          placeholder="Your Category Name..."
-        />
+        <input v-model="category.name" type="string" class="form-control" id="Category"
+          placeholder="Your Category Name..." />
       </div>
       <div class="d-flex justify-content-end">
         <Button class="mx-2" @click="createModal = false">Cancel</Button>
-        <Button
-          @click="createCategory()"
-          type="primary"
-          :loading="creatingCategory"
-          >Save</Button
-        >
+        <Button @click="createCategory()" type="primary" :loading="creatingCategory">Save</Button>
       </div>
     </b-modal>
     <!--Create Modal-->
@@ -56,21 +40,16 @@
     <b-modal v-model="editModal" hide-footer title="Edit Category">
       <div class="mb-3">
         <label for="Category" class="form-label">Name</label>
-        <input
-          v-model="editData.name"
-          type="string"
-          class="form-control"
-          id="Category"
-        />
+        <input v-model="editData.name" type="string" class="form-control" id="Category" />
       </div>
       <div class="d-flex justify-content-end">
         <Button class="mx-2" @click="editModal = false">Cancel</Button>
-        <Button @click="editCategory()" type="primary" :loading="editing"
-          >Edit</Button
-        >
+        <Button @click="editCategory()" type="primary" :loading="editing">Edit</Button>
       </div>
     </b-modal>
     <!--Create Modal-->
+
+    <deleteModal delete_url="/delete_category" item_name="category" v-model="deleteModal"> </deleteModal>
   </div>
 </template>
 
@@ -78,8 +57,9 @@
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../../composables/useCallApi";
-
+import deleteModal from "../../composables/deleteModal.vue"
 export default {
+  components: { deleteModal },
   setup() {
     const toast = useToast();
 
@@ -156,10 +136,18 @@ export default {
         categories.value.at(editIndex.value).name = editData.value.name
         editModal.value = false;
       } else {
-         toast.error(res.data.message);
+        toast.error(res.data.message);
       }
       editing.value = false;
     };
+
+    //deleteModal
+    const deleteModal = ref(false)
+    const deleteId = ref(null)
+    const showDeleteModal = (id) => {
+      deleteId.value = id
+      deleteModal.value = true
+    }
 
     return {
       createModal,
@@ -173,6 +161,9 @@ export default {
       showEditModal,
       editing,
       editIndex,
+      deleteModal,
+      showDeleteModal,
+      deleteId,
     };
   },
 };

@@ -8,17 +8,25 @@
     font-family: monospace;
 }
 
-h1{
+h1 {
     font-family: monospace;
 }
 
-.side-menu li, .function-icon {
+.side-menu li,
+.function-icon {
     cursor: pointer;
 }
 
 .side-menu li:hover {
     text-decoration: underline;
 }
-.side-menu li a{
+
+.side-menu li a {
     color: inherit;
+}
+
+.delete-modal-icon {
+    color: #990000;
+    font-size: 75px;
+
 }
