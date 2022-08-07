@@ -6,28 +6,16 @@
           <h1>Menu</h1>
           <ul class="side-menu">
             <li>
-              <a
-                data-bs-toggle="collapse"
-                href="#collapseExample"
-                role="button"
-              >
+              <a data-bs-toggle="collapse" href="#collapseExample" role="button">
                 Admin Panel
               </a>
             </li>
             <div class="collapse" id="collapseExample">
               <div class="card card-body bg-primary">
-                <router-link class="router-link" to="/admin/categories"
-                  >Categories</router-link
-                >
-                <router-link class="router-link" to="/admin/questions"
-                  >Questions</router-link
-                >
-                <router-link class="router-link" to="/admin/users"
-                  >Users</router-link
-                >
-                <router-link class="router-link" to="/admin/tags"
-                  >Tags</router-link
-                >
+                <router-link class="router-link" to="/admin/categories">Categories</router-link>
+                <router-link class="router-link" to="/admin/questions">Questions</router-link>
+                <router-link class="router-link" to="/admin/users">Users</router-link>
+                <router-link class="router-link" to="/admin/tags">Tags</router-link>
               </div>
             </div>
             <li @click="createQuestionModal = true">Create question</li>
@@ -36,52 +24,33 @@
           </ul>
         </div>
       </div>
-      <div class="col-md-9 rounded text-center">
-        <h1>something</h1>
+      <div class="col-md-9 rounded">
+        <h1 class="text-end">Last Five Questions</h1>
+        <div class="my-3" v-for="(question, q) in lastFiveQuestions" :key="q" >
+            <div class="mb-2 p-2 bg-primary rounded">{{question.question}}</div>
+        </div>
       </div>
     </div>
 
     <!--Create Question Modal-->
-    <b-modal
-      v-model="createQuestionModal"
-      hide-footer
-      size="lg"
-      title="Create Question"
-    >
+    <b-modal v-model="createQuestionModal" hide-footer size="lg" title="Create Question">
       <div class="mb-3">
         <label for="Question" class="form-label">Question</label>
-        <input
-          v-model="question.question"
-          type="string"
-          class="form-control"
-          id="Question"
-          placeholder="Your question..."
-        />
+        <input v-model="question.question" type="string" class="form-control" id="Question"
+          placeholder="Your question..." />
       </div>
       <div class="mb-3">
         <label for="Description" class="form-label">Description</label>
-        <textarea
-          v-model="question.description"
-          class="form-control"
-          id="Description"
-          rows="3"
-          placeholder="Description..."
-        ></textarea>
+        <textarea v-model="question.description" class="form-control" id="Description" rows="3"
+          placeholder="Description..."></textarea>
       </div>
       <div class="mb-3">
         <label for="Category" class="form-label">Category</label>
-        <b-form-select
-          id="Category"
-          v-model="question.category_id"
-          value-field="id"
-          text-field="name"
-          :options="categories"
-        ></b-form-select>
+        <b-form-select id="Category" v-model="question.category_id" value-field="id" text-field="name"
+          :options="categories"></b-form-select>
       </div>
       <div class="d-flex justify-content-end">
-        <Button class="mx-2" @click="createQuestionModal = false"
-          >Cancel</Button
-        >
+        <Button class="mx-2" @click="createQuestionModal = false">Cancel</Button>
         <Button @click="createQuestion()" type="primary">Save</Button>
       </div>
     </b-modal>
@@ -97,6 +66,7 @@ export default {
   setup() {
     const toast = useToast();
 
+    //create question
     const createQuestionModal = ref(false);
     const creatingQuestion = ref(false);
     const question = ref({
@@ -123,6 +93,7 @@ export default {
 
       if (res.status == 201) {
         toast.success("Question created sucessfully!");
+        createQuestionModal.value = false;
       } else {
         toast.error(res.data.message);
       }
@@ -141,7 +112,22 @@ export default {
 
     getCategories();
 
-    return { createQuestionModal, question, createQuestion, categories };
+    //get last five questions
+    const lastFiveQuestions = ref([]);
+
+    const getLastFiveQuestions = async () => {
+      const res = await useCallApi('get', '/get_last_five_questions')
+
+      if (res.status == 200) {
+        lastFiveQuestions.value = res.data
+      } else {
+        toast.error('Failed to load the last five questions!')
+      }
+    }
+
+    getLastFiveQuestions();
+
+    return { createQuestionModal, question, createQuestion, categories, lastFiveQuestions };
   },
 };
 </script>

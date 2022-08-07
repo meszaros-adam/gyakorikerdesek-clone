@@ -1,5 +1,6 @@
 <template>
   <div>
+    <admin-nav-bar></admin-nav-bar>
     <div class="container my-5 p-5 bg-dark text-light">
       <Button @click="createModal = true"><i class="bi bi-plus-lg"></i> Create Category</Button>
       <table class="table table-primary table-striped my-3">
@@ -49,8 +50,8 @@
     </b-modal>
     <!--Create Modal-->
 
-    <deleteModal delete_url="/delete_category" item_name="category" :item_id="deleteId" v-model="deleteModal"
-      :delete_index="deleteIndex" @successfullDelete="removeDeletedItem(index)"> </deleteModal>
+    <delete-modal delete_url="/delete_category" item_name="category" :item_id="deleteId" v-model="deleteModal"
+      :delete_index="deleteIndex" @successfullDelete="removeDeletedItem(index)"></delete-modal>
   </div>
 </template>
 
@@ -58,9 +59,10 @@
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../../composables/useCallApi";
-import deleteModal from "../../composables/deleteModal.vue"
+import deleteModal from "../../partials/deleteModal.vue"
+import adminNavBar from "../../partials/adminNavBar.vue"
 export default {
-  components: { deleteModal },
+  components: { deleteModal, adminNavBar },
   setup() {
     const toast = useToast();
 

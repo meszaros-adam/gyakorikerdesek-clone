@@ -13,7 +13,7 @@
 
 <script>
 import { computed } from 'vue'
-import useCallApi from './useCallApi'
+import useCallApi from '../composables/useCallApi'
 import { useToast } from 'vue-toastification'
 import { ref } from 'vue'
 
