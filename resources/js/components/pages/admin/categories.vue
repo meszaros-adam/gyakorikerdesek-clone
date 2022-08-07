@@ -17,7 +17,7 @@
             <td>
               <i @click="showEditModal(category, c)" title="Edit" class="bi bi-pencil function-icon mx-1">
               </i>
-              <i @click="showDeleteModal(category.id)" title="Delete" class="bi bi-trash function-icon mx-1"> </i>
+              <i @click="showDeleteModal(category.id, c)" title="Delete" class="bi bi-trash function-icon mx-1"> </i>
             </td>
           </tr>
         </tbody>
@@ -49,7 +49,8 @@
     </b-modal>
     <!--Create Modal-->
 
-    <deleteModal delete_url="/delete_category" item_name="category" v-model="deleteModal"> </deleteModal>
+    <deleteModal delete_url="/delete_category" item_name="category" :item_id="deleteId" v-model="deleteModal"
+      :delete_index="deleteIndex" @successfullDelete="removeDeletedItem(index)"> </deleteModal>
   </div>
 </template>
 
@@ -144,9 +145,14 @@ export default {
     //deleteModal
     const deleteModal = ref(false)
     const deleteId = ref(null)
-    const showDeleteModal = (id) => {
+    const deleteIndex = ref(null)
+    const showDeleteModal = (id, index) => {
       deleteId.value = id
+      deleteIndex.value = index
       deleteModal.value = true
+    }
+    const removeDeletedItem = (index) => {
+      categories.value.splice(index, 1)
     }
 
     return {
@@ -164,6 +170,8 @@ export default {
       deleteModal,
       showDeleteModal,
       deleteId,
+      deleteIndex,
+      removeDeletedItem,
     };
   },
 };

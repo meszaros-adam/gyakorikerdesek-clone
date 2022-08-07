@@ -32,4 +32,11 @@ class CategoryController extends Controller
            "name" => $request->name,
         ]);
     }
+    public function delete(Request $request){
+        $this->validate($request,[
+            "id" => "required|numeric"
+        ]);
+
+        return Category::where('id', $request->id)->delete();
+    }
 }

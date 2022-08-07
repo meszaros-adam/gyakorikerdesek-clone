@@ -29,6 +29,7 @@ Route::post('/create_category', [App\Http\Controllers\CategoryController::class,
 Route::get('/get_categories', [App\Http\Controllers\CategoryController::class, 'get']);
 Route::get('/get_all_categories', [App\Http\Controllers\CategoryController::class, 'getAll']);
 Route::post('/edit_category', [App\Http\Controllers\CategoryController::class, 'edit']);
+Route::post('/delete_category', [App\Http\Controllers\CategoryController::class, 'delete']);
 
 Route::get('/', function () {
     return view('welcome');
