@@ -25,10 +25,20 @@
         </div>
       </div>
       <div class="col-md-9 rounded">
-        <h1 class="text-end">Last Five Questions</h1>
-        <div class="my-3" v-for="(question, q) in lastFiveQuestions" :key="q" >
-            <div class="mb-2 p-2 bg-primary rounded">{{question.question}}</div>
-        </div>
+        <h1 class="text-center mb-5">Last Five Questions</h1>
+        <Carousel>
+          <Slide v-for="(question, q) in lastFiveQuestions" :key="q">
+            <div class="carousel__item">
+              <h3>{{ question.question }}</h3>
+              <p>{{ question.description }}</p>
+            </div>
+          </Slide>
+
+          <template #addons>
+            <Navigation />
+            <Pagination />
+          </template>
+        </Carousel>
       </div>
     </div>
 
@@ -51,7 +61,7 @@
       </div>
       <div class="d-flex justify-content-end">
         <Button class="mx-2" @click="createQuestionModal = false">Cancel</Button>
-        <Button @click="createQuestion()" type="primary">Save</Button>
+        <Button @click="createQuestion()" :loading="creatingQuestion" type="primary">Save</Button>
       </div>
     </b-modal>
     <!--Create Question Modal-->
@@ -62,7 +72,15 @@
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 export default {
+  components: {
+    Carousel,
+    Slide,
+    Pagination,
+    Navigation,
+  },
   setup() {
     const toast = useToast();
 
@@ -81,23 +99,21 @@ export default {
         return toast.warning(
           "Your question must be at least six characters long!"
         );
-
       if (typeof question.value.category_id !== "number")
         return toast.warning("You must enter one category!");
-
-      console.log(typeof question.value.category_id);
 
       creatingQuestion.value = true;
 
       const res = await useCallApi("post", "/create_question", question.value);
 
       if (res.status == 201) {
+        getLastFiveQuestions();
         toast.success("Question created sucessfully!");
         createQuestionModal.value = false;
       } else {
         toast.error(res.data.message);
       }
-      creatingQuestion.value = true;
+      creatingQuestion.value = false;
     };
 
     const categories = ref([]);
@@ -127,7 +143,7 @@ export default {
 
     getLastFiveQuestions();
 
-    return { createQuestionModal, question, createQuestion, categories, lastFiveQuestions };
+    return { createQuestionModal, question, createQuestion, categories, lastFiveQuestions, creatingQuestion };
   },
 };
 </script>

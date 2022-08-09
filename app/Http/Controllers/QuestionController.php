@@ -23,6 +23,6 @@ class QuestionController extends Controller
 
     }
     public function getLastFive(){
-       return Question::latest()->take(5)->get();
+       return Question::latest()->take(5)->with('category')->get();
     }
 }
