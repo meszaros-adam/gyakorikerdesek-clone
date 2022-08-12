@@ -11,15 +11,13 @@ class UserController extends Controller
     public function registration(Request $request)
     {
         $this->validate($request, [
-            'firstName' => 'required',
-            'lastName' => 'required',
+            'nickname' => 'required',
             'email' => 'required|email|confirmed',
             'password' => 'required|confirmed|min:6',
         ]);
 
         return User::create([
-            'first_name' => $request->firstName,
-            'last_name' => $request->lastName,
+            'nickname' => $request->nickname,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);

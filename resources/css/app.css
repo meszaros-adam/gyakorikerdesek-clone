@@ -35,6 +35,9 @@ h1 {
     color: #0d6efd;
 }
 
-.router-link:hover {
+.router-link:hover, .carousel__item:hover {
     text-decoration: underline dashed 2px;
+    color: white;
 }
+
+

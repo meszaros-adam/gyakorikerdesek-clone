@@ -24,14 +24,14 @@
           </ul>
         </div>
       </div>
-      <div class="col-md-9 rounded">
+      <div class="col-md-9 rounded ps-5 pe-5">
         <h1 class="text-center mb-5">Last Five Questions</h1>
-        <Carousel>
+        <Carousel :autoplay="8000" :wrap-around="true">
           <Slide v-for="(question, q) in lastFiveQuestions" :key="q">
-            <div class="carousel__item">
-              <h3>{{ question.question }}</h3>
-              <p>{{ question.description }}</p>
-            </div>
+            <router-link class="carousel__item" :to="{name: 'question', params: {id: question.id}}">
+                <h3>{{ question.question }}</h3>
+                <p>{{ question.description }}</p>
+            </router-link>
           </Slide>
 
           <template #addons>
@@ -147,3 +147,37 @@ export default {
   },
 };
 </script>
+
+<style>
+.carousel__item {
+  min-height: 200px;
+  width: 100%;
+  background-color: #0d6efd;
+  color: var(--vc-clr-white);
+  font-size: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel__slide {
+  padding: 10px;
+}
+
+.carousel__prev,
+.carousel__next {
+  background-color: #0d6efd;
+  box-sizing: content-box;
+  border: 5px solid white;
+}
+
+.carousel__pagination-button {
+  background-color: grey;
+}
+
+.carousel__pagination-button--active {
+  background-color: #0d6efd;
+}
+</style>

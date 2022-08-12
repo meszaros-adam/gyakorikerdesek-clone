@@ -3,6 +3,7 @@ import login from './components/pages/auth/login.vue'
 import register from './components/pages/auth/register.vue'
 import home from './components/pages/home.vue'
 import categoriesAdmin from './components/pages/admin/categories.vue'
+import questionSingle from './components/pages/questionSingle.vue'
 
 const routes = [
     {
@@ -20,6 +21,11 @@ const routes = [
     {
         path: '/admin/categories',
         component: categoriesAdmin,
+    },
+    {
+        path: '/question/:id',
+        name: 'question',
+        component: questionSingle,
     },
 ]
 

@@ -2,21 +2,12 @@
   <div class="container my-5 p-5 bg-dark text-light">
     <h1>Register</h1>
     <div class="mb-3">
-      <label for="first-name" class="form-label">First name:</label>
+      <label for="first-name" class="form-label">Nickname: </label>
       <input
-        v-model="registrationData.firstName"
+        v-model="registrationData.nickname"
         type="text"
         class="form-control"
         id="first-name"
-      />
-    </div>
-    <div class="mb-3">
-      <label for="last-name" class="form-label">Last name:</label>
-      <input
-        v-model="registrationData.lastName"
-        type="text"
-        class="form-control"
-        id="last-name"
       />
     </div>
     <hr class="bg-primary border-2 border-top border-primary" />
@@ -81,8 +72,7 @@ export default {
     const router = useRouter();
 
     const registrationData = ref({
-      firstName: "",
-      lastName: "",
+      nickname: "",
       email: "",
       email_confirmation: "",
       password: "",
@@ -92,10 +82,8 @@ export default {
     const registrating = ref(false);
 
     async function register() {
-      if (registrationData.value.firstName.trim() == "")
-        return toast.warning("You need enter first name!");
-      if (registrationData.value.lastName.trim() == "")
-        return toast.warning("You need enter last name!");
+      if (registrationData.value.nickname.trim() == "")
+        return toast.warning("You need enter a nickname!");
       if (registrationData.value.email.trim() == "")
         return toast.warning("You need enter email!");
       if (

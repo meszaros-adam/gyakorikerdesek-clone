@@ -34,7 +34,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                {{ user.getUser.first_name }}
+                {{ user.getUser.nickname}}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#">Action</a></li>
