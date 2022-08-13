@@ -1,8 +1,8 @@
 <template>
     <div class="container my-5 p-5 bg-dark text-light">
-        <div v-if="question" class="bg-secondary container mb-3">
+        <div v-if="question" class="bg-secondary container mb-3 rounded">
             <div class="border-bottom py-3">
-                <h1 class="text-center">{{ question.question }}</h1>
+                <h1 class="text-center mb-3">{{ question.question }}</h1>
                 <p class="text-center">{{ question.description }}</p>
             </div>
             <div class="d-flex justify-content-between">
@@ -10,12 +10,23 @@
                 <div>{{ question.created_at }}</div>
             </div>
         </div>
-        <div class="bg-secondary container mb-3">
-            <h3>Answers</h3>
-            <div v-for="(answer, a ) in answers" :key="a">
+        <div class="mb-3 container" v-for="(answer, a ) in answers" :key="a">
+            <div class="bg-primary rounded-top p-1 d-flex justify-content-between">
+                <div>
+                    {{ answer.user.nickname }}
+                </div>
+                <div>
+                    {{ answer.created_at }}
+                </div>
+            </div>
+            <div class="bg-secondary p-3 rounded-bottom">
                 <p>{{ answer.answer }}</p>
             </div>
         </div>
+        <!-- Pagination -->
+        <b-pagination v-model="currentPage" :total-rows="totalAnswers" :per-page="10" align="center"
+            ></b-pagination>
+        <!-- Pagination -->
         <div class="container">
             <label for="answer" class="form-label">
                 <h3>Your Answer</h3>
@@ -31,10 +42,11 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch} from 'vue'
 import { useToast } from 'vue-toastification'
 import useCallApi from '../composables/useCallApi'
 import { useRoute } from 'vue-router'
+import { useUserStore } from "../../stores/user";
 export default {
     setup() {
         const toast = useToast()
@@ -44,10 +56,18 @@ export default {
         //get id from route param
         const route = useRoute()
 
+        //answers pagination
+        const currentPage = ref(1)
+        watch(currentPage,() => {
+            getQuestion()
+        })
+        const totalAnswers = ref(0)
+
         const getQuestion = async () => {
-            const res = await useCallApi('get', `/get_single_question?id=${route.params.id}`)
+            const res = await useCallApi('get', `/get_single_question?id=${route.params.id}&page=${currentPage.value}`)
 
             if (res.status == 200) {
+                totalAnswers.value = res.data.answers.total
                 question.value = res.data.question
                 answers.value = res.data.answers.data
             } else {
@@ -57,12 +77,15 @@ export default {
 
         getQuestion()
 
-        //Answer
+        //Answering
         const answer = ref({
             answer: '',
-            question_id: route.params.id
+            question_id: route.params.id,
+            created_at: null,
+            user: null,
         });
         const answering = ref(false)
+        const user = useUserStore()
 
         const sendAnswer = async () => {
             if (answer.value.answer.trim().length < 2) return toast.warning('Your answer must be at least 2 characters!')
@@ -72,15 +95,20 @@ export default {
             const res = await useCallApi('post', '/create_answer', answer.value)
 
             if (res.status == 201) {
+                const today = new Date();
+                const fullDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0') + ' ' + today.getHours() + ':' + String(today.getMinutes()).padStart(2, '0');
+
+                answer.value.created_at = fullDate
+                answer.value.user = user.getUser
                 answers.value.push(answer.value)
                 toast.success('Sucessful answering!')
             } else {
-                toast.error(res.data.msg)
+                toast.error(res.data.message)
             }
             answering.value = false
         }
 
-        return { question, answers, answer, sendAnswer, answering }
+        return { question, answers, answer, sendAnswer, answering, currentPage, totalAnswers, getQuestion }
     }
 }
 </script>
