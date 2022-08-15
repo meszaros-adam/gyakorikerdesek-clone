@@ -17,7 +17,7 @@ class CategoryController extends Controller
         ]);
     }
     public function get(Request $request){
-        return Category::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
+        return Category::orderBy($request->orderBy, $request->ordering)->paginate(10);
     }
     public function getAll(){
         return Category::orderBy('name', 'desc')->get();

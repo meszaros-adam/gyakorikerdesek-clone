@@ -10,6 +10,9 @@
                 <div>{{ question.created_at }}</div>
             </div>
         </div>
+         <!-- Pagination -->
+        <b-pagination class="mb-3" v-model="currentPage" :total-rows="totalAnswers" :per-page="10" align="center"></b-pagination>
+        <!-- Pagination -->
         <div class="mb-3 container" v-for="(answer, a ) in answers" :key="a">
             <div class="bg-primary rounded-top p-1 d-flex justify-content-between">
                 <div>
@@ -24,8 +27,7 @@
             </div>
         </div>
         <!-- Pagination -->
-        <b-pagination v-model="currentPage" :total-rows="totalAnswers" :per-page="10" align="center"
-            ></b-pagination>
+        <b-pagination v-model="currentPage" :total-rows="totalAnswers" :per-page="10" align="center"></b-pagination>
         <!-- Pagination -->
         <div class="container">
             <label for="answer" class="form-label">
@@ -42,7 +44,7 @@
 </template>
 
 <script>
-import { ref, watch} from 'vue'
+import { ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import useCallApi from '../composables/useCallApi'
 import { useRoute } from 'vue-router'
@@ -58,7 +60,7 @@ export default {
 
         //answers pagination
         const currentPage = ref(1)
-        watch(currentPage,() => {
+        watch(currentPage, () => {
             getQuestion()
         })
         const totalAnswers = ref(0)

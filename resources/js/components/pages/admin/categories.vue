@@ -23,6 +23,9 @@
           </tr>
         </tbody>
       </table>
+      <!-- Pagination -->
+        <b-pagination v-model="currentPage" :total-rows="totalCategories" :per-page="10" align="center"></b-pagination>
+        <!-- Pagination -->
     </div>
     <!--Create Modal-->
     <b-modal v-model="createModal" hide-footer title="Create Category">
@@ -56,7 +59,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch} from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../../composables/useCallApi";
 import deleteModal from "../../partials/deleteModal.vue"
@@ -98,19 +101,28 @@ export default {
     const ordering = "desc";
     const itemPerPage = 10;
 
+    //categories pagination
+    const currentPage = ref(1)
+    watch(currentPage, () => {
+      getCategories()
+    })
+    const totalCategories = ref(0)
+
     const getCategories = async () => {
       const res = await useCallApi(
         "get",
-        `/get_categories?orderBy=${orderBy}&ordering=${ordering}&itemPerPage=${itemPerPage}`
+        `/get_categories?orderBy=${orderBy}&ordering=${ordering}&page=${currentPage.value}`
       );
 
       if (res.status == 200) {
         categories.value = res.data.data;
+        totalCategories.value = res.data.total
       } else {
         toast.error("Failed to load categories!");
       }
     };
     getCategories();
+
 
     //edit categories
     const editModal = ref(false);
@@ -174,6 +186,8 @@ export default {
       deleteId,
       deleteIndex,
       removeDeletedItem,
+      totalCategories,
+      currentPage,
     };
   },
 };
