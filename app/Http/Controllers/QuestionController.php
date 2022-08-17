@@ -30,7 +30,7 @@ class QuestionController extends Controller
     public function getSingle(Request $request)
     {
         $question =  Question::with('user')->find($request->id);
-        $answers = Answer::where('question_id', $request->id)->paginate(10);
+        $answers = Answer::where('question_id', $request->id)->paginate($request->itemPerPage);
 
         return response()->json([
             'question' => $question,

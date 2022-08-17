@@ -18,9 +18,9 @@
                 <router-link class="router-link" to="/admin/tags">Tags</router-link>
               </div>
             </div>
-            <li @click="createQuestionModal = true">Create question</li>
-            <li>My questions</li>
-            <li>My answered questions</li>
+            <li class="pointer-cursor" @click="createQuestionModal = true">Create question</li>
+            <li class="pointer-cursor" >My questions</li>
+            <li class="pointer-cursor" >My answered questions</li>
           </ul>
         </div>
       </div>

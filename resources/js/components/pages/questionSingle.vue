@@ -6,17 +6,30 @@
                 <p class="text-center">{{ question.description }}</p>
             </div>
             <div class="d-flex justify-content-between">
-                <div>{{ question.user.nickname }}</div>
+                <div>
+                    <span>{{ question.user.nickname }}</span>
+                </div>
+                <div @click="showMessageModal(question.user)" class="pointer-cursor">
+                    <span class="mx-2">Send a Message </span><i class="bi bi-envelope"></i>
+                </div>
                 <div>{{ question.created_at }}</div>
             </div>
         </div>
-         <!-- Pagination -->
-        <b-pagination class="mb-3" v-model="currentPage" :total-rows="totalAnswers" :per-page="10" align="center"></b-pagination>
         <!-- Pagination -->
-        <div class="mb-3 container" v-for="(answer, a ) in answers" :key="a">
+        <b-pagination v-if="itemPerPage < totalAnswers" class="mb-3" v-model="currentPage" :total-rows="totalAnswers"
+            :per-page="10" align="center"></b-pagination>
+        <!-- Pagination -->
+        <div v-if="answers.length == 0" class="bg-secondary p-3 rounded mb-3">
+            <h3>There is no answer yet</h3>
+        </div>
+        <div v-else class="mb-3 container" v-for="(answer, a ) in answers" :key="a">
             <div class="bg-primary rounded-top p-1 d-flex justify-content-between">
                 <div>
                     {{ answer.user.nickname }}
+                </div>
+                <div @click="showMessageModal(answer.user)" class="pointer-cursor">
+                    <span class="mx-2">Send a Message</span>
+                    <i class="bi bi-envelope"></i>
                 </div>
                 <div>
                     {{ answer.created_at }}
@@ -27,7 +40,8 @@
             </div>
         </div>
         <!-- Pagination -->
-        <b-pagination v-model="currentPage" :total-rows="totalAnswers" :per-page="10" align="center"></b-pagination>
+        <b-pagination v-if="itemPerPage < totalAnswers" v-model="currentPage" :total-rows="totalAnswers" :per-page="10"
+            align="center"></b-pagination>
         <!-- Pagination -->
         <div class="container">
             <label for="answer" class="form-label">
@@ -37,8 +51,7 @@
                 rows="3"></textarea>
             <Button @click="sendAnswer" :loading="answering" type="primary" class="mt-3">Send Answer</Button>
         </div>
-
-
+        <message-modal v-model="messageModal" :addressee="addressee"></message-modal>
     </div>
 
 </template>
@@ -49,7 +62,9 @@ import { useToast } from 'vue-toastification'
 import useCallApi from '../composables/useCallApi'
 import { useRoute } from 'vue-router'
 import { useUserStore } from "../../stores/user";
+import messageModal from '../partials/messageModal.vue'
 export default {
+    components: { messageModal },
     setup() {
         const toast = useToast()
         const question = ref(null)
@@ -60,13 +75,14 @@ export default {
 
         //answers pagination
         const currentPage = ref(1)
+        const itemPerPage = ref(10)
         watch(currentPage, () => {
             getQuestion()
         })
         const totalAnswers = ref(0)
 
         const getQuestion = async () => {
-            const res = await useCallApi('get', `/get_single_question?id=${route.params.id}&page=${currentPage.value}`)
+            const res = await useCallApi('get', `/get_single_question?id=${route.params.id}&page=${currentPage.value}&itemPerPage=${itemPerPage.value}`)
 
             if (res.status == 200) {
                 totalAnswers.value = res.data.answers.total
@@ -110,7 +126,18 @@ export default {
             answering.value = false
         }
 
-        return { question, answers, answer, sendAnswer, answering, currentPage, totalAnswers, getQuestion }
+
+        //message
+        const messageModal = ref(false)
+        const addressee = ref({})
+
+        const showMessageModal = (user) => {
+            addressee.value = user
+            messageModal.value = true
+        }
+
+
+        return { question, answers, answer, sendAnswer, answering, currentPage, totalAnswers, getQuestion, itemPerPage, messageModal, addressee, showMessageModal }
     }
 }
 </script>

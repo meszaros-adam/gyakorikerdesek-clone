@@ -12,8 +12,7 @@ h1 {
     font-family: monospace;
 }
 
-.side-menu li,
-.function-icon {
+.pointer-cursor {
     cursor: pointer;
 }
 
@@ -22,7 +21,7 @@ h1 {
 }
 
 .side-menu li a {
-    color: inherit;
+    color: white;
 }
 
 .delete-modal-icon {
@@ -35,9 +34,8 @@ h1 {
     color: #0d6efd;
 }
 
-.router-link:hover, .carousel__item:hover {
-    text-decoration: underline dashed 2px;
+.router-link:hover,
+.carousel__item:hover {
+    text-decoration: underline;
     color: white;
 }
-
-

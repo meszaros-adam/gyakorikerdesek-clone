@@ -16,9 +16,9 @@
             <th scope="row">{{ category.id }}</th>
             <td>{{ category.name }}</td>
             <td>
-              <i @click="showEditModal(category, c)" title="Edit" class="bi bi-pencil function-icon mx-1">
+              <i @click="showEditModal(category, c)" title="Edit" class="bi bi-pencil pointer-cursor mx-1">
               </i>
-              <i @click="showDeleteModal(category.id, c)" title="Delete" class="bi bi-trash function-icon mx-1"> </i>
+              <i @click="showDeleteModal(category.id, c)" title="Delete" class="bi bi-trash pointer-cursor mx-1"> </i>
             </td>
           </tr>
         </tbody>
