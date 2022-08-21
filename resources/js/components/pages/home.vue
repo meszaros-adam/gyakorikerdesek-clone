@@ -20,6 +20,7 @@
             </div>
             <li class="pointer-cursor" @click="createQuestionModal = true">Create question</li>
             <li class="pointer-cursor" >My questions</li>
+             <router-link class="router-link" to="/messages">Messages</router-link>
             <li class="pointer-cursor" >My answered questions</li>
           </ul>
         </div>

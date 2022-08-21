@@ -38,6 +38,7 @@ Route::get('/delete_category', [App\Http\Controllers\CategoryController::class, 
 
 //Message
 Route::post('/create_message', [App\Http\Controllers\MessageController::class, 'add']);
+Route::get('/incoming_messages', [App\Http\Controllers\MessageController::class, 'incoming']);
 
 Route::get('/', function () {
     return view('welcome');

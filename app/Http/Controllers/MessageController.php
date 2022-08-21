@@ -20,4 +20,7 @@ class MessageController extends Controller
             'sender_id' => Auth::user()->id,
         ]);
     }
+    public function incoming(){
+        return Message::where('addressee_id', Auth::user()->id)->get();
+    }
 }
