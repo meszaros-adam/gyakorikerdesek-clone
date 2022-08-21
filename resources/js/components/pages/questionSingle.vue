@@ -9,8 +9,13 @@
                 <div>
                     <span>{{ question.user.nickname }}</span>
                 </div>
-                <div @click="showMessageModal(question.user)" class="pointer-cursor">
-                    <span class="mx-2">Send a Message </span><i class="bi bi-envelope"></i>
+                <div>
+                    <div v-if="user.getUser.id == question.user.id">
+                        Your Question!
+                    </div>
+                    <div v-else @click="showMessageModal(question.user)" class="pointer-cursor">
+                        <span class="mx-2">Send Message </span><i class="bi bi-envelope"></i>
+                    </div>
                 </div>
                 <div>{{ question.created_at }}</div>
             </div>
@@ -27,9 +32,14 @@
                 <div>
                     {{ answer.user.nickname }}
                 </div>
-                <div @click="showMessageModal(answer.user)" class="pointer-cursor">
-                    <span class="mx-2">Send a Message</span>
-                    <i class="bi bi-envelope"></i>
+                <div>
+                    <div v-if="user.getUser.id == answer.user.id">
+                        Your Answer!
+                    </div>
+                    <div v-else @click="showMessageModal(answer.user)" class="pointer-cursor">
+                        <span class="mx-2">Send Message</span>
+                        <i class="bi bi-envelope"></i>
+                    </div>
                 </div>
                 <div>
                     {{ answer.created_at }}
@@ -63,6 +73,7 @@ import useCallApi from '../composables/useCallApi'
 import { useRoute } from 'vue-router'
 import { useUserStore } from "../../stores/user";
 import messageModal from '../partials/messageModal.vue'
+import router from '../../router';
 export default {
     components: { messageModal },
     setup() {
@@ -132,12 +143,19 @@ export default {
         const addressee = ref({})
 
         const showMessageModal = (user) => {
-            addressee.value = user
-            messageModal.value = true
+            if (!user.getUser) {
+                router.push({ path: '/login' })
+                toast.warning('You must login to send messages!')
+            }
+            else {
+                addressee.value = user
+                messageModal.value = true
+            }
+
         }
 
 
-        return { question, answers, answer, sendAnswer, answering, currentPage, totalAnswers, getQuestion, itemPerPage, messageModal, addressee, showMessageModal }
+        return { question, answers, answer, sendAnswer, answering, currentPage, totalAnswers, getQuestion, itemPerPage, messageModal, addressee, showMessageModal, user }
     }
 }
 </script>

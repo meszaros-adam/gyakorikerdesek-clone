@@ -1,8 +1,9 @@
 <template>
-    <b-modal hide-footer :title=title>
+    <b-modal hide-footer :title=title @hide="close">
         <div class="mb-3">
             <label for="message" class="form-label">Your message:</label>
-            <textarea v-model="message" placeholder="Your message..." class="form-control" id="message" rows="3"></textarea>
+            <textarea v-model="message" placeholder="Your message..." class="form-control" id="message"
+                rows="3"></textarea>
         </div>
         <div class="text-end">
             <Button @click="sendMessage" :loading="sending" type="primary">Send</Button>
@@ -19,11 +20,11 @@ export default {
     setup(props, context) {
         const toast = useToast()
         const title = computed(() => 'Sending message to ' + props.addressee.nickname + ':')
-        const message = ref('')
+        const message = ref(props.zero)
 
         const sending = ref(false)
         const sendMessage = async () => {
-            if(message.value.trim().length<3) return toast.warning('Message must be at least 3 characters!')
+            if (message.value.trim().length < 3) return toast.warning('Message must be at least 3 characters!')
             sending.value = true
             const res = await useCallApi('post', '/create_message', { message: message.value, addressee_id: props.addressee.id })
 
@@ -36,8 +37,12 @@ export default {
             sending.value = false
         }
 
+        //reseting message on closing modal
+        const close = () => {
+            message.value = ''
+        }
 
-        return { title, message, sendMessage, sending }
+        return { title, message, sendMessage, sending, close }
     }
 }
 </script>
