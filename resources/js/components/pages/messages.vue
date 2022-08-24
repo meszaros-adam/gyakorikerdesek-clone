@@ -6,23 +6,31 @@
             </div>
             <div class="col-md-9">
                 <div class="container bg-dark text-light">
-                    <h1 class="mb-3">Incoming Messages:</h1>
-                    <div class="bg-primary mb-3 p-2 rounded d-flex justify-content-between"
-                        v-for="(message, m) in messages" :key="m">
-                        <div>
-                            <span> {{ message.sender.nickname + ': ' }}</span>
-                            <span> {{ message.message }}</span>
-                        </div>
-                        <div>
-                            <i title="Reply" class="bi bi-reply mx-2 pointer-cursor fs-5"></i>
-                        </div>
-                    </div>
+                    <b-tabs content-class="mt-3">
+                        <b-tab title="Incoming" active>
+                            <h1 class="mb-3">Incoming Messages:</h1>
+                            <div class="bg-primary mb-3 p-2 rounded d-flex justify-content-between"
+                                v-for="(message, m) in messages" :key="m">
+                                <div>
+                                    <span> {{ message.sender.nickname + ': ' }}</span>
+                                    <span> {{ message.message }}</span>
+                                </div>
+                                <div>
+                                    <i @click="showMessageModal(message.sender)" title="Reply"
+                                        class="bi bi-reply mx-2 pointer-cursor fs-5 "></i>
+                                </div>
+                            </div>
+                        </b-tab>
+                        <b-tab title="Sended">
+                            <p>Sended Messages</p>
+                        </b-tab>
+                    </b-tabs>
+
                 </div>
             </div>
         </div>
-
     </div>
-
+    <messageModal v-model="messageModal" :addressee="addressee"></messageModal>
 </template>
 
 <script>
@@ -30,8 +38,9 @@ import { ref } from 'vue'
 import useCallApi from '../composables/useCallApi'
 import { useToast } from 'vue-toastification'
 import sideMenu from "../partials/sideMenu.vue";
+import messageModal from '../partials/messageModal.vue';
 export default {
-    components: { sideMenu },
+    components: { sideMenu, messageModal },
     setup() {
         const toast = useToast()
         const messages = ref([])
@@ -50,7 +59,17 @@ export default {
 
         getMessages()
 
-        return { messages }
+        //messageModal
+        const addressee = ref({})
+        const messageModal = ref(false)
+
+        const showMessageModal = (user) => {
+            addressee.value = user
+            messageModal.value = true
+        }
+
+
+        return { messages, addressee, messageModal, showMessageModal }
     }
 }
 </script>

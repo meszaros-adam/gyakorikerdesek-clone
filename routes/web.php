@@ -34,7 +34,7 @@ Route::post('/create_category', [App\Http\Controllers\CategoryController::class,
 Route::get('/get_categories', [App\Http\Controllers\CategoryController::class, 'get']);
 Route::get('/get_all_categories', [App\Http\Controllers\CategoryController::class, 'getAll']);
 Route::post('/edit_category', [App\Http\Controllers\CategoryController::class, 'edit']);
-Route::get('/delete_category', [App\Http\Controllers\CategoryController::class, 'delete']);
+Route::post('/delete_category', [App\Http\Controllers\CategoryController::class, 'delete']);
 
 //Message
 Route::post('/create_message', [App\Http\Controllers\MessageController::class, 'add']);
