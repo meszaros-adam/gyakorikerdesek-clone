@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-    public function add(Request $request){
-        $this->validate($request,[
+    public function add(Request $request)
+    {
+        $this->validate($request, [
             'message' => 'required|min:3',
-            'addressee_id' =>'required',
+            'addressee_id' => 'required',
         ]);
 
         return Message::create([
@@ -20,7 +21,12 @@ class MessageController extends Controller
             'sender_id' => Auth::user()->id,
         ]);
     }
-    public function incoming(){
+    public function getIncoming()
+    {
         return Message::where('addressee_id', Auth::user()->id)->get();
+    }
+    public function getSended()
+    {
+        return Message::where('sender_id', Auth::user()->id)->get();
     }
 }

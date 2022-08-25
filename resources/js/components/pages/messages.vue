@@ -10,7 +10,7 @@
                         <b-tab title="Incoming" active>
                             <h1 class="mb-3">Incoming Messages:</h1>
                             <div class="bg-primary mb-3 p-2 rounded d-flex justify-content-between"
-                                v-for="(message, m) in messages" :key="m">
+                                v-for="(message, m) in incomingMessages" :key="m">
                                 <div>
                                     <span> {{ message.sender.nickname + ': ' }}</span>
                                     <span> {{ message.message }}</span>
@@ -21,8 +21,19 @@
                                 </div>
                             </div>
                         </b-tab>
-                        <b-tab title="Sended">
-                            <p>Sended Messages</p>
+                        <b-tab @click="getSendedMessages" title="Sended">
+                            <h1 class="mb-3">Sended Messages:</h1>
+                            <div class="bg-primary mb-3 p-2 rounded d-flex justify-content-between"
+                                v-for="(message, m) in sendedMessages" :key="m">
+                                <div>
+                                    <span> {{ message.sender.nickname + ': ' }}</span>
+                                    <span> {{ message.message }}</span>
+                                </div>
+                                <div>
+                                    <i @click="showMessageModal(message.sender)" title="Reply"
+                                        class="bi bi-reply mx-2 pointer-cursor fs-5 "></i>
+                                </div>
+                            </div>
                         </b-tab>
                     </b-tabs>
 
@@ -43,21 +54,36 @@ export default {
     components: { sideMenu, messageModal },
     setup() {
         const toast = useToast()
-        const messages = ref([])
 
+        //incoming messages
+        const incomingMessages = ref([])
 
-        const getMessages = async () => {
+        const getIncomingMessages = async () => {
             const res = await useCallApi('get', '/incoming_messages')
 
             if (res.status == 200) {
-                messages.value = res.data
+                incomingMessages.value = res.data
             }
             else {
-                toast.error('Failed to load messages!')
+                toast.error('Failed to load incoming messages!')
             }
         }
 
-        getMessages()
+        getIncomingMessages()
+
+        //sended messages
+
+        const sendedMessages = ref([])
+
+        const getSendedMessages = async () => {
+            const res = await useCallApi('get', 'sended_messages')
+
+            if(res.status == 200){
+                sendedMessages.value = res.data
+            }else{
+                toast.error('Failed to load sended messages!')
+            }
+        }
 
         //messageModal
         const addressee = ref({})
@@ -69,7 +95,7 @@ export default {
         }
 
 
-        return { messages, addressee, messageModal, showMessageModal }
+        return { incomingMessages, addressee, messageModal, showMessageModal, sendedMessages, getSendedMessages }
     }
 }
 </script>
