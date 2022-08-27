@@ -1,5 +1,5 @@
 <template>
-    <div class="container bg-secondary rounded">
+    <div class="bg-secondary rounded p-3">
         <h1>Menu</h1>
         <ul class="side-menu">
             <li>
@@ -15,7 +15,7 @@
                     <router-link class="router-link" to="/admin/tags">Tags</router-link>
                 </div>
             </div>
-            <li class="pointer-cursor" @click="createQuestionModal = true">Create question</li>
+            <li class="pointer-cursor" @click="showCreateQuestionModal">Create question</li>
             <li class="pointer-cursor">My questions</li>
             <router-link class="router-link" to="/messages">Messages</router-link>
             <li class="pointer-cursor">My answered questions</li>
@@ -98,9 +98,13 @@ export default {
             }
         };
 
-        getCategories();
+        const showCreateQuestionModal = () => {
+            getCategories()
+            createQuestionModal.value = true
+        }
 
-        return { createQuestion, categories, createQuestionModal, creatingQuestion, question, categories }
+
+        return { createQuestion, categories, createQuestionModal, creatingQuestion, question, categories, showCreateQuestionModal }
     }
 }
 </script>

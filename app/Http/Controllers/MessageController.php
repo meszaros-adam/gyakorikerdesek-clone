@@ -21,12 +21,12 @@ class MessageController extends Controller
             'sender_id' => Auth::user()->id,
         ]);
     }
-    public function getIncoming()
+    public function getIncoming(Request $request)
     {
-        return Message::where('addressee_id', Auth::user()->id)->get();
+        return Message::where('addressee_id', Auth::user()->id)->orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
     }
-    public function getSended()
+    public function getSended(Request $request)
     {
-        return Message::where('sender_id', Auth::user()->id)->get();
+        return Message::where('sender_id', Auth::user()->id)->orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
     }
 }

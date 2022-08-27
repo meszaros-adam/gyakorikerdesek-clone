@@ -24,7 +24,7 @@
         </tbody>
       </table>
       <!-- Pagination -->
-        <b-pagination v-model="currentPage" :total-rows="totalCategories" :per-page="10" align="center"></b-pagination>
+        <b-pagination v-model="currentPage" :total-rows="totalCategories" :per-page="itemPerPage" align="center"></b-pagination>
         <!-- Pagination -->
     </div>
     <!--Create Modal-->
@@ -96,10 +96,9 @@ export default {
 
     //get categories
     const categories = ref([]);
-
-    const orderBy = "id";
-    const ordering = "desc";
-    const itemPerPage = 10;
+    const orderBy = ref('id');
+    const ordering = ref('desc')
+    const itemPerPage = ref(10)
 
     //categories pagination
     const currentPage = ref(1)
@@ -111,7 +110,7 @@ export default {
     const getCategories = async () => {
       const res = await useCallApi(
         "get",
-        `/get_categories?orderBy=${orderBy}&ordering=${ordering}&page=${currentPage.value}`
+        `/get_categories?orderBy=${orderBy.value}&ordering=${ordering.value}&page=${currentPage.value}`
       );
 
       if (res.status == 200) {
@@ -188,6 +187,7 @@ export default {
       removeDeletedItem,
       totalCategories,
       currentPage,
+      itemPerPage,
     };
   },
 };
