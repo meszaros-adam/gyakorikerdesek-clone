@@ -76,7 +76,7 @@ export default {
                 totalIncoming.value = res.data.total
             }
             else {
-                toast.error('Failed to load incoming messages!')
+                toast.error(res.data)
             }
         }
 
@@ -101,7 +101,7 @@ export default {
                 sendedMessages.value = res.data.data
                 totalSended.value = res.data.total
             } else {
-                toast.error('Failed to load sended messages!')
+                toast.error(res.data)
             }
         }
 
