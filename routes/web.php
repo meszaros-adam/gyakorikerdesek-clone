@@ -42,6 +42,8 @@ Route::post('/delete_category', [App\Http\Controllers\CategoryController::class,
 Route::post('/create_message', [App\Http\Controllers\MessageController::class, 'add'])->middleware(LoginCheck::class);
 Route::get('/incoming_messages', [App\Http\Controllers\MessageController::class, 'getIncoming'])->middleware(LoginCheck::class);
 Route::get('/sended_messages', [App\Http\Controllers\MessageController::class, 'getSended'])->middleware(LoginCheck::class);
+Route::get('/unreaded_messages_count', [App\Http\Controllers\MessageController::class, 'getUnreadedCount'])->middleware(LoginCheck::class);
+Route::post('/set_messages_to_readed', [App\Http\Controllers\MessageController::class, 'setMessagesTopReaded'])->middleware(LoginCheck::class);
 
 
 Route::fallback(function () {

@@ -76,7 +76,7 @@ export default {
                 totalIncoming.value = res.data.total
             }
             else {
-                toast.error(res.data)
+                toast.error(res.data.message)
             }
         }
 
@@ -101,7 +101,7 @@ export default {
                 sendedMessages.value = res.data.data
                 totalSended.value = res.data.total
             } else {
-                toast.error(res.data)
+                toast.error(res.data.message)
             }
         }
 

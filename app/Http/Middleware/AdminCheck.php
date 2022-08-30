@@ -17,15 +17,14 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return response()->json([
                 'message' => 'You must login!'
-            ]);
-        }
-        elseif(!Auth::user()->admin){
+            ], 401);
+        } elseif (!Auth::user()->admin) {
             return response()->json([
                 'message' => 'Only Admins can access this route!'
-            ]);
+            ], 401);
         }
 
 

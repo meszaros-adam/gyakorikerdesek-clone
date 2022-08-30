@@ -29,4 +29,17 @@ class MessageController extends Controller
     {
         return Message::where('sender_id', Auth::user()->id)->orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
     }
+    public function getUnreadedCount()
+    {
+        return Message::where([
+            ['addressee_id', Auth::user()->id],
+            ['readed', false]
+        ])->count();
+    }
+    public function setMessagesTopReaded()
+    {
+        return Message::where('addressee_id', Auth::user()->id)->update([
+            'readed' => true,
+        ]);
+    }
 }

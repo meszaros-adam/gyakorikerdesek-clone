@@ -17,7 +17,7 @@
             </div>
             <li class="pointer-cursor" @click="showCreateQuestionModal">Create question</li>
             <li class="pointer-cursor">My questions</li>
-            <router-link class="router-link" to="/messages">Messages</router-link>
+            <router-link @click="setMessagesToReaded" class="router-link" to="/messages">Messages <span class="badge bg-primary">{{unreadedCount}}</span></router-link>
             <li class="pointer-cursor">My answered questions</li>
         </ul>
     </div>
@@ -50,11 +50,13 @@
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
+import { useUserStore } from "../../stores/user";
 export default {
     emits: ['newQuestionCreated'],
     //props needed becouse it drops error without it
     setup(props, context) {
         const toast = useToast()
+        const user = useUserStore();
 
         //create question
         const createQuestionModal = ref(false);
@@ -103,8 +105,33 @@ export default {
             createQuestionModal.value = true
         }
 
+        //unreaded messages
+        const unreadedCount = ref(null)
 
-        return { createQuestion, categories, createQuestionModal, creatingQuestion, question, categories, showCreateQuestionModal }
+        const getUnreadedCount = async () => {
+            if (user.getUser) {
+                const res = await useCallApi('get', '/unreaded_messages_count')
+
+                if (res.status == 200) {
+                    unreadedCount.value = res.data
+                } else {
+                    toast.error('Cannot load the unreaded message count')
+                }
+            }
+        }
+
+        const setMessagesToReaded = async () =>{
+            const res = useCallApi('post', '/set_messages_to_readed')
+
+            if(!res.status == 200){
+                toast.error('Failed to set messages to unread!')
+            }
+        }
+
+
+        getUnreadedCount();
+
+        return { createQuestion, categories, createQuestionModal, creatingQuestion, question, categories, showCreateQuestionModal, unreadedCount, setMessagesToReaded }
     }
 }
 </script>

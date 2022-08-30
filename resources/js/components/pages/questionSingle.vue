@@ -8,12 +8,12 @@
                 <div class="container bg-dark text-light">
                     <div v-if="question" class="bg-secondary container mb-3 rounded">
                         <div class="border-bottom py-3">
-                            <h1 class="text-center mb-3">{{ question.question }}</h1>
-                            <p class="text-center">{{ question.description }}</p>
+                            <h1 class="text-center mb-3">{{  question.question  }}</h1>
+                            <p class="text-center">{{  question.description  }}</p>
                         </div>
                         <div class="d-flex justify-content-between">
                             <div>
-                                <span>{{ question.user.nickname }}</span>
+                                <span>{{  question.user.nickname  }}</span>
                             </div>
                             <div>
                                 <div v-if="user.getUser.id == question.user.id">
@@ -23,7 +23,7 @@
                                     <span class="mx-2">Send Message </span><i class="bi bi-envelope"></i>
                                 </div>
                             </div>
-                            <div>{{ question.created_at }}</div>
+                            <div>{{  question.created_at  }}</div>
                         </div>
                     </div>
                     <!-- Pagination -->
@@ -36,7 +36,7 @@
                     <div v-else class="mb-3 container" v-for="(answer, a ) in answers" :key="a">
                         <div class="bg-primary rounded-top p-1 d-flex justify-content-between">
                             <div>
-                                {{ answer.user.nickname }}
+                                {{  answer.user.nickname  }}
                             </div>
                             <div>
                                 <div v-if="user.getUser.id == answer.user.id">
@@ -48,11 +48,11 @@
                                 </div>
                             </div>
                             <div>
-                                {{ answer.created_at }}
+                                {{  answer.created_at  }}
                             </div>
                         </div>
                         <div class="bg-secondary p-3 rounded-bottom">
-                            <p>{{ answer.answer }}</p>
+                            <p>{{  answer.answer  }}</p>
                         </div>
                     </div>
                     <!-- Pagination -->
@@ -143,6 +143,7 @@ export default {
                 answer.value.created_at = fullDate
                 answer.value.user = user.getUser
                 answers.value.push(answer.value)
+                answer.value = ''
                 toast.success('Sucessful answering!')
             } else {
                 toast.error(res.data.message)

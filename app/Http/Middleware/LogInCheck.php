@@ -17,10 +17,10 @@ class LogInCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return response()->json([
                 'message' => 'You must login!'
-            ]);
+            ], 401);
         }
         return $next($request);
     }
