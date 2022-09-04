@@ -24,8 +24,9 @@
         </tbody>
       </table>
       <!-- Pagination -->
-        <b-pagination v-model="currentPage" :total-rows="totalCategories" :per-page="itemPerPage" align="center"></b-pagination>
-        <!-- Pagination -->
+      <b-pagination v-model="currentPage" :total-rows="totalCategories" :per-page="itemPerPage" align="center">
+      </b-pagination>
+      <!-- Pagination -->
     </div>
     <!--Create Modal-->
     <b-modal v-model="createModal" hide-footer title="Create Category">
@@ -54,12 +55,12 @@
     <!--Create Modal-->
 
     <delete-modal delete_url="/delete_category" item_name="category" :item_id="deleteId" v-model="deleteModal"
-      :delete_index="deleteIndex" @successfullDelete="removeDeletedItem(index)"></delete-modal>
+      :delete_index="deleteIndex" @successfulDelete="removeDeletedItem"></delete-modal>
   </div>
 </template>
 
 <script>
-import { ref, watch} from "vue";
+import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../../composables/useCallApi";
 import deleteModal from "../../partials/deleteModal.vue"
@@ -110,7 +111,7 @@ export default {
     const getCategories = async () => {
       const res = await useCallApi(
         "get",
-        `/get_categories?orderBy=${orderBy.value}&ordering=${ordering.value}&page=${currentPage.value}`
+        `/get_categories?orderBy=${orderBy.value}&ordering=${ordering.value}&page=${currentPage.value}&itemPerPage=${itemPerPage.value}`
       );
 
       if (res.status == 200) {

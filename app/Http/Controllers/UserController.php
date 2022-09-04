@@ -40,4 +40,7 @@ class UserController extends Controller
         Auth::logout();
         return redirect('/login');
     }
+    public function getAll(){
+        return User::orderBy('nickname', 'asc')->get();
+    }
 }

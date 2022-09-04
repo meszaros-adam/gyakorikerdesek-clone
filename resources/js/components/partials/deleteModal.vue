@@ -36,7 +36,7 @@ export default {
 
             if (res.status == 200) {
                 toast.success('Item was deleted successfuly!')
-                context.emit('successfullDelete', props.delete_index)
+                context.emit('successfulDelete', props.delete_index)
             } else {
                 toast.error('Delete failed!')
             }

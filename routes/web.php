@@ -27,6 +27,10 @@ Route::prefix('/auth')->group(function () {
 Route::post('/create_question', [App\Http\Controllers\QuestionController::class, 'add'])->middleware(LoginCheck::class);
 Route::get('/get_last_five_questions', [App\Http\Controllers\QuestionController::class, 'getLastFive']);
 Route::get('get_single_question', [App\Http\Controllers\QuestionController::class, 'getSingle']);
+Route::get('/get_questions', [App\Http\Controllers\QuestionController::class, 'get']);
+Route::post('/edit_question', [App\Http\Controllers\QuestionController::class, 'edit'])->middleware(AdminCheck::class);
+Route::post('/delete_question', [App\Http\Controllers\QuestionController::class, 'delete'])->middleware(AdminCheck::class);
+
 
 //Answers
 Route::post('/create_answer', [App\Http\Controllers\AnswerController::class, 'add'])->middleware(LoginCheck::class);
@@ -44,6 +48,9 @@ Route::get('/incoming_messages', [App\Http\Controllers\MessageController::class,
 Route::get('/sended_messages', [App\Http\Controllers\MessageController::class, 'getSended'])->middleware(LoginCheck::class);
 Route::get('/unreaded_messages_count', [App\Http\Controllers\MessageController::class, 'getUnreadedCount'])->middleware(LoginCheck::class);
 Route::post('/set_messages_to_readed', [App\Http\Controllers\MessageController::class, 'setMessagesTopReaded'])->middleware(LoginCheck::class);
+
+//User
+Route::get('get_all_users', [App\Http\Controllers\UserController::class, 'getAll'])->middleware(AdminCheck::class);
 
 
 Route::fallback(function () {

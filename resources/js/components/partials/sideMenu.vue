@@ -17,7 +17,8 @@
             </div>
             <li class="pointer-cursor" @click="showCreateQuestionModal">Create question</li>
             <li class="pointer-cursor">My questions</li>
-            <router-link @click="setMessagesToReaded" class="router-link" to="/messages">Messages <span class="badge bg-primary">{{unreadedCount}}</span></router-link>
+            <router-link @click="setMessagesToReaded" class="router-link" to="/messages">Messages <span
+                    v-if="unreadedCount > 0" class="badge bg-primary">{{ unreadedCount }}</span></router-link>
             <li class="pointer-cursor">My answered questions</li>
         </ul>
     </div>
@@ -61,11 +62,7 @@ export default {
         //create question
         const createQuestionModal = ref(false);
         const creatingQuestion = ref(false);
-        const question = ref({
-            question: "",
-            description: "",
-            category_id: "",
-        });
+        const question = ref({});
         const createQuestion = async () => {
             if (question.value.question.trim() == "")
                 return toast.warning("You must enter a question!");
@@ -87,13 +84,14 @@ export default {
             } else {
                 toast.error(res.data.message);
             }
+            question.value = {};
             creatingQuestion.value = false;
         };
 
         const categories = ref([]);
         const getCategories = async () => {
             const res = await useCallApi("get", "/get_all_categories");
-            if ((res.status = 200)) {
+            if (res.status == 200) {
                 categories.value = res.data;
             } else {
                 toast.error(res.data.message);
@@ -120,10 +118,10 @@ export default {
             }
         }
 
-        const setMessagesToReaded = async () =>{
+        const setMessagesToReaded = async () => {
             const res = useCallApi('post', '/set_messages_to_readed')
 
-            if(!res.status == 200){
+            if (!res.status == 200) {
                 toast.error('Failed to set messages to unread!')
             }
         }

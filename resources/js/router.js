@@ -3,6 +3,7 @@ import login from './components/pages/auth/login.vue'
 import register from './components/pages/auth/register.vue'
 import home from './components/pages/home.vue'
 import categoriesAdmin from './components/pages/admin/categoriesAdmin.vue'
+import questionsAdmin from './components/pages/admin/questionsAdmin.vue'
 import questionSingle from './components/pages/questionSingle.vue'
 import messages from './components/pages/messages.vue'
 
@@ -20,10 +21,6 @@ const routes = [
         component: home,
     },
     {
-        path: '/admin/categories',
-        component: categoriesAdmin,
-    },
-    {
         path: '/question/:id',
         name: 'question',
         component: questionSingle,
@@ -37,6 +34,15 @@ const routes = [
         path: '/messages',
         name: 'messages',
         component: messages,
+    },
+    //Admin
+    {
+        path: '/admin/categories',
+        component: categoriesAdmin,
+    },
+    {
+        path: '/admin/questions',
+        component: questionsAdmin,
     },
 ]
 

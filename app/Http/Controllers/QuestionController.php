@@ -25,16 +25,44 @@ class QuestionController extends Controller
     }
     public function getLastFive()
     {
-        return Question::latest()->take(5)->with('category')->get();
+        return Question::latest()->take(5)->get();
     }
     public function getSingle(Request $request)
     {
-        $question =  Question::with('user')->find($request->id);
+        $question =  Question::find($request->id);
         $answers = Answer::where('question_id', $request->id)->paginate($request->itemPerPage);
 
         return response()->json([
             'question' => $question,
             'answers' => $answers,
         ]);
+    }
+    public function get(Request $request)
+    {
+        return Question::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
+    }
+    public function edit(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|numeric',
+            'question' => 'required|min:6',
+            'categoryId' => 'required|numeric',
+            'userId'  => 'required|numeric',
+        ]);
+
+        return Question::where('id', $request->id)->update([
+            'question' => $request->question,
+            'description' => $request->description,
+            'category_id' => $request->categoryId,
+            'user_id' => $request->userId
+
+        ]);
+    }
+    public function delete(Request $request){
+        $this->validate($request, [
+            'id' => 'required|numeric'
+        ]);
+
+        return Question::where('id', $request->id)->delete();
     }
 }
