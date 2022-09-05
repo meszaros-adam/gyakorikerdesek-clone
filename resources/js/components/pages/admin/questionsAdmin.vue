@@ -2,11 +2,12 @@
     <div>
         <admin-nav-bar></admin-nav-bar>
         <div class="container my-5 p-5 bg-dark text-light">
-            <Button><i class="bi bi-plus-lg"></i> Create Question</Button>
+            <Button @click="createModal = true"><i class="bi bi-plus-lg"></i> Create Question</Button>
             <table class="table table-primary table-striped my-3">
                 <thead>
                     <tr>
                         <th scope="col">#ID</th>
+                        <th scope="col">Category</th>
                         <th scope="col">Questioner</th>
                         <th scope="col">Question</th>
                         <th scope="col">Functions</th>
@@ -15,6 +16,7 @@
                 <tbody>
                     <tr v-for="(question, q) in questions" :key="q">
                         <th scope="row">{{ question.id }}</th>
+                        <td>{{ question.category.name }}</td>
                         <td>{{ question.user.nickname }}</td>
                         <td>{{ question.question }}</td>
                         <td>
@@ -61,6 +63,8 @@
 
         <delete-modal delete_url="/delete_question" item_name="question" :item_id="deleteId" v-model="deleteModal"
             :delete_index="deleteIndex" @successfulDelete="removeDeletedItem"></delete-modal>
+
+        <createQuestionModalVue v-model="createModal" @newQuestionCreated="getQuestions"></createQuestionModalVue>
     </div>
 </template>
   
@@ -70,8 +74,9 @@
   import useCallApi from "../../composables/useCallApi";
   import deleteModal from "../../partials/deleteModal.vue"
   import adminNavBar from "../../partials/adminNavBar.vue"
+  import createQuestionModalVue from "../../partials/createQuestionModal.vue";
   export default {
-      components: { deleteModal, adminNavBar },
+      components: { deleteModal, adminNavBar, createQuestionModalVue },
       setup() {
           const toast = useToast();
   
@@ -104,7 +109,7 @@
           getQuestions();
   
   
-          //edit categories
+          //edit questions
           const editModal = ref(false);
           const editing = ref(false);
           const editIndex = ref(null);
@@ -148,6 +153,7 @@
               editModal.value = true;
               editIndex.value = index;
           };
+
           const editQuestion = async () => {
               if (editData.value.question.trim().length < 6)
                   return toast.warning("Question must be at leat 6 characters!");
@@ -180,7 +186,9 @@
           const removeDeletedItem = (index) => {
               questions.value.splice(index, 1)
           }
-  
+          
+          //create modal
+          const createModal = ref(false)
           return {
               questions,
               editModal,
@@ -199,6 +207,8 @@
               itemPerPage,
               categories,
               users,
+              createModal,
+              getQuestions,
           };
       },
   };
