@@ -1,50 +1,40 @@
 <template>
-    <div class="container my-5 p-5 bg-dark text-light">
-        <div class="row g-5">
-            <div class="col-md-3">
-                <sideMenu></sideMenu>
-            </div>
-            <div class="col-md-9">
-                <div class="container bg-dark text-light">
-                    <b-tabs content-class="mt-3">
-                        <b-tab title="Incoming" active>
-                            <h1 class="mb-3">Incoming Messages:</h1>
-                            <div class="bg-primary mb-3 p-2 rounded" v-for="(message, m) in incomingMessages" :key="m">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div class="border-bottom">From: {{ message.sender.nickname }}</div>
-                                    <div>{{ message.created_at }}</div>
+    <div class="container my-5 p-3 bg-dark text-light">
+        <b-tabs content-class="mt-3">
+            <b-tab title="Incoming" active>
+                <h1 class="mb-3">Incoming Messages:</h1>
+                <div class="bg-primary mb-3 p-2 rounded" v-for="(message, m) in incomingMessages" :key="m">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="border-bottom">From: {{ message.sender.nickname }}</div>
+                        <div>{{ message.created_at }}</div>
 
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span> {{ message.message }}</span>
-                                    <i @click="showMessageModal(message.sender)" title="Reply"
-                                        class="bi bi-reply mx-2 pointer-cursor fs-5 "></i>
-                                </div>
-                            </div>
-                            <!-- Pagination -->
-                            <b-pagination v-if="totalIncoming > itemPerPage" v-model="currentPageIncoming"
-                                :total-rows="totalIncoming" :per-page="itemPerPage" align="center"></b-pagination>
-                            <!-- Pagination -->
-                        </b-tab>
-                        <b-tab title="Sended">
-                            <h1 class="mb-3">Sended Messages:</h1>
-                            <div class="bg-primary mb-3 p-2 rounded" v-for="(message, m) in sendedMessages" :key="m">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div class="border-bottom"> To: {{ message.addressee.nickname }}</div>
-                                    <div>{{ message.created_at }}</div>
-                                </div>
-                                <div> {{ message.message }}</div>
-                            </div>
-                            <!-- Pagination -->
-                            <b-pagination v-if="totalSended > itemPerPage" v-model="currentPageSended"
-                                :total-rows="totalSended" :per-page="itemPerPage" align="center"></b-pagination>
-                            <!-- Pagination -->
-                        </b-tab>
-                    </b-tabs>
-
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span> {{ message.message }}</span>
+                        <i @click="showMessageModal(message.sender)" title="Reply"
+                            class="bi bi-reply mx-2 pointer-cursor fs-5 "></i>
+                    </div>
                 </div>
-            </div>
-        </div>
+                <!-- Pagination -->
+                <b-pagination v-if="totalIncoming > itemPerPage" v-model="currentPageIncoming"
+                    :total-rows="totalIncoming" :per-page="itemPerPage" align="center"></b-pagination>
+                <!-- Pagination -->
+            </b-tab>
+            <b-tab title="Sended">
+                <h1 class="mb-3">Sended Messages:</h1>
+                <div class="bg-primary mb-3 p-2 rounded" v-for="(message, m) in sendedMessages" :key="m">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="border-bottom"> To: {{ message.addressee.nickname }}</div>
+                        <div>{{ message.created_at }}</div>
+                    </div>
+                    <div> {{ message.message }}</div>
+                </div>
+                <!-- Pagination -->
+                <b-pagination v-if="totalSended > itemPerPage" v-model="currentPageSended" :total-rows="totalSended"
+                    :per-page="itemPerPage" align="center"></b-pagination>
+                <!-- Pagination -->
+            </b-tab>
+        </b-tabs>
     </div>
     <messageModal v-model="messageModal" :addressee="addressee"></messageModal>
 </template>

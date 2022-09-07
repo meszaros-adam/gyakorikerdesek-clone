@@ -1,27 +1,20 @@
 <template>
   <div class="container my-5 p-5 bg-dark text-light">
-    <div class="row g-5">
-      <div class="col-md-3">
-        <sideMenu @newQuestionCreated="getLastFiveQuestions"></sideMenu>
-      </div>
-      <div class="col-md-9 rounded ps-5 pe-5">
-        <h1 class="text-center mb-5">Last Five Questions</h1>
-        <!--This v-if needed to avoid "maximum recursive updates exceeded" error-->
-        <div v-if="lastFiveQuestions.length > 0">
-          <Carousel :autoplay="8000" :wrap-around="true">
-            <Slide v-for="(question, q) in lastFiveQuestions" :key="q">
-              <router-link class="carousel__item" :to="{ name: 'question', params: { id: question.id } }">
-                <h3>{{ question.question }}</h3>
-                <p>{{ question.description }}</p>
-              </router-link>
-            </Slide>
-            <template #addons>
-              <Navigation />
-              <Pagination />
-            </template>
-          </Carousel>
-        </div>
-      </div>
+    <h1 class="text-center mb-5">Last Five Questions</h1>
+    <!--This v-if needed to avoid "maximum recursive updates exceeded" error-->
+    <div v-if="lastFiveQuestions.length > 0">
+      <Carousel :autoplay="8000" :wrap-around="true">
+        <Slide v-for="(question, q) in lastFiveQuestions" :key="q">
+          <router-link class="carousel__item" :to="{ name: 'question', params: { id: question.id } }">
+            <h3>{{ question.question }}</h3>
+            <p>{{ question.description }}</p>
+          </router-link>
+        </Slide>
+        <template #addons>
+          <Navigation />
+          <Pagination />
+        </template>
+      </Carousel>
     </div>
   </div>
 </template>
@@ -32,14 +25,12 @@ import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
-import sideMenu from "../partials/sideMenu.vue";
 export default {
   components: {
     Carousel,
     Slide,
     Pagination,
     Navigation,
-    sideMenu,
   },
   setup() {
     const toast = useToast();

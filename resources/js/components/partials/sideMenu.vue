@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-secondary rounded p-3">
+    <div class="bg-secondary my-5 mx-3 p-3">
         <h1>Menu</h1>
         <ul class="side-menu">
             <li>
@@ -11,18 +11,22 @@
                 <div class="card card-body bg-primary">
                     <router-link class="router-link" to="/admin/categories">Categories</router-link>
                     <router-link class="router-link" to="/admin/questions">Questions</router-link>
+                    <router-link class="router-link" to="/admin/answers">Answers</router-link>
                     <router-link class="router-link" to="/admin/users">Users</router-link>
                     <router-link class="router-link" to="/admin/tags">Tags</router-link>
                 </div>
             </div>
             <li class="pointer-cursor" @click="createQuestionModal = true">Create question</li>
-            <li class="pointer-cursor">My questions</li>
+            <li>
+                <router-link class="router-link" to="/my-questions">My Questions</router-link>
+            </li>
             <router-link @click="setMessagesToReaded" class="router-link" to="/messages">Messages <span
                     v-if="unreadedCount > 0" class="badge bg-primary">{{ unreadedCount }}</span></router-link>
             <li class="pointer-cursor">My answered questions</li>
         </ul>
     </div>
-    <createQuestionModal v-model="createQuestionModal" @newQuestionCreated="$emit('newQuestionCreated')"></createQuestionModal>
+    <createQuestionModal v-model="createQuestionModal" @newQuestionCreated="$emit('newQuestionCreated')">
+    </createQuestionModal>
 </template>
 
 <script>
@@ -32,7 +36,7 @@ import useCallApi from "../composables/useCallApi";
 import { useUserStore } from "../../stores/user";
 import createQuestionModal from "./createQuestionModal.vue";
 export default {
-    components:{createQuestionModal},
+    components: { createQuestionModal },
     emits: ['newQuestionCreated'],
     //props needed becouse it drops error without it
     setup(props, context) {
@@ -67,7 +71,7 @@ export default {
 
         getUnreadedCount();
 
-        return {  createQuestionModal, unreadedCount, setMessagesToReaded }
+        return { createQuestionModal, unreadedCount, setMessagesToReaded }
     }
 }
 </script>

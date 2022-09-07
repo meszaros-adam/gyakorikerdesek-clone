@@ -1,7 +1,6 @@
 <template>
   <div>
-    <admin-nav-bar></admin-nav-bar>
-    <div class="container my-5 p-5 bg-dark text-light">
+    <div class="container my-5 p-3 bg-dark text-light">
       <Button @click="createModal = true"><i class="bi bi-plus-lg"></i> Create Category</Button>
       <table class="table table-primary table-striped my-3">
         <thead>
@@ -64,9 +63,8 @@ import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../../composables/useCallApi";
 import deleteModal from "../../partials/deleteModal.vue"
-import adminNavBar from "../../partials/adminNavBar.vue"
 export default {
-  components: { deleteModal, adminNavBar },
+  components: { deleteModal },
   setup() {
     const toast = useToast();
 
