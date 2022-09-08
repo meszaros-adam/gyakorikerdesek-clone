@@ -62,7 +62,7 @@
 import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../../composables/useCallApi";
-import deleteModal from "../../partials/deleteModal.vue"
+import deleteModal from "../../partials/deleteModal.vue";
 export default {
   components: { deleteModal },
   setup() {
@@ -116,7 +116,7 @@ export default {
         categories.value = res.data.data;
         totalCategories.value = res.data.total
       } else {
-        toast.error("Failed to load categories!");
+        toast.error(res.data.message);
       }
     };
     getCategories();

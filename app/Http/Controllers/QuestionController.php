@@ -65,4 +65,7 @@ class QuestionController extends Controller
 
         return Question::where('id', $request->id)->delete();
     }
+    public function getMyQuestions(Request $request){
+        return Question::where('user_id', Auth::user()->id)->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
+    }
 }

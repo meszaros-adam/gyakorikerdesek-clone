@@ -30,6 +30,7 @@ Route::get('get_single_question', [App\Http\Controllers\QuestionController::clas
 Route::get('/get_questions', [App\Http\Controllers\QuestionController::class, 'get']);
 Route::post('/edit_question', [App\Http\Controllers\QuestionController::class, 'edit'])->middleware(AdminCheck::class);
 Route::post('/delete_question', [App\Http\Controllers\QuestionController::class, 'delete'])->middleware(AdminCheck::class);
+Route::get('/get_my_questions', [App\Http\Controllers\QuestionController::class, 'getMyQuestions'])->middleware(LoginCheck::class);
 
 
 //Answers

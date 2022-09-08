@@ -45,14 +45,16 @@
     </nav>
     <!-- NAV -->
 
-    <div class="row g-5">
-      <div class="col-lg-3">
-        <side-menu></side-menu>
-      </div>
-      <div class="col-lg-9">
-        <!-- ROUTER -->
-        <router-view> </router-view>
-        <!-- ROUTER -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-3">
+          <side-menu></side-menu>
+        </div>
+        <div class="col-lg-9">
+          <!-- ROUTER -->
+          <router-view> </router-view>
+          <!-- ROUTER -->
+        </div>
       </div>
     </div>
 
