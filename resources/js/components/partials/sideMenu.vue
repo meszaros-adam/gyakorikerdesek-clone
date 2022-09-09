@@ -1,9 +1,9 @@
 <template>
-    <div class="bg-secondary my-5 mx-3 p-3">
+    <div class="bg-secondary mt-5 mx-3 p-3">
         <h1>Menu</h1>
         <ul class="side-menu">
             <li>
-                <a data-bs-toggle="collapse" href="#collapseExample" role="button">
+                <a class="admin-panel" data-bs-toggle="collapse" href="#collapseExample" role="button">
                     Admin Panel
                 </a>
             </li>
@@ -20,8 +20,10 @@
             <li>
                 <router-link class="router-link" to="/my-questions">My Questions</router-link>
             </li>
-            <router-link @click="setMessagesToReaded" class="router-link" to="/messages">Messages <span
-                    v-if="unreadedCount > 0" class="badge bg-primary">{{ unreadedCount }}</span></router-link>
+            <li>
+                <router-link @click="setMessagesToReaded" class="router-link" to="/messages">Messages <span
+                        v-if="unreadedCount > 0" class="badge bg-primary">{{ unreadedCount }}</span></router-link>
+            </li>
             <li class="pointer-cursor">My answered questions</li>
         </ul>
     </div>

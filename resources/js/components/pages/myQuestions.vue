@@ -2,7 +2,8 @@
     <div class="container my-5 p-3 bg-dark text-light">
         <div class="bg-primary mb-3 p-2 rounded" v-for="(question, q) in myQuestions" :key="q">
             <router-link class="text-white" :to="{name: 'question', params:{id: question.id}}">
-                <div>{{question.question}}</div>
+                <div>Category: {{question.category.name}}</div>
+                <div class="text-center fs-6">{{question.question}}</div>
             </router-link>
         </div>
          <!-- Pagination -->

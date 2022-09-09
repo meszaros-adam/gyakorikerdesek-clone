@@ -3,11 +3,14 @@
     color: aliceblue;
 }
 
-.side-menu {
+.side-menu{
     list-style-type: none;
     font-family: monospace;
+    color: whitesmoke;
 }
-
+.admin-panel{
+    color: white;
+}
 h1 {
     font-family: monospace;
 }
@@ -15,15 +18,6 @@ h1 {
 .pointer-cursor {
     cursor: pointer;
 }
-
-.side-menu li:hover {
-    text-decoration: underline;
-}
-
-.side-menu li a {
-    color: white;
-}
-
 .delete-modal-icon {
     color: #990000;
     font-size: 75px;
