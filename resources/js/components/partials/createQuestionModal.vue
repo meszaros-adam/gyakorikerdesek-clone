@@ -1,6 +1,6 @@
 <template>
     <!--Create Question Modal-->
-    <b-modal hide-footer size="lg" title="Create Question">
+    <b-modal hide-footer size="lg" title="Create Question" @show="showModal">
         <div class="mb-3">
             <label for="Question" class="form-label">Question</label>
             <input v-model="question.question" type="string" class="form-control" id="Question"
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
-    export default{
-    setup(props, context){
+export default {
+    setup(props, context) {
         const toast = useToast()
 
         //create question
@@ -37,10 +37,10 @@ import useCallApi from "../composables/useCallApi";
         const creatingQuestion = ref(false);
         const question = ref({});
 
-        const closeModal = () =>{
+        const closeModal = () => {
             context.emit("update:modelValue", false)
         }
-        
+
         const createQuestion = async () => {
             if (question.value.question.trim() == "")
                 return toast.warning("You must enter a question!");
@@ -69,6 +69,7 @@ import useCallApi from "../composables/useCallApi";
 
         const categories = ref([]);
         const getCategories = async () => {
+
             const res = await useCallApi("get", "/get_all_categories");
             if (res.status == 200) {
                 categories.value = res.data;
@@ -77,9 +78,13 @@ import useCallApi from "../composables/useCallApi";
             }
         };
 
-        getCategories()
-     
-        return{createQuestionModal, creatingQuestion, question, createQuestion, categories, closeModal}
+        const showModal = () => {
+            if(categories.value.length == 0){
+                getCategories();
+            }
+        }
+
+        return { createQuestionModal, creatingQuestion, question, createQuestion, categories, closeModal, showModal }
     }
 }
 </script>
