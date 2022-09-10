@@ -43,6 +43,13 @@ Route::get('/get_all_categories', [App\Http\Controllers\CategoryController::clas
 Route::post('/edit_category', [App\Http\Controllers\CategoryController::class, 'edit'])->middleware(AdminCheck::class);
 Route::post('/delete_category', [App\Http\Controllers\CategoryController::class, 'delete'])->middleware(AdminCheck::class);
 
+//Tag
+Route::post('/create_tag', [App\Http\Controllers\TagController::class, 'add'])->middleware(AdminCheck::class);
+Route::get('/get_tags', [App\Http\Controllers\TagController::class, 'get']);
+Route::get('/get_all_tags', [App\Http\Controllers\TagController::class, 'getAll']);
+Route::post('/edit_tag', [App\Http\Controllers\TagController::class, 'edit'])->middleware(AdminCheck::class);
+Route::post('/delete_tag', [App\Http\Controllers\TagController::class, 'delete'])->middleware(AdminCheck::class);
+
 //Message
 Route::post('/create_message', [App\Http\Controllers\MessageController::class, 'add'])->middleware(LoginCheck::class);
 Route::get('/incoming_messages', [App\Http\Controllers\MessageController::class, 'getIncoming'])->middleware(LoginCheck::class);

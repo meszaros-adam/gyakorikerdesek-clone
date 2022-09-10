@@ -28,7 +28,7 @@
         <!-- Pagination -->
       </div>
       <!--Create Modal-->
-      <b-modal v-model="createModal" hide-footer title="Create tag">
+      <b-modal v-model="createModal" hide-footer title="Create Tag">
         <div class="mb-3">
           <label for="tag" class="form-label">Name</label>
           <input v-model="tag.name" type="string" class="form-control" id="tag"
@@ -41,7 +41,7 @@
       </b-modal>
       <!--Create Modal-->
       <!--Edit Modal-->
-      <b-modal v-model="editModal" hide-footer title="Edit tag">
+      <b-modal v-model="editModal" hide-footer title="Edit Tag">
         <div class="mb-3">
           <label for="tag" class="form-label">Name</label>
           <input v-model="editData.name" type="string" class="form-control" id="tag" />
@@ -75,8 +75,8 @@
         name: "",
       });
       const createTag = async () => {
-        if (tag.value.name.trim().length < 3)
-          return toast.warning("tag name must be at leat 3 characters!");
+        if (tag.value.name.trim().length < 2)
+          return toast.warning("Tag name must be at leat 2 characters!");
   
         creatingTag.value = true;
   
@@ -86,7 +86,7 @@
           createModal.value = false;
           tag.value.name = "";
           tags.value.unshift(res.data);
-          toast.success("tag created successfully!");
+          toast.success("Tag created successfully!");
         } else {
           toast.error(res.data.message);
         }
