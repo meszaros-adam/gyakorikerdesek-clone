@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\LoginCheck;
+use App\Http\Middleware\QuestionPermissionCheck;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,7 @@ Route::get('/get_last_five_questions', [App\Http\Controllers\QuestionController:
 Route::get('get_single_question', [App\Http\Controllers\QuestionController::class, 'getSingle']);
 Route::get('/get_questions', [App\Http\Controllers\QuestionController::class, 'get']);
 Route::post('/edit_question', [App\Http\Controllers\QuestionController::class, 'edit'])->middleware(AdminCheck::class);
-Route::post('/delete_question', [App\Http\Controllers\QuestionController::class, 'delete'])->middleware(AdminCheck::class);
+Route::post('/delete_question', [App\Http\Controllers\QuestionController::class, 'delete'])->middleware(QuestionPermissionCheck::class);
 Route::get('/get_my_questions', [App\Http\Controllers\QuestionController::class, 'getMyQuestions'])->middleware(LoginCheck::class);
 
 
