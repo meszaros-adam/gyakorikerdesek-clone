@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\QuestionTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -16,12 +18,31 @@ class QuestionController extends Controller
             'category_id' => 'required|numeric',
         ]);
 
-        return Question::create([
-            'question' => $request->question,
-            'description' => $request->description,
-            'user_id' => Auth::user()->id,
-            'category_id' => $request->category_id,
-        ]);
+        DB::beginTransaction();
+
+        try {
+            $question = Question::create([
+                'question' => $request->question,
+                'description' => $request->description,
+                'user_id' => Auth::user()->id,
+                'category_id' => $request->category_id,
+            ]);
+
+            $question_tags = [];
+
+            foreach ($request->tags as $tag_id) {
+                array_push($question_tags, [
+                    'question_id' => $question->id,
+                    'tag_id' => $tag_id,
+                ]);
+            }
+            QuestionTag::insert($question_tags);
+
+            DB::commit();
+            return response($question, 201);
+        } catch (\Throwable $th) {
+            return response($th, 500);
+        }
     }
     public function getLastFive()
     {
@@ -58,14 +79,16 @@ class QuestionController extends Controller
 
         ]);
     }
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $this->validate($request, [
             'id' => 'required|numeric'
         ]);
 
         return Question::where('id', $request->id)->delete();
     }
-    public function getMyQuestions(Request $request){
+    public function getMyQuestions(Request $request)
+    {
         return Question::where('user_id', Auth::user()->id)->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
     }
 }

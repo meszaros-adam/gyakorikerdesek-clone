@@ -1,18 +1,24 @@
 <template>
     <div class="container my-5 p-3 bg-dark text-light">
-        <div class="bg-primary mb-3 p-2 rounded d-flex" v-for="(question, q) in myQuestions" :key="q">
-            <router-link class="text-white flex-grow-1" :to="{name: 'question', params:{id: question.id}}">
-                <div>Category: {{question.category.name}}</div>
-                <div class="text-center fs-6 flex-grow-1">{{question.question}}</div>
-            </router-link>
-            <i class="bi bi-trash pointer-cursor mx-1 align-self-center" title="Delete" @click="showDeleteModal(question.id, q)" > </i>
+        <div v-if="myQuestions.length>0">
+            <div class="bg-primary mb-3 p-2 rounded d-flex" v-for="(question, q) in myQuestions" :key="q">
+                <router-link class="text-white flex-grow-1" :to="{name: 'question', params:{id: question.id}}">
+                    <div>Category: {{question.category.name}}</div>
+                    <div class="text-center fs-6 flex-grow-1">{{question.question}}</div>
+                </router-link>
+                <i class="bi bi-trash pointer-cursor mx-1 align-self-center" title="Delete"
+                    @click="showDeleteModal(question.id, q)"> </i>
+            </div>
+            <!-- Pagination -->
+            <b-pagination v-if="totalMyQuestions>10" v-model="currentPage" :total-rows="totalMyQuestions" :per-page="itemPerPage" align="center">
+            </b-pagination>
+            <!-- Pagination -->
+            <deleteModal delete_url="/delete_question" item_name="question" :item_id="deleteId" v-model="deleteModal"
+                :delete_index="deleteIndex" @successfulDelete="removeDeletedItem"></deleteModal>
         </div>
-        <!-- Pagination -->
-        <b-pagination v-model="currentPage" :total-rows="totalMyQuestions" :per-page="itemPerPage" align="center">
-        </b-pagination>
-        <!-- Pagination -->
-        <deleteModal delete_url="/delete_question" item_name="question" :item_id="deleteId" v-model="deleteModal"
-        :delete_index="deleteIndex" @successfulDelete="removeDeletedItem"></deleteModal>
+        <div v-else>
+            <h1>You have no questions yet</h1>
+        </div>
     </div>
 </template>
 
@@ -22,7 +28,7 @@ import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
 import deleteModal from "../partials/deleteModal.vue";
 export default {
-    components:{deleteModal},
+    components: { deleteModal },
     setup() {
 
         const toast = useToast()
@@ -57,16 +63,16 @@ export default {
 
         const deleteModal = ref(false)
         const deleteId = ref(null)
-        const deleteIndex = ref (null)
+        const deleteIndex = ref(null)
 
-        const showDeleteModal = (id, index) =>{
+        const showDeleteModal = (id, index) => {
             deleteId.value = id
             deleteIndex.value = index
             deleteModal.value = true
         }
 
-        const removeDeletedItem = (index) =>{
-            myQuestions.value.splice(index,1)
+        const removeDeletedItem = (index) => {
+            myQuestions.value.splice(index, 1)
         }
 
         return {

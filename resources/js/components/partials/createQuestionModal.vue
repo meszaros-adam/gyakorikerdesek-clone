@@ -13,8 +13,17 @@
         </div>
         <div class="mb-3">
             <label for="Category" class="form-label">Category</label>
-            <b-form-select id="Category" v-model="question.category_id" value-field="id" text-field="name"
-                :options="categories"></b-form-select>
+            <Select id="Category" v-model="question.category_id" placeholder="Select Category!">
+                <Option v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}
+                </Option>
+            </Select>
+        </div>
+        <div class="mb-3">
+            <label for="Tags" class="form-label">Tags</label>
+            <Select id="Tags" filterable placeholder="Select Tags!" not-found-text="Tag not found!" v-model="question.tags" multiple>
+                <Option v-for="tag in tags" :value="tag.id" :key="tag.id">{{ tag.name }}</Option>
+            </Select>
+
         </div>
         <div class="d-flex justify-content-end">
             <Button class="mx-2" @click="closeModal">Cancel</Button>
@@ -35,7 +44,9 @@ export default {
         //create question
         const createQuestionModal = ref(false);
         const creatingQuestion = ref(false);
-        const question = ref({});
+        const question = ref({
+            tags: [],
+        });
 
         const closeModal = () => {
             context.emit("update:modelValue", false)
@@ -78,13 +89,27 @@ export default {
             }
         };
 
-        const showModal = () => {
-            if(categories.value.length == 0){
-                getCategories();
+        const tags = ref([])
+
+        const getTags = async () => {
+            const res = await useCallApi("get", "/get_all_tags");
+            if (res.status == 200) {
+                tags.value = res.data;
+            } else {
+                toast.error(res.data.message);
             }
         }
 
-        return { createQuestionModal, creatingQuestion, question, createQuestion, categories, closeModal, showModal }
+        const showModal = () => {
+            if (categories.value.length == 0) {
+                getCategories();
+            }
+            if (tags.value.length == 0) {
+                getTags();
+            }
+        }
+
+        return { createQuestionModal, creatingQuestion, question, createQuestion, categories, closeModal, showModal, tags }
     }
 }
 </script>
