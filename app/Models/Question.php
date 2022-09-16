@@ -26,6 +26,9 @@ class Question extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function tags(){
+        return $this->belongsToMany(Tag::class, 'question_tags');
+    }
     //reformat time to readable
     public function getCreatedAtAttribute($value)
     {

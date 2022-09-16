@@ -23,7 +23,6 @@
             <Select id="Tags" filterable placeholder="Select Tags!" not-found-text="Tag not found!" v-model="question.tags" multiple>
                 <Option v-for="tag in tags" :value="tag.id" :key="tag.id">{{ tag.name }}</Option>
             </Select>
-
         </div>
         <div class="d-flex justify-content-end">
             <Button class="mx-2" @click="closeModal">Cancel</Button>
@@ -38,7 +37,7 @@ import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
 export default {
-    setup(props, context) {
+    setup(props, context,) {
         const toast = useToast()
 
         //create question

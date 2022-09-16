@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Message;
 use App\Models\Question;
 use App\Models\QuestionTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class QuestionController extends Controller
 {
@@ -41,6 +43,7 @@ class QuestionController extends Controller
             DB::commit();
             return response($question, 201);
         } catch (\Throwable $th) {
+            DB::rollback();
             return response($th, 500);
         }
     }
@@ -60,7 +63,7 @@ class QuestionController extends Controller
     }
     public function get(Request $request)
     {
-        return Question::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
+        return Question::orderBy($request->orderBy, $request->ordering)->with('tags')->paginate($request->itemPerPage);
     }
     public function edit(Request $request)
     {
@@ -68,16 +71,41 @@ class QuestionController extends Controller
             'id' => 'required|numeric',
             'question' => 'required|min:6',
             'categoryId' => 'required|numeric',
-            'userId'  => 'required|numeric',
         ]);
 
-        return Question::where('id', $request->id)->update([
-            'question' => $request->question,
-            'description' => $request->description,
-            'category_id' => $request->categoryId,
-            'user_id' => $request->userId
+        try{
+            DB::beginTransaction();
 
-        ]);
+            Question::where('id', $request->id)->update([
+                'question' => $request->question,
+                'description' => $request->description,
+                'category_id' => $request->categoryId,
+            ]);
+
+            QuestionTag::where('question_id', $request->id)->delete();
+
+            $question_tags = [];
+
+            foreach($request->tags as $tag){
+                array_push($question_tags,[
+                    'question_id' => $request->id,
+                    'tag_id' => $tag,
+                ]);
+            }
+            QuestionTag::insert($question_tags);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Question edited successfully!',
+            ]);
+
+        }catch(\Throwable $th){
+            DB::rollback();
+            return response($th, 500);
+        }
+
+      
     }
     public function delete(Request $request)
     {
