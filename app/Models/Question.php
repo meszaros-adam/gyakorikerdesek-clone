@@ -12,8 +12,6 @@ class Question extends Model
 
     protected $fillable = ["question", "description", "user_id", "category_id"];
 
-    protected $with = ["user", "category"];
-
     public function category()
     {
         return $this->belongsTo(Category::class);

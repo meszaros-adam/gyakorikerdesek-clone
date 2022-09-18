@@ -2,9 +2,16 @@
     <div class="container my-5 p-3 bg-dark text-light">
         <div class="container bg-dark text-light">
             <div v-if="question" class="bg-secondary container mb-3 rounded">
-                <div class="border-bottom py-3">
+                <div class="border-bottom pt-3 pb-1">
                     <h1 class="text-center mb-3">{{ question.question }}</h1>
                     <p class="text-center">{{ question.description }}</p>
+                    <div class="d-flex">
+                        <div v-for="tag in question.tags" :key="tag.id">
+                            <div class="me-2 px-1 bg-primary rounded">
+                                #{{tag.name}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div>

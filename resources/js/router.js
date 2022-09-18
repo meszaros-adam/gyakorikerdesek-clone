@@ -9,6 +9,7 @@ import myQuestions from './components/pages/myQuestions.vue'
 import categoriesAdmin from './components/pages/admin/categoriesAdmin.vue'
 import questionsAdmin from './components/pages/admin/questionsAdmin.vue'
 import tagsAdmin from './components/pages/admin/tagsAdmin.vue'
+import usersAdmin from './components/pages/admin/usersAdmin.vue'
 
 const routes = [
     {
@@ -56,11 +57,16 @@ const routes = [
         path: '/admin/tags',
         component: tagsAdmin,
     },
+    {
+        path: '/admin/users',
+        component: usersAdmin,
+    },
+
 ]
 
 const router = createRouter({
     history: createWebHistory(),
-    routes
+    routes,
 })
 
 export default router

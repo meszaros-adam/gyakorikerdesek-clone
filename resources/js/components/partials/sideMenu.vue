@@ -1,6 +1,6 @@
 <template>
     <div class="bg-secondary mt-5 mx-3 p-3">
-        <h1>Menu</h1>
+        <h1 class="text-black">Menu</h1>
         <ul class="side-menu">
             <li>
                 <a class="admin-panel" data-bs-toggle="collapse" href="#collapseExample" role="button">
@@ -11,8 +11,8 @@
                 <div class="card card-body bg-primary">
                     <router-link class="router-link" to="/admin/categories">Categories</router-link>
                     <router-link class="router-link" to="/admin/questions">Questions</router-link>
-                    <router-link class="router-link" to="/admin/answers">Answers</router-link>
                     <router-link class="router-link" to="/admin/users">Users</router-link>
+                    <router-link class="router-link" to="/admin/answers">Answers</router-link>
                     <router-link class="router-link" to="/admin/tags">Tags</router-link>
                 </div>
             </div>

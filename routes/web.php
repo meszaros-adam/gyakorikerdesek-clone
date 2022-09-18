@@ -59,7 +59,9 @@ Route::get('/unreaded_messages_count', [App\Http\Controllers\MessageController::
 Route::post('/set_messages_to_readed', [App\Http\Controllers\MessageController::class, 'setMessagesTopReaded'])->middleware(LoginCheck::class);
 
 //User
-Route::get('get_all_users', [App\Http\Controllers\UserController::class, 'getAll'])->middleware(AdminCheck::class);
+Route::get('get_users', [App\Http\Controllers\UserController::class, 'get'])->middleware(AdminCheck::class);
+Route::post('edit_user', [App\Http\Controllers\UserController::class, 'edit'])->middleware(AdminCheck::class);
+Route::post('delete_user', [App\Http\Controllers\UserController::class, 'delete'])->middleware(AdminCheck::class);
 
 
 Route::fallback(function () {

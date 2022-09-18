@@ -53,7 +53,7 @@ class QuestionController extends Controller
     }
     public function getSingle(Request $request)
     {
-        $question =  Question::find($request->id);
+        $question =  Question::with('user', 'tags')->find($request->id);
         $answers = Answer::where('question_id', $request->id)->paginate($request->itemPerPage);
 
         return response()->json([
@@ -63,7 +63,7 @@ class QuestionController extends Controller
     }
     public function get(Request $request)
     {
-        return Question::orderBy($request->orderBy, $request->ordering)->with('tags')->paginate($request->itemPerPage);
+        return Question::orderBy($request->orderBy, $request->ordering)->with('tags', 'category', 'user')->paginate($request->itemPerPage);
     }
     public function edit(Request $request)
     {

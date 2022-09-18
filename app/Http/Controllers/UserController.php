@@ -11,7 +11,7 @@ class UserController extends Controller
     public function registration(Request $request)
     {
         $this->validate($request, [
-            'nickname' => 'required',
+            'nickname' => 'required|min:3',
             'email' => 'required|email|confirmed',
             'password' => 'required|confirmed|min:6',
         ]);
@@ -40,7 +40,26 @@ class UserController extends Controller
         Auth::logout();
         return redirect('/login');
     }
-    public function getAll(){
-        return User::orderBy('nickname', 'asc')->get();
+    public function get(Request $request){
+        return User::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
+    }
+    public function edit(Request $request){
+        $this->validate($request,[
+            'id' => 'required|numeric',
+            'nickname' => 'required|min:3',
+            'admin' => 'required|boolean',
+        ]);
+
+        return User::where('id', $request->id)->update([
+            'nickname' => $request->nickname,
+            'admin' => $request->admin,
+        ]);
+    }
+    public function delete(Request $request){
+        $this->validate($request,[
+            'id' => 'required|numeric'
+        ]);
+
+        return User::where('id', $request->id)->delete();
     }
 }
