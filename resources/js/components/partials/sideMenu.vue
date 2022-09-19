@@ -12,7 +12,6 @@
                     <router-link class="router-link" to="/admin/categories">Categories</router-link>
                     <router-link class="router-link" to="/admin/questions">Questions</router-link>
                     <router-link class="router-link" to="/admin/users">Users</router-link>
-                    <router-link class="router-link" to="/admin/answers">Answers</router-link>
                     <router-link class="router-link" to="/admin/tags">Tags</router-link>
                 </div>
             </div>

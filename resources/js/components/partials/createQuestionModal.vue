@@ -1,6 +1,6 @@
 <template>
     <!--Create Question Modal-->
-    <b-modal hide-footer size="lg" title="Create Question" @show="showModal">
+    <b-modal hide-footer no-close-on-backdrop size="lg" title="Create Question" @show="showModal">
         <div class="mb-3">
             <label for="Question" class="form-label">Question</label>
             <input v-model="question.question" type="string" class="form-control" id="Question"
@@ -20,9 +20,7 @@
         </div>
         <div class="mb-3">
             <label for="Tags" class="form-label">Tags</label>
-            <Select id="Tags" filterable placeholder="Select Tags!" not-found-text="Tag not found!" v-model="question.tags" multiple>
-                <Option v-for="tag in tags" :value="tag.id" :key="tag.id">{{ tag.name }}</Option>
-            </Select>
+            <b-form-tags input-id="tags-basic" v-model="question.tags"></b-form-tags>
         </div>
         <div class="d-flex justify-content-end">
             <Button class="mx-2" @click="closeModal">Cancel</Button>
@@ -45,6 +43,8 @@ export default {
         const creatingQuestion = ref(false);
         const question = ref({
             tags: [],
+            question: '',
+            category_id: '',
         });
 
         const closeModal = () => {
@@ -88,27 +88,13 @@ export default {
             }
         };
 
-        const tags = ref([])
-
-        const getTags = async () => {
-            const res = await useCallApi("get", "/get_all_tags");
-            if (res.status == 200) {
-                tags.value = res.data;
-            } else {
-                toast.error(res.data.message);
-            }
-        }
-
         const showModal = () => {
             if (categories.value.length == 0) {
                 getCategories();
             }
-            if (tags.value.length == 0) {
-                getTags();
-            }
         }
 
-        return { createQuestionModal, creatingQuestion, question, createQuestion, categories, closeModal, showModal, tags }
+        return { createQuestionModal, creatingQuestion, question, createQuestion, categories, closeModal, showModal }
     }
 }
 </script>

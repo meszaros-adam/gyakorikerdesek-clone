@@ -61,7 +61,6 @@ const routes = [
         path: '/admin/users',
         component: usersAdmin,
     },
-
 ]
 
 const router = createRouter({

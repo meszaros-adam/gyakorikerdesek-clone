@@ -67,20 +67,17 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import { useUserStore } from "../stores/user";
 import { useToast } from "vue-toastification";
 import sideMenu from "./partials/sideMenu.vue";
-import useCallApi from "../components/composables/useCallApi";
 export default {
   components: { sideMenu },
   props: ["user"],
   setup(props) {
-    const toast = useToast();
 
     const user = useUserStore();
     user.setUser(props.user);
-
+    
     return { user };
   },
 };

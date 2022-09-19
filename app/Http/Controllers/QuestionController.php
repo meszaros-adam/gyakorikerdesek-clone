@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\Message;
 use App\Models\Question;
 use App\Models\QuestionTag;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,13 +33,29 @@ class QuestionController extends Controller
 
             $question_tags = [];
 
-            foreach ($request->tags as $tag_id) {
-                array_push($question_tags, [
-                    'question_id' => $question->id,
-                    'tag_id' => $tag_id,
-                ]);
+
+            foreach ($request->tags as $tagName) {
+
+                $searchTag = Tag::where('name', $tagName)->first();
+
+                if (!$searchTag) {
+                    $tag = Tag::create([
+                        'name' => $tagName
+                    ]);
+                    array_push($question_tags, [
+                        'question_id' => $question->id,
+                        'tag_id' => $tag->id,
+                    ]);
+                } else {
+                    array_push($question_tags, [
+                        'question_id' => $question->id,
+                        'tag_id' => $searchTag->id,
+                    ]);
+                }
             }
-            QuestionTag::insert($question_tags);
+            if (count($question_tags) > 0) {
+                QuestionTag::insert($question_tags);
+            }
 
             DB::commit();
             return response($question, 201);
@@ -73,7 +90,7 @@ class QuestionController extends Controller
             'categoryId' => 'required|numeric',
         ]);
 
-        try{
+        try {
             DB::beginTransaction();
 
             Question::where('id', $request->id)->update([
@@ -86,8 +103,8 @@ class QuestionController extends Controller
 
             $question_tags = [];
 
-            foreach($request->tags as $tag){
-                array_push($question_tags,[
+            foreach ($request->tags as $tag) {
+                array_push($question_tags, [
                     'question_id' => $request->id,
                     'tag_id' => $tag,
                 ]);
@@ -99,13 +116,10 @@ class QuestionController extends Controller
             return response()->json([
                 'message' => 'Question edited successfully!',
             ]);
-
-        }catch(\Throwable $th){
+        } catch (\Throwable $th) {
             DB::rollback();
             return response($th, 500);
         }
-
-      
     }
     public function delete(Request $request)
     {

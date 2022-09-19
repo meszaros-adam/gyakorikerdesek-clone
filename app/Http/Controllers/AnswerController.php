@@ -20,4 +20,8 @@ class AnswerController extends Controller
             "user_id" => Auth::user()->id,
         ]);
     }
+    public function get(Request $request){
+        return Answer::orderBy($request->orderBy, $request->ordering)->with('user')->paginate($request->itemPerPage);
+
+    }
 }

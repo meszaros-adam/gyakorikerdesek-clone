@@ -36,6 +36,7 @@ Route::get('/get_my_questions', [App\Http\Controllers\QuestionController::class,
 
 //Answers
 Route::post('/create_answer', [App\Http\Controllers\AnswerController::class, 'add'])->middleware(LoginCheck::class);
+Route::post('/get_answers', [App\Http\Controllers\AnswerController::class, 'get'])->middleware(AdminCheck::class);
 
 //Category
 Route::post('/create_category', [App\Http\Controllers\CategoryController::class, 'add'])->middleware(AdminCheck::class);
@@ -47,7 +48,6 @@ Route::post('/delete_category', [App\Http\Controllers\CategoryController::class,
 //Tag
 Route::post('/create_tag', [App\Http\Controllers\TagController::class, 'add'])->middleware(AdminCheck::class);
 Route::get('/get_tags', [App\Http\Controllers\TagController::class, 'get']);
-Route::get('/get_all_tags', [App\Http\Controllers\TagController::class, 'getAll']);
 Route::post('/edit_tag', [App\Http\Controllers\TagController::class, 'edit'])->middleware(AdminCheck::class);
 Route::post('/delete_tag', [App\Http\Controllers\TagController::class, 'delete'])->middleware(AdminCheck::class);
 
