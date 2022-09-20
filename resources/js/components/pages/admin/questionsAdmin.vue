@@ -34,7 +34,7 @@
             <!-- Pagination -->
         </div>
         <!--Edit Modal-->
-        <b-modal v-model="editModal" hide-footer title="Edit Question">
+        <b-modal v-model="editModal" no-close-on-backdrop hide-footer title="Edit Question">
             <div class="mb-3">
                 <label for="question" class="form-label">Question</label>
                 <input v-model="editData.question" type="string" class="form-control" id="question" />
@@ -52,10 +52,7 @@
             </div>
             <div class="mb-3">
                 <label for="Tags" class="form-label">Tags</label>
-                <Select id="Tags" filterable placeholder="Select Tags!" not-found-text="Tag not found!"
-                    v-model="editData.tags" multiple>
-                    <Option v-for="tag in tags" :value="tag.id" :key="tag.id">{{ tag.name }}</Option>
-                </Select>
+                <b-form-tags v-model="editData.tags" input-id="tags-basic" :limit="5"></b-form-tags>
             </div>
             <div class="d-flex justify-content-end">
                 <Button class="mx-2" @click="editModal = false">Cancel</Button>
@@ -116,12 +113,11 @@ export default {
         const editing = ref(false);
         const editIndex = ref(null);
         const editData = ref({
+            tags: [],
             id: null,
             question: "",
             description: "",
-            userId: null,
             categoryId: '',
-            tags: [],
         });
         const categories = ref([]);
         const tags = ref([]);
@@ -135,25 +131,14 @@ export default {
             }
         };
 
-        const getTags = async () => {
-            const res = await useCallApi("get", "/get_all_tags");
-            if (res.status == 200) {
-                tags.value = res.data;
-            } else {
-                toast.error(res.data.message);
-            }
-        };
-
         getCategories()
-        getTags()
 
         const showEditModal = (question, index) => {
             editData.value.id = question.id;
             editData.value.question = question.question;
             editData.value.description = question.description;
-            editData.value.userId = question.user_id;
             editData.value.categoryId = question.category_id;
-            editData.value.tags = question.tags.map( (tag) => tag.id);
+            editData.value.tags = question.tags.map( (tag) => tag.name);
             editModal.value = true;
             editIndex.value = index;
         };

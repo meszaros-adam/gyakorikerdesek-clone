@@ -33,7 +33,6 @@ class QuestionController extends Controller
 
             $question_tags = [];
 
-
             foreach ($request->tags as $tagName) {
 
                 $searchTag = Tag::where('name', $tagName)->first();
@@ -103,13 +102,28 @@ class QuestionController extends Controller
 
             $question_tags = [];
 
-            foreach ($request->tags as $tag) {
-                array_push($question_tags, [
-                    'question_id' => $request->id,
-                    'tag_id' => $tag,
-                ]);
+            foreach ($request->tags as $tagName) {
+
+                $searchTag = Tag::where('name', $tagName)->first();
+
+                if (!$searchTag) {
+                    $tag = Tag::create([
+                        'name' => $tagName
+                    ]);
+                    array_push($question_tags, [
+                        'question_id' => $request->id,
+                        'tag_id' => $tag->id,
+                    ]);
+                } else {
+                    array_push($question_tags, [
+                        'question_id' => $request->id,
+                        'tag_id' => $searchTag->id,
+                    ]);
+                }
             }
-            QuestionTag::insert($question_tags);
+            if (count($question_tags) > 0) {
+                QuestionTag::insert($question_tags);
+            }
 
             DB::commit();
 

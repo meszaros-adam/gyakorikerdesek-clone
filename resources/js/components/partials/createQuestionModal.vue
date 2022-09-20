@@ -20,7 +20,7 @@
         </div>
         <div class="mb-3">
             <label for="Tags" class="form-label">Tags</label>
-            <b-form-tags input-id="tags-basic" v-model="question.tags"></b-form-tags>
+            <b-form-tags v-model="question.tags" input-id="tags-basic" :limit="5"></b-form-tags>
         </div>
         <div class="d-flex justify-content-end">
             <Button class="mx-2" @click="closeModal">Cancel</Button>
