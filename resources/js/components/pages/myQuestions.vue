@@ -1,12 +1,12 @@
 <template>
     <div class="container my-5 p-3 bg-dark text-light">
         <div v-if="myQuestions.length>0">
-            <div class="bg-primary mb-3 p-2 rounded d-flex" v-for="(question, q) in myQuestions" :key="q">
-                <router-link class="text-white flex-grow-1" :to="{name: 'question', params:{id: question.id}}">
+            <div class="bg-primary mb-3 rounded d-flex" v-for="(question, q) in myQuestions" :key="q">
+                <router-link class="text-white flex-grow-1 p-1" :to="{name: 'question', params:{id: question.id}}">
                     <div>Category: {{question.category.name}}</div>
                     <div class="text-center fs-6 flex-grow-1">{{question.question}}</div>
                 </router-link>
-                <i class="bi bi-trash pointer-cursor mx-1 align-self-center" title="Delete"
+                <i class="bi bi-trash pointer-cursor mx-2 align-self-center" title="Delete"
                     @click="showDeleteModal(question.id, q)"> </i>
             </div>
             <!-- Pagination -->

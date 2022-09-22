@@ -5,6 +5,7 @@ import lastFiveQuestions from './components/pages/lastFiveQuestions.vue'
 import questionSingle from './components/pages/questionSingle.vue'
 import messages from './components/pages/messages.vue'
 import myQuestions from './components/pages/myQuestions.vue'
+import myAnsweredQuestions from './components/pages/myAnsweredQuestions.vue'
 //Admin
 import categoriesAdmin from './components/pages/admin/categoriesAdmin.vue'
 import questionsAdmin from './components/pages/admin/questionsAdmin.vue'
@@ -43,6 +44,11 @@ const routes = [
         path: '/my-questions',
         name: 'my-questions',
         component: myQuestions,
+    },
+    {
+        path: '/my-answered-questions',
+        name: 'my--answered-questions',
+        component: myAnsweredQuestions,
     },
     //Admin
     {

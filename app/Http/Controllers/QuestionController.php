@@ -145,6 +145,12 @@ class QuestionController extends Controller
     }
     public function getMyQuestions(Request $request)
     {
-        return Question::where('user_id', Auth::user()->id)->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
+        return Question::where('user_id', Auth::user()->id)->orderBy($request->orderBy,  $request->ordering)->with('category')->paginate($request->itemPerPage);
+    }
+    public function getMyAnsweredQuestions(Request $request)
+    {
+        return Question::whereHas('answers', function($q){
+            $q->where('user_id', Auth::user()->id);
+        })->orderBy($request->orderBy,  $request->ordering)->with('category')->paginate($request->itemPerPage);
     }
 }

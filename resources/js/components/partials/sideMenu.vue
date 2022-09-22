@@ -23,7 +23,7 @@
                 <router-link @click="setMessagesToReaded" class="router-link" to="/messages">Messages <span
                         v-if="unreadedCount > 0" class="badge bg-primary">{{ unreadedCount }}</span></router-link>
             </li>
-            <li class="pointer-cursor">My answered questions</li>
+            <router-link class="router-link" to="/my-answered-questions">My Answered Questions</router-link>
         </ul>
     </div>
     <createQuestionModal v-model="createQuestionModal" @newQuestionCreated="$emit('newQuestionCreated')">
