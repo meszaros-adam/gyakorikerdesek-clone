@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
 import { useLastFiveQuestionsStore } from "../../stores/lastFiveQuestions";
@@ -75,7 +75,7 @@ export default {
             } else {
                 toast.error(res.data.message);
             }
-            question.value = {};
+            question.value = {tags:[]};
             creatingQuestion.value = false;
             closeModal();
         };

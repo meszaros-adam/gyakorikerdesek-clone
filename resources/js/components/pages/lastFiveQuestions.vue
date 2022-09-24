@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import { useToast } from "vue-toastification";
 import { useLastFiveQuestionsStore } from "../../stores/lastFiveQuestions";
 import useCallApi from "../composables/useCallApi";
@@ -48,7 +47,6 @@ export default {
         toast.error('Failed to load the last five questions!')
       }
     }
-
     getLastFiveQuestions();
 
     return { lastFiveQuestions, getLastFiveQuestions };

@@ -24,6 +24,11 @@
                             </i>
                             <i @click="showDeleteModal(question.id, q)" title="Delete"
                                 class="bi bi-trash pointer-cursor mx-1"> </i>
+                            <span>
+                                <router-link class="text-dark"
+                                    :to="{ name: 'question', params: { id: question.id } }">Open
+                                </router-link>
+                            </span>
                         </td>
                     </tr>
                 </tbody>
@@ -138,7 +143,7 @@ export default {
             editData.value.question = question.question;
             editData.value.description = question.description;
             editData.value.categoryId = question.category_id;
-            editData.value.tags = question.tags.map( (tag) => tag.name);
+            editData.value.tags = question.tags.map((tag) => tag.name);
             editModal.value = true;
             editIndex.value = index;
         };
@@ -152,7 +157,7 @@ export default {
 
             if (res.status == 200) {
                 toast.success("Question edited successfully");
-                getQuestions();              
+                getQuestions();
             } else {
                 toast.error(res.data.message);
             }
