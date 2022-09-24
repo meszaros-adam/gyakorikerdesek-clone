@@ -2,9 +2,9 @@
   <div class="container my-5 p-5 bg-dark text-light">
     <h1 class="text-center mb-5">Last Five Questions</h1>
     <!--This v-if needed to avoid "maximum recursive updates exceeded" error-->
-    <div v-if="lastFiveQuestions.length > 0">
+    <div v-if="lastFiveQuestions.getQuestions.length > 0">
       <Carousel :autoplay="8000" :wrap-around="true">
-        <Slide v-for="(question, q) in lastFiveQuestions" :key="q">
+        <Slide v-for="(question, q) in lastFiveQuestions.getQuestions" :key="q">
           <router-link class="carousel__item" :to="{ name: 'question', params: { id: question.id } }">
             <h3>{{ question.question }}</h3>
             <p>{{ question.description }}</p>
@@ -22,6 +22,7 @@
 <script>
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
+import { useLastFiveQuestionsStore } from "../../stores/lastFiveQuestions";
 import useCallApi from "../composables/useCallApi";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
@@ -36,13 +37,13 @@ export default {
     const toast = useToast();
 
     //get last five questions
-    const lastFiveQuestions = ref([]);
+    const lastFiveQuestions = useLastFiveQuestionsStore();
 
     const getLastFiveQuestions = async () => {
       const res = await useCallApi('get', '/get_last_five_questions')
 
       if (res.status == 200) {
-        lastFiveQuestions.value = res.data
+        lastFiveQuestions.setLastFive(res.data)
       } else {
         toast.error('Failed to load the last five questions!')
       }

@@ -64,7 +64,7 @@
         <delete-modal delete_url="/delete_question" item_name="question" :item_id="deleteId" v-model="deleteModal"
             :delete_index="deleteIndex" @successfulDelete="removeDeletedItem"></delete-modal>
 
-        <createQuestionModalVue v-model="createModal" @newQuestionCreated="getQuestions"></createQuestionModalVue>
+        <createQuestionModalVue v-model="createModal" @newQuestionCreated="newQuestion"></createQuestionModalVue>
     </div>
 </template>
   
@@ -175,6 +175,13 @@ export default {
 
         //create modal
         const createModal = ref(false)
+
+        //handle new question
+
+        const newQuestion = (newQuestion) => {
+            questions.value.unshift(newQuestion)
+        }
+
         return {
             questions,
             editModal,
@@ -195,6 +202,7 @@ export default {
             tags,
             createModal,
             getQuestions,
+            newQuestion,
         };
     },
 };

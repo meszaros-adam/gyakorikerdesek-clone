@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Category;
 use App\Models\Message;
 use App\Models\Question;
 use App\Models\QuestionTag;
@@ -30,6 +31,8 @@ class QuestionController extends Controller
                 'user_id' => Auth::user()->id,
                 'category_id' => $request->category_id,
             ]);
+
+            $question->load('category', 'tags', 'user');
 
             $question_tags = [];
 
@@ -149,7 +152,7 @@ class QuestionController extends Controller
     }
     public function getMyAnsweredQuestions(Request $request)
     {
-        return Question::whereHas('answers', function($q){
+        return Question::whereHas('answers', function ($q) {
             $q->where('user_id', Auth::user()->id);
         })->orderBy($request->orderBy,  $request->ordering)->with('category')->paginate($request->itemPerPage);
     }

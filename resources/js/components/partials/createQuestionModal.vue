@@ -34,9 +34,11 @@
 import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
+import { useLastFiveQuestionsStore } from "../../stores/lastFiveQuestions";
 export default {
     setup(props, context,) {
         const toast = useToast()
+        const LastFiveQuestion = useLastFiveQuestionsStore()
 
         //create question
         const createQuestionModal = ref(false);
@@ -66,7 +68,8 @@ export default {
             const res = await useCallApi("post", "/create_question", question.value);
 
             if (res.status == 201) {
-                context.emit('newQuestionCreated')
+                context.emit('newQuestionCreated', res.data)
+                LastFiveQuestion.newQuestion(res.data)
                 toast.success("Question created sucessfully!");
                 createQuestionModal.value = false;
             } else {

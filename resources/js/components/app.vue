@@ -22,18 +22,10 @@
                 {{ user.getUser.nickname }}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li>
-                  <hr class="dropdown-divider" />
-                </li>
                 <li>
                   <a class="dropdown-item" href="/auth/logout">Logout</a>
                 </li>
               </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled">Disabled</a>
             </li>
           </ul>
           <form class="d-flex" role="search">
@@ -68,7 +60,6 @@
 
 <script>
 import { useUserStore } from "../stores/user";
-import { useToast } from "vue-toastification";
 import sideMenu from "./partials/sideMenu.vue";
 export default {
   components: { sideMenu },
@@ -77,7 +68,7 @@ export default {
 
     const user = useUserStore();
     user.setUser(props.user);
-    
+
     return { user };
   },
 };
