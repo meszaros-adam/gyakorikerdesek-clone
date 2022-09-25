@@ -75,6 +75,8 @@
 
     <message-modal v-model="messageModal" :addressee="addressee"></message-modal>
 
+    <deleteModal delete_url="/delete_answer" item_name="answer" :item_id="itemId" :delete_index="deleteIndex">
+    </deleteModal>
 </template>
 
 <script>
@@ -86,8 +88,9 @@ import { useUserStore } from "../../stores/user";
 import messageModal from '../partials/messageModal.vue'
 import router from '../../router';
 import sideMenu from "../partials/sideMenu.vue";
+import deleteModal from "../partials/deleteModal.vue";
 export default {
-    components: { messageModal, sideMenu },
+    components: { messageModal, sideMenu, deleteModal },
     setup() {
         const toast = useToast()
         const question = ref(null)
@@ -119,37 +122,29 @@ export default {
         getQuestion()
 
         //Answering
-        const answer = ref({
-            answer: '',
-            question_id: route.params.id,
-            created_at: null,
-            user: null,
-        });
+        const answer = ref({});
         const answering = ref(false)
         const user = useUserStore()
 
         const sendAnswer = async () => {
             if (answer.value.answer.trim().length < 2) return toast.warning('Your answer must be at least 2 characters!')
 
+            console.log(route.params.id)
+
+            answer.value.question_id = route.params.id
             answering.value = true
 
             const res = await useCallApi('post', '/create_answer', answer.value)
 
             if (res.status == 201) {
-                const today = new Date();
-                const fullDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0') + ' ' + today.getHours() + ':' + String(today.getMinutes()).padStart(2, '0');
-
-                answer.value.created_at = fullDate
-                answer.value.user = user.getUser
-                answers.value.push(answer.value)
-                answer.value = ''
+                answers.value.push(res.data)
+                answer.value = {}
                 toast.success('Sucessful answering!')
             } else {
                 toast.error(res.data.message)
             }
             answering.value = false
         }
-
 
         //message
         const messageModal = ref(false)
@@ -164,11 +159,14 @@ export default {
                 addressee.value = user
                 messageModal.value = true
             }
-
         }
 
+        //delete
+        const deleteIndex = ref(null)
+        const itemId = ref(null)
 
-        return { question, answers, answer, sendAnswer, answering, currentPage, totalAnswers, getQuestion, itemPerPage, messageModal, addressee, showMessageModal, user }
+
+        return { question, answers, answer, sendAnswer, answering, currentPage, totalAnswers, getQuestion, itemPerPage, messageModal, addressee, showMessageModal, user, deleteIndex, itemId }
     }
 }
 </script>

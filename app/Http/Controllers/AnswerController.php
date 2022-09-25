@@ -14,11 +14,13 @@ class AnswerController extends Controller
             "question_id" => "required",
         ]);
 
-        return Answer::create([
+        $answer =  Answer::create([
             "answer" => $request->answer,
             "question_id" => $request->question_id,
             "user_id" => Auth::user()->id,
         ]);
+
+        return $answer->load('user');
     }
     public function get(Request $request){
         return Answer::orderBy($request->orderBy, $request->ordering)->with('user')->paginate($request->itemPerPage);

@@ -19,16 +19,16 @@
                         <td>{{ question.user.nickname }}</td>
                         <td>{{ question.question }}</td>
                         <td>
+                            <span>
+                                <router-link title="Open Question" class="text-dark" :to="{ name: 'question', params: { id: question.id } }">
+                                    Open
+                                </router-link>
+                            </span>
                             <i @click="showEditModal(question, q)" title="Edit"
                                 class="bi bi-pencil pointer-cursor mx-1">
                             </i>
                             <i @click="showDeleteModal(question.id, q)" title="Delete"
                                 class="bi bi-trash pointer-cursor mx-1"> </i>
-                            <span>
-                                <router-link class="text-dark"
-                                    :to="{ name: 'question', params: { id: question.id } }">Open
-                                </router-link>
-                            </span>
                         </td>
                     </tr>
                 </tbody>
