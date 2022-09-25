@@ -37,7 +37,8 @@ Route::get('/get_my_answered_questions', [App\Http\Controllers\QuestionControlle
 
 //Answers
 Route::post('/create_answer', [App\Http\Controllers\AnswerController::class, 'add'])->middleware(LoginCheck::class);
-Route::post('/get_answers', [App\Http\Controllers\AnswerController::class, 'get'])->middleware(AdminCheck::class);
+Route::post('/edit_answer', [App\Http\Controllers\AnswerController::class, 'edit'])->middleware(AdminCheck::class);
+Route::post('/delete_answer', [App\Http\Controllers\AnswerController::class, 'delete'])->middleware(AdminCheck::class);
 
 //Category
 Route::post('/create_category', [App\Http\Controllers\CategoryController::class, 'add'])->middleware(AdminCheck::class);

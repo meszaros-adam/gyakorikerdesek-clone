@@ -22,8 +22,21 @@ class AnswerController extends Controller
 
         return $answer->load('user');
     }
-    public function get(Request $request){
-        return Answer::orderBy($request->orderBy, $request->ordering)->with('user')->paginate($request->itemPerPage);
+    public function edit(Request $request){
+        $this->validate($request,[
+            "answer" => "required|min:2",
+            "id" => "required|numeric",
+        ]);
 
+        return Answer::where('id', $request->id)->update([
+            'answer' => $request->answer,
+        ]);
+    }
+    public function delete(Request $request){
+        $this->validate($request,[
+            "id" => "required|numeric",
+        ]);
+
+        return Answer::where('id', $request->id)->delete();
     }
 }

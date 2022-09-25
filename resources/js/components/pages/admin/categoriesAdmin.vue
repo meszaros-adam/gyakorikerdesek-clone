@@ -146,7 +146,7 @@ export default {
 
       if (res.status == 200) {
         toast.success("Category edited successfully");
-        categories.value.at(editIndex.value).name = editData.value.name
+        categories.value[editIndex.value].name = editData.value.name
         editModal.value = false;
       } else {
         toast.error(res.data.message);

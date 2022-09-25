@@ -20,7 +20,8 @@
                         <td>{{ question.question }}</td>
                         <td>
                             <span>
-                                <router-link title="Open Question" class="text-dark" :to="{ name: 'question', params: { id: question.id } }">
+                                <router-link title="Open Question" class="text-dark"
+                                    :to="{ name: 'question', params: { id: question.id } }">
                                     Open
                                 </router-link>
                             </span>
@@ -66,7 +67,7 @@
         </b-modal>
         <!--Edit Modal-->
 
-        <delete-modal delete_url="/delete_question" item_name="question" :item_id="deleteId" v-model="deleteModal"
+        <delete-modal v-model="deleteModal" delete_url="/delete_question" item_name="question" :item_id="deleteId"
             :delete_index="deleteIndex" @successfulDelete="removeDeletedItem"></delete-modal>
 
         <createQuestionModalVue v-model="createModal" @newQuestionCreated="newQuestion"></createQuestionModalVue>

@@ -53,8 +53,13 @@
                         {{ answer.created_at }}
                     </div>
                 </div>
-                <div class="bg-secondary p-3 rounded-bottom">
-                    <p>{{ answer.answer }}</p>
+                <div class="bg-secondary px-3 rounded-bottom">
+                    <p class="py-3">{{ answer.answer }}</p>
+                    <div class="d-flex justify-content-center">
+                        <i title="Edit" @click="showEditModal(answer, a)" class="bi bi-pencil pointer-cursor mx-1"></i>
+                        <i title="Delete" @click="showDeleteModal(answer, a)" class="bi bi-trash pointer-cursor mx-1">
+                        </i>
+                    </div>
                 </div>
             </div>
             <!-- Pagination -->
@@ -75,7 +80,21 @@
 
     <message-modal v-model="messageModal" :addressee="addressee"></message-modal>
 
-    <deleteModal delete_url="/delete_answer" item_name="answer" :item_id="itemId" :delete_index="deleteIndex">
+    <!--Edit Modal-->
+    <b-modal v-model="editModal" no-close-on-backdrop hide-footer title="Edit Question">
+        <div class="mb-3">
+            <label for="question" class="form-label">Answer</label>
+            <input v-model="editData.answer" type="string" class="form-control" id="question" />
+        </div>
+        <div class="d-flex justify-content-end">
+            <Button class="mx-2" @click="editModal = false">Cancel</Button>
+            <Button @click="edit()" type="primary" :loading="editing">Edit</Button>
+        </div>
+    </b-modal>
+    <!--Edit Modal-->
+
+    <deleteModal v-model="deleteModal" delete_url="/delete_answer" item_name="answer" :item_id="itemId"
+        :delete_index="deleteIndex" @successfulDelete="removeDeletedItem">
     </deleteModal>
 </template>
 
@@ -161,12 +180,51 @@ export default {
             }
         }
 
+        //edit
+        const editData = ref({})
+        const editModal = ref(false)
+        const editIndex = ref(null);
+        const editing = ref(false)
+
+        const showEditModal = (answer, index) => {
+            editData.value.id = answer.id
+            editData.value.answer = answer.answer
+            editIndex.value = index
+            editModal.value = true
+        }
+
+        const edit = async () => {
+            if (editData.value.answer.trim().length < 2) return toast.warning('Answer must be at least 2 characters!')
+
+            editing.value = true
+
+            const res = await useCallApi('post', '/edit_answer', editData.value)
+
+            if (res.status == 200) {
+                answers.value[editIndex.value].answer = editData.value.answer
+                toast.success('Answer edited successfully!')
+            } else {
+                toast.error(res.data.message)
+            }
+            editing.value = false
+            editModal.value = false
+        }
+
         //delete
         const deleteIndex = ref(null)
         const itemId = ref(null)
+        const deleteModal = ref(false)
 
+        const showDeleteModal = (answer, index) => {
+            itemId.value = answer.id
+            deleteIndex.value = index
+            deleteModal.value = true
+        }
+        const removeDeletedItem = (index) => {
+            answers.value.splice(index, 1)
+        }
 
-        return { question, answers, answer, sendAnswer, answering, currentPage, totalAnswers, getQuestion, itemPerPage, messageModal, addressee, showMessageModal, user, deleteIndex, itemId }
+        return { question, answers, answer, sendAnswer, answering, currentPage, totalAnswers, getQuestion, itemPerPage, messageModal, addressee, showMessageModal, user, deleteIndex, itemId, editModal, editData, deleteModal, showEditModal, editing, edit, showDeleteModal, removeDeletedItem }
     }
 }
 </script>

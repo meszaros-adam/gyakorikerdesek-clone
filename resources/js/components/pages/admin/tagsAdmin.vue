@@ -146,7 +146,7 @@
   
         if (res.status == 200) {
           toast.success("Tag edited successfully");
-          tags.value.at(editIndex.value).name = editData.value.name
+          tags.value[editIndex.value].name = editData.value.name
           editModal.value = false;
         } else {
           toast.error(res.data.message);

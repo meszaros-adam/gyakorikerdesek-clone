@@ -118,8 +118,8 @@ export default {
 
             if (res.status == 200) {
                 toast.success("User edited successfully");
-                users.value.at(editIndex.value).nickname = editData.value.nickname
-                users.value.at(editIndex.value).admin = editData.value.admin
+                users.value[editIndex.value].nickname = editData.value.nickname
+                users.value[editIndex.value].admin = editData.value.admin
                 editModal.value = false;
             } else {
                 toast.error(res.data.message);
