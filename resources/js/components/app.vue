@@ -9,7 +9,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav me-auto">
             <li v-if="!user.getUser" class="nav-item">
               <router-link to="/login" class="nav-link">Login</router-link>
             </li>
@@ -21,7 +21,7 @@
                 aria-expanded="false">
                 {{ user.getUser.nickname }}
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu"  style="margin: 0" aria-labelledby="navbarDropdown">
                 <li>
                   <a class="dropdown-item" href="/auth/logout">Logout</a>
                 </li>

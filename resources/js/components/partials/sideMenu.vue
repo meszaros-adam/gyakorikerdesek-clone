@@ -1,20 +1,20 @@
 <template>
     <div class="bg-secondary mt-5 mx-3 p-3">
         <h1 class="text-black">Menu</h1>
-        <ul class="side-menu">
-            <li>
+        <ul v-if="user.getUser" class="side-menu">
+            <li v-if="user.getUser.admin">
                 <a class="admin-panel" data-bs-toggle="collapse" href="#collapseExample" role="button">
                     Admin Panel
                 </a>
-            </li>
-            <div class="collapse" id="collapseExample">
-                <div class="card card-body bg-primary">
-                    <router-link class="router-link" to="/admin/categories">Categories</router-link>
-                    <router-link class="router-link" to="/admin/questions">Questions</router-link>
-                    <router-link class="router-link" to="/admin/users">Users</router-link>
-                    <router-link class="router-link" to="/admin/tags">Tags</router-link>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body bg-primary">
+                        <router-link class="router-link" to="/admin/categories">Categories</router-link>
+                        <router-link class="router-link" to="/admin/questions">Questions</router-link>
+                        <router-link class="router-link" to="/admin/users">Users</router-link>
+                        <router-link class="router-link" to="/admin/tags">Tags</router-link>
+                    </div>
                 </div>
-            </div>
+            </li>
             <li class="pointer-cursor" @click="createQuestionModal = true">Create question</li>
             <li>
                 <router-link class="router-link" to="/my-questions">My Questions</router-link>
@@ -25,6 +25,11 @@
             </li>
             <router-link class="router-link" to="/my-answered-questions">My Answered Questions</router-link>
         </ul>
+        <div v-else>
+            <router-link to="/login">
+                <button type="button" class="btn btn-primary my-3">Login</button>
+            </router-link>
+        </div>
     </div>
     <createQuestionModal v-model="createQuestionModal" @newQuestionCreated="$emit('newQuestionCreated')">
     </createQuestionModal>
@@ -72,7 +77,7 @@ export default {
 
         getUnreadedCount();
 
-        return { createQuestionModal, unreadedCount, setMessagesToReaded }
+        return { createQuestionModal, unreadedCount, setMessagesToReaded, user }
     }
 }
 </script>

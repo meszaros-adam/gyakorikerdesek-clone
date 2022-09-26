@@ -55,10 +55,14 @@
                 </div>
                 <div class="bg-secondary px-3 rounded-bottom">
                     <p class="py-3">{{ answer.answer }}</p>
-                    <div class="d-flex justify-content-center">
-                        <i title="Edit" @click="showEditModal(answer, a)" class="bi bi-pencil pointer-cursor mx-1"></i>
-                        <i title="Delete" @click="showDeleteModal(answer, a)" class="bi bi-trash pointer-cursor mx-1">
-                        </i>
+                    <div v-if="user.getUser">
+                        <div v-if="user.getUser.admin" class="d-flex justify-content-center">
+                            <i title="Edit" @click="showEditModal(answer, a)"
+                                class="bi bi-pencil pointer-cursor mx-1"></i>
+                            <i title="Delete" @click="showDeleteModal(answer, a)"
+                                class="bi bi-trash pointer-cursor mx-1">
+                            </i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,7 +88,7 @@
     <b-modal v-model="editModal" no-close-on-backdrop hide-footer title="Edit Question">
         <div class="mb-3">
             <label for="question" class="form-label">Answer</label>
-            <input v-model="editData.answer" type="string" class="form-control" id="question" />
+            <textarea v-model="editData.answer" type="string" class="form-control" id="question"></textarea>
         </div>
         <div class="d-flex justify-content-end">
             <Button class="mx-2" @click="editModal = false">Cancel</Button>
