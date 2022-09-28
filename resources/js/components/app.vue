@@ -21,7 +21,7 @@
                 aria-expanded="false">
                 {{ user.getUser.nickname }}
               </a>
-              <ul class="dropdown-menu"  style="margin: 0" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu" style="margin: 0" aria-labelledby="navbarDropdown">
                 <li>
                   <a class="dropdown-item" href="/auth/logout">Logout</a>
                 </li>
@@ -41,6 +41,12 @@
       <div class="row">
         <div class="col-lg-3">
           <side-menu></side-menu>
+          <div class="bg-secondary mt-5 mx-3 p-3 d-none d-lg-block">
+            <h1 class="text-black">Categories</h1>
+            <div v-for="(category, c)  in categories" :key="c">
+              <router-link class="router-link" :to="{ name: 'category', params: { id: category.id, title: category.name } }"> {{category.name}}</router-link>
+            </div>
+          </div>
         </div>
         <div class="col-lg-9">
           <!-- ROUTER -->
@@ -59,17 +65,34 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import { useUserStore } from "../stores/user";
+import useCallApi from './composables/useCallApi';
 import sideMenu from "./partials/sideMenu.vue";
+import { useToast } from 'vue-toastification';
 export default {
   components: { sideMenu },
   props: ["user"],
   setup(props) {
-
+    const toast = useToast()
     const user = useUserStore();
     user.setUser(props.user);
 
-    return { user };
+    //categories
+    const categories = ref([])
+
+    const getCategories = async () => {
+      const res = await useCallApi('get', '/get_all_categories')
+
+      if (res.status == 200) {
+        categories.value = res.data
+      } else {
+        toast.error('Caannot load categories!')
+      }
+    }
+    getCategories();
+
+    return { user, categories };
   },
 };
 </script>

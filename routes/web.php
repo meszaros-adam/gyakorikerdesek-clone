@@ -33,6 +33,7 @@ Route::post('/edit_question', [App\Http\Controllers\QuestionController::class, '
 Route::post('/delete_question', [App\Http\Controllers\QuestionController::class, 'delete'])->middleware(QuestionPermissionCheck::class);
 Route::get('/get_my_questions', [App\Http\Controllers\QuestionController::class, 'getMyQuestions'])->middleware(LoginCheck::class);
 Route::get('/get_my_answered_questions', [App\Http\Controllers\QuestionController::class, 'getMyAnsweredQuestions'])->middleware(LoginCheck::class);
+Route::get('/get_questions_by_category', [App\Http\Controllers\QuestionController::class, 'getByCategory']);
 
 
 //Answers

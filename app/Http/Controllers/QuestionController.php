@@ -156,4 +156,9 @@ class QuestionController extends Controller
             $q->where('user_id', Auth::user()->id);
         })->orderBy($request->orderBy,  $request->ordering)->with('category')->paginate($request->itemPerPage);
     }
+    public function getByCategory(Request $request){
+        return Question::whereHas('category', function ($q) use($request){
+            return $q->where('id', $request->category_id);
+        })->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
+    }
 }

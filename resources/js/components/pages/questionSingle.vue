@@ -85,7 +85,7 @@
     <message-modal v-model="messageModal" :addressee="addressee"></message-modal>
 
     <!--Edit Modal-->
-    <b-modal v-model="editModal" no-close-on-backdrop hide-footer title="Edit Question">
+    <b-modal v-model="editModal" hide-footer title="Edit Question">
         <div class="mb-3">
             <label for="question" class="form-label">Answer</label>
             <textarea v-model="editData.answer" type="string" class="form-control" id="question"></textarea>
