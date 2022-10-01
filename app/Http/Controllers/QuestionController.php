@@ -161,4 +161,9 @@ class QuestionController extends Controller
             return $q->where('id', $request->category_id);
         })->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
     }
+    public function getByTag(Request $request){
+        return Question::whereHas('tags', function ($q) use($request){
+            return $q->where('tag_id', $request->tag_id);
+        })->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
+    }
 }

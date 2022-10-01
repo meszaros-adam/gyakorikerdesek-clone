@@ -37,16 +37,34 @@
     </nav>
     <!-- NAV -->
 
+
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-3">
+          <!-- Side Menu -->
           <side-menu></side-menu>
+          <!-- Side Menu -->
+          <!-- Categories -->
           <div class="bg-secondary mt-5 mx-3 p-3 d-none d-lg-block">
             <h1 class="text-black">Categories</h1>
             <div v-for="(category, c)  in categories" :key="c">
-              <router-link class="router-link" :to="{ name: 'category', params: { id: category.id, title: category.name } }"> {{category.name}}</router-link>
+              <router-link class="router-link"
+                :to="{ name: 'category', params: { id: category.id, title: category.name } }"> {{category.name}}
+              </router-link>
             </div>
           </div>
+          <!-- Categories -->
+          <!-- Most Popular Tags -->
+          <div class="bg-secondary m-5 mx-3 p-3 d-none d-lg-block">
+            <h1 class="text-black">Popular Tags</h1>
+            <div v-for="(tag, t)  in popTags" :key="t">
+              <router-link class="router-link" :to="{ name: 'tag', params: { id: tag.id, title: tag.name } }">
+                {{tag.name}} <span>({{tag.questions_count}})</span>
+              </router-link>
+            </div>
+          </div>
+          <!-- Most Popular Tags -->
+
         </div>
         <div class="col-lg-9">
           <!-- ROUTER -->
@@ -87,12 +105,27 @@ export default {
       if (res.status == 200) {
         categories.value = res.data
       } else {
-        toast.error('Caannot load categories!')
+        toast.error(res.data.message)
       }
     }
     getCategories();
 
-    return { user, categories };
+    //popular tags
+    const popTags = ref([])
+
+    const getPopTags = async () => {
+      const res = await useCallApi('get', '/get_popular_tags')
+
+      if (res.status == 200) {
+        popTags.value = res.data
+      } else {
+        toast.error(res.data.message)
+      }
+    }
+
+    getPopTags()
+
+    return { user, categories, popTags };
   },
 };
 </script>

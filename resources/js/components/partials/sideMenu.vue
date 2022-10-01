@@ -8,8 +8,8 @@
                 </a>
                 <div class="collapse" id="collapseExample">
                     <div class="card card-body bg-primary">
-                        <router-link class="router-link" to="/admin/categories">Categories</router-link>
                         <router-link class="router-link" to="/admin/questions">Questions</router-link>
+                        <router-link class="router-link" to="/admin/categories">Categories</router-link>
                         <router-link class="router-link" to="/admin/users">Users</router-link>
                         <router-link class="router-link" to="/admin/tags">Tags</router-link>
                     </div>

@@ -7,8 +7,11 @@
                     <p class="text-center">{{ question.description }}</p>
                     <div class="d-flex">
                         <div v-for="tag in question.tags" :key="tag.id">
-                            <div class="me-2 px-1 bg-primary rounded">
-                                #{{tag.name}}
+                            <div class="me-2 px-1 bg-primary rounded fst-italic">
+                                <router-link class="router-link"
+                                    :to="{ name: 'tag', params: { id: tag.id, title: tag.name } }">
+                                    #{{tag.name}}
+                                </router-link>
                             </div>
                         </div>
                     </div>

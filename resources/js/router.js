@@ -7,6 +7,8 @@ import messages from './components/pages/messages.vue'
 import myQuestions from './components/pages/myQuestions.vue'
 import myAnsweredQuestions from './components/pages/myAnsweredQuestions.vue'
 import questionsByCategory from './components/pages/questionsByCategory.vue'
+import questionsByTag from './components/pages/questionsByTag.vue'
+
 //Admin
 import categoriesAdmin from './components/pages/admin/categoriesAdmin.vue'
 import questionsAdmin from './components/pages/admin/questionsAdmin.vue'
@@ -55,6 +57,11 @@ const routes = [
         path: '/category/:id/:title',
         name: 'category',
         component: questionsByCategory,
+    },
+    {
+        path: '/tag/:id/:title',
+        name: 'tag',
+        component: questionsByTag,
     },
     //Admin
     {

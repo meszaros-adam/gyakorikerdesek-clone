@@ -34,7 +34,7 @@ Route::post('/delete_question', [App\Http\Controllers\QuestionController::class,
 Route::get('/get_my_questions', [App\Http\Controllers\QuestionController::class, 'getMyQuestions'])->middleware(LoginCheck::class);
 Route::get('/get_my_answered_questions', [App\Http\Controllers\QuestionController::class, 'getMyAnsweredQuestions'])->middleware(LoginCheck::class);
 Route::get('/get_questions_by_category', [App\Http\Controllers\QuestionController::class, 'getByCategory']);
-
+Route::get('/get_questions_by_tag', [App\Http\Controllers\QuestionController::class, 'getByTag']);
 
 //Answers
 Route::post('/create_answer', [App\Http\Controllers\AnswerController::class, 'add'])->middleware(LoginCheck::class);
@@ -53,6 +53,8 @@ Route::post('/create_tag', [App\Http\Controllers\TagController::class, 'add'])->
 Route::get('/get_tags', [App\Http\Controllers\TagController::class, 'get']);
 Route::post('/edit_tag', [App\Http\Controllers\TagController::class, 'edit'])->middleware(AdminCheck::class);
 Route::post('/delete_tag', [App\Http\Controllers\TagController::class, 'delete'])->middleware(AdminCheck::class);
+Route::get('/get_popular_tags', [App\Http\Controllers\TagController::class, 'getPopular']);
+
 
 //Message
 Route::post('/create_message', [App\Http\Controllers\MessageController::class, 'add'])->middleware(LoginCheck::class);
@@ -65,7 +67,6 @@ Route::post('/set_messages_to_readed', [App\Http\Controllers\MessageController::
 Route::get('get_users', [App\Http\Controllers\UserController::class, 'get'])->middleware(AdminCheck::class);
 Route::post('edit_user', [App\Http\Controllers\UserController::class, 'edit'])->middleware(AdminCheck::class);
 Route::post('delete_user', [App\Http\Controllers\UserController::class, 'delete'])->middleware(AdminCheck::class);
-
 
 Route::fallback(function () {
     return view('welcome');

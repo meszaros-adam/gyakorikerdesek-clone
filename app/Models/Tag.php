@@ -14,4 +14,7 @@ class Tag extends Model
     public function setNameAttribute($value){
         $this->attributes['name'] = strtolower($value);
     }
+    public function questions(){
+        return $this->belongsToMany(Question::class, 'question_tags');
+    }
 }

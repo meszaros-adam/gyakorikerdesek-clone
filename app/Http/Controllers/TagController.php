@@ -7,37 +7,47 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    public function add(Request $request){
-        $this->validate($request,[
-            'name' =>'required|min:2',
+    public function add(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:2',
         ]);
 
         return Tag::create([
-            'name' =>$request->name,
+            'name' => $request->name,
         ]);
     }
-    public function get(Request $request){
+    public function get(Request $request)
+    {
         return Tag::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
-
     }
-    public function edit(Request $request){
-        $this->validate($request,[
-            'name' =>'required|min:2',
+    public function edit(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:2',
             'id' => 'required|numeric',
         ]);
 
         return Tag::where('id', $request->id)->update([
-            'name' =>$request->name
+            'name' => $request->name
         ]);
     }
-    public function getAll(){
+    public function getAll()
+    {
         return Tag::orderBy('name', 'asc')->get();
     }
-    public function delete(Request $request){
-        $this->validate($request,[
+    public function delete(Request $request)
+    {
+        $this->validate($request, [
             'id' => 'required|numeric',
         ]);
 
         return Tag::where('id', $request->id)->delete();
+    }
+    public function getPopular()
+    {
+        //return top 10 tags order by question count 
+        return Tag::withCount('questions')->orderBy('questions_count', 'desc')->take(10)->get();
+
     }
 }
