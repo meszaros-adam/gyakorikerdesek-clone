@@ -1,13 +1,27 @@
 <template>
     <div>
         <div class="container my-5 p-3 bg-dark text-light">
-            <Button @click="createModal = true"><i class="bi bi-plus-lg"></i> Create Question</Button>
+            <div class="d-flex justify-content-between">
+                <Button @click="createModal = true"><i class="bi bi-plus-lg"></i> Create Question</Button>
+                <div class="d-flex align-items-center">
+                    <div class="text-nowrap me-3">Order By:</div>
+                    <select v-model="orderBy" @change="getQuestions" class="form-select me-3"
+                        aria-label="Default select example">
+                        <option value="id">ID</option>
+                        <option value="question">Question</option>
+                        <option value="category_name">Category</option>
+                        <option value="user_nickname">User</option>
+                    </select>
+                    <i v-show="ordering == 'desc'" @click="changeOrdering('asc')" class="bi bi-arrow-up pointer-cursor" title="Ascending Order"></i>
+                    <i v-show="ordering == 'asc'" @click="changeOrdering('desc')" class="bi bi-arrow-down pointer-cursor" title="Descending Order"></i>
+                </div>
+            </div>
             <table class="table table-primary table-striped my-3">
                 <thead>
                     <tr>
                         <th scope="col">#ID</th>
                         <th scope="col">Category</th>
-                        <th scope="col">Questioner</th>
+                        <th scope="col">User</th>
                         <th scope="col">Question</th>
                         <th scope="col">Functions</th>
                     </tr>
@@ -90,6 +104,11 @@ export default {
         const orderBy = ref('id');
         const ordering = ref('desc')
         const itemPerPage = ref(10)
+
+        const changeOrdering = (newOrdering) =>{
+            ordering.value = newOrdering
+            getQuestions();
+        }   
 
         //questions pagination
         const currentPage = ref(1)
@@ -209,6 +228,9 @@ export default {
             createModal,
             getQuestions,
             newQuestion,
+            orderBy,
+            ordering,
+            changeOrdering,
         };
     },
 };

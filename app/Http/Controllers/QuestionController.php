@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
-use App\Models\Category;
-use App\Models\Message;
 use App\Models\Question;
 use App\Models\QuestionTag;
 use App\Models\Tag;
@@ -82,7 +80,12 @@ class QuestionController extends Controller
     }
     public function get(Request $request)
     {
-        return Question::orderBy($request->orderBy, $request->ordering)->with('tags', 'category', 'user')->paginate($request->itemPerPage);
+        return Question::select(['questions.*', 'categories.name as category_name', 'users.nickname as user_nickname'])
+        ->with('tags', 'category', 'user')
+        ->join('categories', 'questions.category_id', '=', 'categories.id')
+        ->join('users', 'questions.user_id', '=', 'users.id')
+        ->orderBy($request->orderBy, $request->ordering)
+        ->paginate($request->itemPerPage);
     }
     public function edit(Request $request)
     {
