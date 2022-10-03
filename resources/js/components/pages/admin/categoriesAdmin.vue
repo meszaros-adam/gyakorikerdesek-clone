@@ -1,7 +1,20 @@
 <template>
   <div>
     <div class="container my-5 p-3 bg-dark text-light">
-      <Button @click="createModal = true"><i class="bi bi-plus-lg"></i> Create Category</Button>
+      <div class="d-flex justify-content-between">
+        <Button @click="createModal = true"><i class="bi bi-plus-lg"></i> Create Category</Button>
+        <div class="d-flex align-items-center">
+          <div class="text-nowrap me-3">Order By:</div>
+          <select v-model="orderBy" @change="getCategories" class="form-select me-3" aria-label="Default select example">
+            <option value="id">ID</option>
+            <option value="name">Name</option>
+          </select>
+          <i v-show="ordering == 'desc'" @click="changeOrdering('asc')" class="bi bi-arrow-up pointer-cursor"
+            title="Ascending Order"></i>
+          <i v-show="ordering == 'asc'" @click="changeOrdering('desc')" class="bi bi-arrow-down pointer-cursor"
+            title="Descending Order"></i>
+        </div>
+      </div>
       <table class="table table-primary table-striped my-3">
         <thead>
           <tr>
@@ -121,6 +134,11 @@ export default {
     };
     getCategories();
 
+    const changeOrdering = (newOrdering) =>{
+      ordering.value = newOrdering
+      getCategories();
+    }
+
 
     //edit categories
     const editModal = ref(false);
@@ -187,6 +205,10 @@ export default {
       totalCategories,
       currentPage,
       itemPerPage,
+      orderBy,
+      ordering,
+      getCategories,
+      changeOrdering,
     };
   },
 };

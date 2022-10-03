@@ -1,11 +1,27 @@
 <template>
     <div>
         <div class="container my-5 p-3 bg-dark text-light">
+            <div class="d-flex justify-content-end">
+                <div class="d-flex align-items-center">
+                    <div class="text-nowrap me-3">Order By:</div>
+                    <select v-model="orderBy" @change="getUsers" class="form-select me-3"
+                        aria-label="Default select example">
+                        <option value="id">ID</option>
+                        <option value="nickname">Nickname</option>
+                        <option value="email">Email</option>
+                    </select>
+                    <i v-show="ordering == 'desc'" @click="changeOrdering('asc')" class="bi bi-arrow-up pointer-cursor"
+                        title="Ascending Order"></i>
+                    <i v-show="ordering == 'asc'" @click="changeOrdering('desc')"
+                        class="bi bi-arrow-down pointer-cursor" title="Descending Order"></i>
+                </div>
+            </div>
             <table class="table table-primary table-striped my-3">
                 <thead>
                     <tr>
                         <th scope="col">#ID</th>
                         <th scope="col">Nickname</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Admin</th>
                         <th scope="col">Functions</th>
                     </tr>
@@ -14,6 +30,7 @@
                     <tr v-for="(user, c) in users" :key="c">
                         <th scope="row">{{ user.id }}</th>
                         <td>{{ user.nickname }}</td>
+                        <td>{{ user.email }}</td>
                         <td>{{ user.admin }}</td>
                         <td>
                             <i @click="showEditModal(user, c)" title="Edit" class="bi bi-pencil pointer-cursor mx-1">
@@ -89,6 +106,12 @@ export default {
                 toast.error(res.data.message);
             }
         };
+
+        const changeOrdering = (newOrdering) => {
+            ordering.value = newOrdering
+            getUsers();
+        }
+
         getUsers();
 
 
@@ -156,6 +179,10 @@ export default {
             totalUsers,
             currentPage,
             itemPerPage,
+            orderBy,
+            ordering,
+            getUsers,
+            changeOrdering,
         };
     },
 };
