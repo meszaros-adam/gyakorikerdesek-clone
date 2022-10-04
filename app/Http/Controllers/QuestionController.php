@@ -81,11 +81,11 @@ class QuestionController extends Controller
     public function get(Request $request)
     {
         return Question::select(['questions.*', 'categories.name as category_name', 'users.nickname as user_nickname'])
-        ->with('tags', 'category', 'user')
-        ->join('categories', 'questions.category_id', '=', 'categories.id')
-        ->join('users', 'questions.user_id', '=', 'users.id')
-        ->orderBy($request->orderBy, $request->ordering)
-        ->paginate($request->itemPerPage);
+            ->with('tags', 'category', 'user')
+            ->join('categories', 'questions.category_id', '=', 'categories.id')
+            ->join('users', 'questions.user_id', '=', 'users.id')
+            ->orderBy($request->orderBy, $request->ordering)
+            ->paginate($request->itemPerPage);
     }
     public function edit(Request $request)
     {
@@ -159,13 +159,15 @@ class QuestionController extends Controller
             $q->where('user_id', Auth::user()->id);
         })->orderBy($request->orderBy,  $request->ordering)->with('category')->paginate($request->itemPerPage);
     }
-    public function getByCategory(Request $request){
-        return Question::whereHas('category', function ($q) use($request){
+    public function getByCategory(Request $request)
+    {
+        return Question::whereHas('category', function ($q) use ($request) {
             return $q->where('id', $request->category_id);
         })->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
     }
-    public function getByTag(Request $request){
-        return Question::whereHas('tags', function ($q) use($request){
+    public function getByTag(Request $request)
+    {
+        return Question::whereHas('tags', function ($q) use ($request) {
             return $q->where('tag_id', $request->tag_id);
         })->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
     }

@@ -11,11 +11,13 @@ class MessageController extends Controller
     public function add(Request $request)
     {
         $this->validate($request, [
+            'subject' => 'required|min:2',
             'message' => 'required|min:3',
             'addressee_id' => 'required',
         ]);
 
         return Message::create([
+            'subject' => $request->message,
             'message' => $request->message,
             'addressee_id' => $request->addressee_id,
             'sender_id' => Auth::user()->id,
@@ -36,10 +38,14 @@ class MessageController extends Controller
             ['readed', false]
         ])->count();
     }
-    public function setMessagesTopReaded()
+    public function setMessageToReaded(Request $request)
     {
-        return Message::where('addressee_id', Auth::user()->id)->update([
-            'readed' => true,
+        $this->validate($request,[
+            'id' => 'required|numeric'
+        ]);
+
+        return Message::where('id', $request->id)->update([
+            'readed' => true
         ]);
     }
 }

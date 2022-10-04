@@ -34,11 +34,11 @@
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
-import { useLastFiveQuestionsStore } from "../../stores/lastFiveQuestions";
+import { useLastFiveQuestions} from "../../stores/lastFiveQuestions";
 export default {
     setup(props, context,) {
         const toast = useToast()
-        const LastFiveQuestion = useLastFiveQuestionsStore()
+        const LastFiveQuestion = useLastFiveQuestions()
 
         //create question
         const createQuestionModal = ref(false);

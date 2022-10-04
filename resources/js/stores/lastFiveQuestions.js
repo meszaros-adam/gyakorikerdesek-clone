@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useLastFiveQuestionsStore = defineStore('lastFive', {
+export const useLastFiveQuestions = defineStore('lastFive', {
     state: () => ({ lastFive: [] }),
     actions: {
         setLastFive(lastFive){

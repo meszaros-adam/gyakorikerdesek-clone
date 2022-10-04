@@ -20,8 +20,8 @@
                 <router-link class="router-link" to="/my-questions">My Questions</router-link>
             </li>
             <li>
-                <router-link @click="setMessagesToReaded" class="router-link" to="/messages">Messages <span
-                        v-if="unreadedCount > 0" class="badge bg-primary">{{ unreadedCount }}</span></router-link>
+                <router-link class="router-link" to="/messages">Messages <span v-if="unreadedMessageCount.getCount > 0"
+                        class="badge bg-primary">{{ unreadedMessageCount.getCount }}</span></router-link>
             </li>
             <router-link class="router-link" to="/my-answered-questions">My Answered Questions</router-link>
         </ul>
@@ -40,6 +40,7 @@ import { ref } from "vue";
 import { useToast } from "vue-toastification";
 import useCallApi from "../composables/useCallApi";
 import { useUserStore } from "../../stores/user";
+import { useUnreadedMessageCount } from "../../stores/unreadedMessageCount";
 import createQuestionModal from "./createQuestionModal.vue";
 export default {
     components: { createQuestionModal },
@@ -48,36 +49,27 @@ export default {
     setup(props, context) {
         const toast = useToast()
         const user = useUserStore();
+        const unreadedMessageCount = useUnreadedMessageCount();
 
         //create question
         const createQuestionModal = ref(false);
 
         //unreaded messages
-        const unreadedCount = ref(null)
-
         const getUnreadedCount = async () => {
             if (user.getUser) {
                 const res = await useCallApi('get', '/unreaded_messages_count')
 
                 if (res.status == 200) {
-                    unreadedCount.value = res.data
+                    unreadedMessageCount.setCount(res.data)
                 } else {
                     toast.error('Cannot load the unreaded message count')
                 }
             }
         }
 
-        const setMessagesToReaded = async () => {
-            const res = useCallApi('post', '/set_messages_to_readed')
-
-            if (!res.status == 200) {
-                toast.error('Failed to set messages to unread!')
-            }
-        }
-
         getUnreadedCount();
 
-        return { createQuestionModal, unreadedCount, setMessagesToReaded, user }
+        return { createQuestionModal, user, unreadedMessageCount }
     }
 }
 </script>

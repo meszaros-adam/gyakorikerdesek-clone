@@ -3,14 +3,23 @@
         <b-tabs content-class="mt-3">
             <b-tab title="Incoming" active>
                 <h1 class="mb-3">Incoming Messages:</h1>
-                <div class="bg-primary mb-3 p-2 rounded" v-for="(message, m) in incomingMessages" :key="m">
-                    <div class="d-flex justify-content-between mb-2">
-                        <div class="border-bottom">From: {{ message.sender.nickname }}</div>
-                        <div>{{ message.created_at }}</div>
-
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <span> {{ message.message }}</span>
+                <div v-for="(message, m) in incomingMessages" :key="m">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div @click="setMessageToReaded(message, m)"
+                            :style="[ message.readed ? {'background-color':  '#6c757d'} : {'background-color':  '#0d6efd'}]"
+                            class="mb-3 p-2 rounded pointer-cursor flex-fill" data-bs-toggle="collapse"
+                            :data-bs-target="'#message'+message.id">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div class="border-bottom">From: {{ message.sender.nickname }}</div>
+                                <div>{{ message.created_at }}</div>
+                            </div>
+                            <div class="mb-3">Subject: {{message.subject}}</div>
+                            <div class="collapse collapse-horizontal text-black" :id="'message'+message.id">
+                                <div class="card card-body" style="width: 300px;">
+                                    {{message.message}}
+                                </div>
+                            </div>
+                        </div>
                         <i @click="showMessageModal(message.sender)" title="Reply"
                             class="bi bi-reply mx-2 pointer-cursor fs-5 "></i>
                     </div>
@@ -27,7 +36,8 @@
                         <div class="border-bottom"> To: {{ message.addressee.nickname }}</div>
                         <div>{{ message.created_at }}</div>
                     </div>
-                    <div> {{ message.message }}</div>
+                    <div class="mb-3">Subject: {{message.subject}}</div>
+                    <div>Message: {{ message.message }}</div>
                 </div>
                 <!-- Pagination -->
                 <b-pagination v-if="totalSended > itemPerPage" v-model="currentPageSended" :total-rows="totalSended"
@@ -45,11 +55,14 @@ import useCallApi from '../composables/useCallApi'
 import { useToast } from 'vue-toastification'
 import sideMenu from "../partials/sideMenu.vue";
 import messageModal from '../partials/messageModal.vue';
+import { useUnreadedMessageCount } from "../../stores/unreadedMessageCount";
+
 export default {
     components: { sideMenu, messageModal },
     setup() {
         const toast = useToast()
         const itemPerPage = ref(10)
+        const unreadedMessageCount = useUnreadedMessageCount();
 
         //incoming messages
         const incomingMessages = ref([])
@@ -95,6 +108,18 @@ export default {
             }
         }
 
+        const setMessageToReaded = async (message, index) => {
+            if (!message.readed) {
+                const res = await useCallApi('post', '/set_message_to_readed', { id: message.id })
+
+                if (res.status == 200) {
+                    //change unreaded count in pinia
+                    unreadedMessageCount.readMessage()
+                    incomingMessages.value[index].readed = true
+                }
+            }
+        }
+
         //pagination on sendedMessages
         watch(currentPageSended, () => {
             getSendedMessages()
@@ -112,7 +137,7 @@ export default {
         }
 
 
-        return { incomingMessages, addressee, messageModal, showMessageModal, sendedMessages, itemPerPage, totalIncoming, currentPageIncoming, totalSended, currentPageSended }
+        return { incomingMessages, addressee, messageModal, showMessageModal, sendedMessages, itemPerPage, totalIncoming, currentPageIncoming, totalSended, currentPageSended, setMessageToReaded }
     }
 }
 </script>

@@ -176,13 +176,13 @@ export default {
         const messageModal = ref(false)
         const addressee = ref({})
 
-        const showMessageModal = (user) => {
+        const showMessageModal = (addresseeUser) => {
             if (!user.getUser) {
                 router.push({ path: '/login' })
                 toast.warning('You must login to send messages!')
             }
             else {
-                addressee.value = user
+                addressee.value = addresseeUser
                 messageModal.value = true
             }
         }

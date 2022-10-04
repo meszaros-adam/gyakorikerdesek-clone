@@ -61,7 +61,7 @@ Route::post('/create_message', [App\Http\Controllers\MessageController::class, '
 Route::get('/incoming_messages', [App\Http\Controllers\MessageController::class, 'getIncoming'])->middleware(LoginCheck::class);
 Route::get('/sended_messages', [App\Http\Controllers\MessageController::class, 'getSended'])->middleware(LoginCheck::class);
 Route::get('/unreaded_messages_count', [App\Http\Controllers\MessageController::class, 'getUnreadedCount'])->middleware(LoginCheck::class);
-Route::post('/set_messages_to_readed', [App\Http\Controllers\MessageController::class, 'setMessagesTopReaded'])->middleware(LoginCheck::class);
+Route::post('/set_message_to_readed', [App\Http\Controllers\MessageController::class, 'setMessageToReaded'])->middleware(LoginCheck::class);
 
 //User
 Route::get('get_users', [App\Http\Controllers\UserController::class, 'get'])->middleware(AdminCheck::class);

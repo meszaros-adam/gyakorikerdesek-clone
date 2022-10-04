@@ -21,7 +21,7 @@
 
 <script>
 import { useToast } from "vue-toastification";
-import { useLastFiveQuestionsStore } from "../../stores/lastFiveQuestions";
+import { useLastFiveQuestions } from "../../stores/lastFiveQuestions";
 import useCallApi from "../composables/useCallApi";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
@@ -36,7 +36,7 @@ export default {
     const toast = useToast();
 
     //get last five questions
-    const lastFiveQuestions = useLastFiveQuestionsStore();
+    const lastFiveQuestions = useLastFiveQuestions();
 
     const getLastFiveQuestions = async () => {
       const res = await useCallApi('get', '/get_last_five_questions')
