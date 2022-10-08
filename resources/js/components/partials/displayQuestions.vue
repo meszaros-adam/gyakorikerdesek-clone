@@ -13,37 +13,50 @@
                 </div>
             </div>
         </div>
-        <div v-for="(question, q) in questions" :key="q" class="bg-primary mb-3 rounded">
-            <router-link class="router-link" :to="{ name: 'question', params: { id: question.id } }">
-                <div class="p-2">
-                    <div class="d-flex justify-content-between">
-                        <div>{{question.question}}</div>
-                        <div>Category: {{question.category.name}}</div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="fst-italic me-2" v-for="(tag, t) in question.tags" :key="t">
-                            #{{tag.name}}</div>
-                    </div>
-                </div>
-            </router-link>
-        </div>
 
+        <div v-for="(question, q) in questions" :key="q">
+            <div class="d-flex align-items-center">
+                <div class="bg-primary mb-3 rounded flex-fill">
+                    <router-link class="router-link" :to="{ name: 'question', params: { id: question.id } }">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-between">
+                                <div>{{question.question}}</div>
+                                <div>Category: {{question.category.name}}</div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="fst-italic me-2" v-for="(tag, t) in question.tags" :key="t">
+                                    #{{tag.name}}</div>
+                            </div>
+                        </div>
+                    </router-link>
+                </div>
+                <i @click="showDeleteModal(question.id, q)" title="Delete"
+                    class="bi bi-trash mb-3 mx-2 pointer-cursor"></i>
+            </div>
+
+        </div>
         <!-- Pagination -->
         <b-pagination v-model="currentPage" :total-rows="totalQuestions" :per-page="itemPerPage" align="center">
         </b-pagination>
         <!-- Pagination -->
     </div>
+    <delete-modal v-model="deleteModal" @successfulDelete="removeDeletedQuestion" delete_url="/delete_question"
+        item_name="Question" :item_id="deleteId" :delete_index="deleteIndex">
+    </delete-modal>
 </template>
 
 <script>
+import deleteModal from '../partials/deleteModal.vue'
 import { useToast } from "vue-toastification";
-import { ref, watch } from "vue";
+import { useRoute } from 'vue-router'
+import { ref, watch, computed } from "vue";
 import useCallApi from '../composables/useCallApi';
-
 export default {
+    components: { deleteModal },
     props: ['get_url', 'title'],
     setup(props) {
         const toast = useToast();
+        const route = useRoute();
 
         //get questions
         const questions = ref([]);
@@ -75,7 +88,23 @@ export default {
 
         getQuestions();
 
-        return { questions, itemPerPage, currentPage, totalQuestions, orderBy, ordering, getQuestions }
+        //delete question 
+        const showDeleteButton = computed(() => route.path == '/my-questions' ? true : false)
+        const deleteId = ref()
+        const deleteIndex = ref()
+        const deleteModal = ref(false)
+
+        const showDeleteModal = async (id, index) => {
+            deleteId.value = id
+            deleteIndex.value = index
+            deleteModal.value = true
+        }
+
+        const removeDeletedQuestion = (index) => {
+            questions.value.splice(index, 1)
+        }
+
+        return { questions, itemPerPage, currentPage, totalQuestions, orderBy, ordering, getQuestions, showDeleteButton, deleteId, deleteIndex, deleteModal, showDeleteModal, removeDeletedQuestion }
 
     }
 }

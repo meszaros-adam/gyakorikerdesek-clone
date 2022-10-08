@@ -153,7 +153,7 @@ class QuestionController extends Controller
     public function getMyQuestions(Request $request)
     {
         return Question::where('questions.user_id', Auth::user()->id)
-            ->join('answers', 'answers.question_id', '=', 'questions.id')
+            ->leftJoin('answers', 'answers.question_id', '=', 'questions.id')
             ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
             ->groupBy('id')
             ->with('category')
@@ -177,7 +177,7 @@ class QuestionController extends Controller
         return Question::whereHas('category', function ($q) use ($request) {
             return $q->where('id', $request->category_id);
         })
-            ->join('answers', 'answers.question_id', '=', 'questions.id')
+            ->leftJoin('answers', 'answers.question_id', '=', 'questions.id')
             ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
             ->groupBy('id')
             ->with('category', 'tags')
@@ -189,7 +189,7 @@ class QuestionController extends Controller
         return Question::whereHas('tags', function ($q) use ($request) {
             return $q->where('tag_id', $request->tag_id);
         })
-            ->join('answers', 'answers.question_id', '=', 'questions.id')
+            ->leftJoin('answers', 'answers.question_id', '=', 'questions.id')
             ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
             ->groupBy('id')
             ->with('category', 'tags')

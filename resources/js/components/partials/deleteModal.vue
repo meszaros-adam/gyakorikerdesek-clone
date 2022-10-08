@@ -28,7 +28,7 @@ export default {
             context.emit("update:modelValue", false)
         }
 
-        const capitalizedItemName = computed(() => props.item_name.charAt(0).toUpperCase()+props.item_name.slice(1) )
+        const capitalizedItemName = computed(() => props.item_name.charAt(0).toUpperCase() + props.item_name.slice(1))
 
         //delete
         const deleting = ref(false)
@@ -37,7 +37,7 @@ export default {
             const res = await useCallApi('post', props.delete_url, { id: props.item_id })
 
             if (res.status == 200) {
-                toast.success( capitalizedItemName.value + ' was deleted successfuly!')
+                toast.success(capitalizedItemName.value + ' was deleted successfuly!')
                 context.emit('successfulDelete', props.delete_index)
             } else {
                 toast.error('Delete failed!')
