@@ -3,6 +3,10 @@
         <div class="container bg-dark text-light">
             <div v-if="question" class="bg-secondary container mb-3 rounded">
                 <div class="border-bottom pt-3 pb-1">
+                    <router-link class="router-link"
+                        :to="{ name: 'category', params: { id: question.category.id, title: question.category.name } }">
+                        Category: {{question.category.name}}
+                    </router-link>
                     <h1 class="text-center mb-3">{{ question.question }}</h1>
                     <p class="text-center">{{ question.description }}</p>
                     <div class="d-flex">

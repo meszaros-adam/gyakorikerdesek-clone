@@ -25,8 +25,8 @@
                     </div>
                 </div>
                 <!-- Pagination -->
-                <b-pagination v-if="totalIncoming > itemPerPage" v-model="currentPageIncoming"
-                    :total-rows="totalIncoming" :per-page="itemPerPage" align="center"></b-pagination>
+                <b-pagination v-model="currentPageIncoming" :total-rows="totalIncoming" :per-page="itemPerPage"
+                    align="center"></b-pagination>
                 <!-- Pagination -->
             </b-tab>
             <b-tab title="Sended">
@@ -40,8 +40,8 @@
                     <div>Message: {{ message.message }}</div>
                 </div>
                 <!-- Pagination -->
-                <b-pagination v-if="totalSended > itemPerPage" v-model="currentPageSended" :total-rows="totalSended"
-                    :per-page="itemPerPage" align="center"></b-pagination>
+                <b-pagination v-model="currentPageSended" :total-rows="totalSended" :per-page="itemPerPage"
+                    align="center"></b-pagination>
                 <!-- Pagination -->
             </b-tab>
         </b-tabs>

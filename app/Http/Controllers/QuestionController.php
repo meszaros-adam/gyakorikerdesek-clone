@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Category;
 use App\Models\Question;
 use App\Models\QuestionTag;
 use App\Models\Tag;
@@ -70,7 +71,7 @@ class QuestionController extends Controller
     }
     public function getSingle(Request $request)
     {
-        $question =  Question::with('user', 'tags')->find($request->id);
+        $question =  Question::with('user', 'tags', 'category')->find($request->id);
         $answers = Answer::where('question_id', $request->id)->paginate($request->itemPerPage);
 
         return response()->json([
@@ -151,24 +152,51 @@ class QuestionController extends Controller
     }
     public function getMyQuestions(Request $request)
     {
-        return Question::where('user_id', Auth::user()->id)->orderBy($request->orderBy,  $request->ordering)->with('category')->paginate($request->itemPerPage);
+        return Question::where('questions.user_id', Auth::user()->id)
+            ->join('answers', 'answers.question_id', '=', 'questions.id')
+            ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
+            ->groupBy('id')
+            ->with('category')
+            ->orderBy($request->orderBy,  $request->ordering)
+            ->paginate($request->itemPerPage);
     }
     public function getMyAnsweredQuestions(Request $request)
     {
         return Question::whereHas('answers', function ($q) {
             $q->where('user_id', Auth::user()->id);
-        })->orderBy($request->orderBy,  $request->ordering)->with('category')->paginate($request->itemPerPage);
+        })
+            ->join('answers', 'answers.question_id', '=', 'questions.id')
+            ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
+            ->groupBy('id')
+            ->with('category')
+            ->orderBy($request->orderBy,  $request->ordering)
+            ->paginate($request->itemPerPage);
     }
     public function getByCategory(Request $request)
     {
         return Question::whereHas('category', function ($q) use ($request) {
             return $q->where('id', $request->category_id);
-        })->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
+        })
+            ->join('answers', 'answers.question_id', '=', 'questions.id')
+            ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
+            ->groupBy('id')
+            ->with('category', 'tags')
+            ->orderBy($request->orderBy,  $request->ordering)
+            ->paginate($request->itemPerPage);
     }
     public function getByTag(Request $request)
     {
         return Question::whereHas('tags', function ($q) use ($request) {
             return $q->where('tag_id', $request->tag_id);
-        })->orderBy($request->orderBy,  $request->ordering)->paginate($request->itemPerPage);
+        })
+            ->join('answers', 'answers.question_id', '=', 'questions.id')
+            ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
+            ->groupBy('id')
+            ->with('category', 'tags')
+            ->orderBy($request->orderBy,  $request->ordering)
+            ->paginate($request->itemPerPage);
+    }
+    public function search(Request $request)
+    {
     }
 }
