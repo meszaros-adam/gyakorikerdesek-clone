@@ -9,6 +9,7 @@
             aria-label="Default select example">
             <option value="id">ID</option>
             <option value="name">Name</option>
+            <option value="questions_count">Count</option>
           </select>
           <i v-show="ordering == 'desc'" @click="changeOrdering('asc')" class="bi bi-arrow-up pointer-cursor"
             title="Ascending Order"></i>
@@ -21,6 +22,7 @@
           <tr>
             <th scope="col">#ID</th>
             <th scope="col">Name</th>
+            <th scope="col">Count</th>
             <th scope="col">Functions</th>
           </tr>
         </thead>
@@ -28,6 +30,7 @@
           <tr v-for="(tag, t) in tags" :key="t">
             <th scope="row">{{ tag.id }}</th>
             <td>{{ tag.name }}</td>
+            <td>{{ tag.questions_count }}</td>
             <td>
               <i @click="showEditModal(tag, t)" title="Edit" class="bi bi-pencil pointer-cursor mx-1">
               </i>

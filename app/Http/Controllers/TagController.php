@@ -19,7 +19,7 @@ class TagController extends Controller
     }
     public function get(Request $request)
     {
-        return Tag::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
+        return Tag::orderBy($request->orderBy, $request->ordering)->withCount('questions')->paginate($request->itemPerPage);
     }
     public function edit(Request $request)
     {
