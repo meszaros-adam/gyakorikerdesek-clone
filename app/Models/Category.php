@@ -16,4 +16,7 @@ class Category extends Model
     {
         $this->attributes['name'] = ucfirst($value);
     }
+    public function questions(){
+        return $this->hasMany(Question::class);
+    }
 }

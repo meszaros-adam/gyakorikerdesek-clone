@@ -60,7 +60,7 @@ class QuestionController extends Controller
 
             DB::commit();
             return response($question, 201);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollback();
             return response($th, 500);
         }
@@ -132,6 +132,8 @@ class QuestionController extends Controller
                 QuestionTag::insert($question_tags);
             }
 
+            $this->deleteUnusedTags();
+
             DB::commit();
 
             return response()->json([
@@ -142,13 +144,27 @@ class QuestionController extends Controller
             return response($th, 500);
         }
     }
+    public function deleteUnusedTags()
+    {
+        Tag::doesntHave('questions')->delete();
+    }
     public function delete(Request $request)
     {
         $this->validate($request, [
             'id' => 'required|numeric'
         ]);
 
-        return Question::where('id', $request->id)->delete();
+
+        try {
+            DB::beginTransaction();
+            Question::where('id', $request->id)->delete();
+            $this->deleteUnusedTags();
+            DB::commit();
+            return response('Question deleted sucessfully!', 200);
+        } catch (Throwable $th) {
+            DB::rollback();
+            return response($th, 500);
+        }
     }
     public function getMyQuestions(Request $request)
     {

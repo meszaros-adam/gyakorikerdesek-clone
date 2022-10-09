@@ -17,7 +17,7 @@ class CategoryController extends Controller
         ]);
     }
     public function get(Request $request){
-        return Category::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
+        return Category::orderBy($request->orderBy, $request->ordering)->withCount('questions')->paginate($request->itemPerPage);
     }
     public function getAll(){
         return Category::orderBy('name', 'asc')->get();
@@ -37,6 +37,7 @@ class CategoryController extends Controller
             "id" => "required|numeric"
         ]);
 
+        //it deletes Questions becouse of cascade
         return Category::where('id', $request->id)->delete();
     }
 }

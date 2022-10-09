@@ -42,6 +42,7 @@ class TagController extends Controller
             'id' => 'required|numeric',
         ]);
 
+        //it deletes QuestionTags becouse of cascade
         return Tag::where('id', $request->id)->delete();
     }
     public function getPopular()

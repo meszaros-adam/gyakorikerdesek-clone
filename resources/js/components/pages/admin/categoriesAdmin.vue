@@ -5,9 +5,11 @@
         <Button @click="createModal = true"><i class="bi bi-plus-lg"></i> Create Category</Button>
         <div class="d-flex align-items-center">
           <div class="text-nowrap me-3">Order By:</div>
-          <select v-model="orderBy" @change="getCategories" class="form-select me-3" aria-label="Default select example">
+          <select v-model="orderBy" @change="getCategories" class="form-select me-3"
+            aria-label="Default select example">
             <option value="id">ID</option>
             <option value="name">Name</option>
+            <option value="questions_count">Questions Count</option>
           </select>
           <i v-show="ordering == 'desc'" @click="changeOrdering('asc')" class="bi bi-arrow-up pointer-cursor"
             title="Ascending Order"></i>
@@ -20,6 +22,7 @@
           <tr>
             <th scope="col">#ID</th>
             <th scope="col">Name</th>
+            <th scope="col">Questions Count</th>
             <th scope="col">Functions</th>
           </tr>
         </thead>
@@ -27,6 +30,7 @@
           <tr v-for="(category, c) in categories" :key="c">
             <th scope="row">{{ category.id }}</th>
             <td>{{ category.name }}</td>
+            <td>{{ category.questions_count }}</td>
             <td>
               <i @click="showEditModal(category, c)" title="Edit" class="bi bi-pencil pointer-cursor mx-1">
               </i>
@@ -134,7 +138,7 @@ export default {
     };
     getCategories();
 
-    const changeOrdering = (newOrdering) =>{
+    const changeOrdering = (newOrdering) => {
       ordering.value = newOrdering
       getCategories();
     }
