@@ -214,5 +214,15 @@ class QuestionController extends Controller
     }
     public function search(Request $request)
     {
+        $keyword =  $request->keyword;
+        return Question::when($keyword != '', function ($q) use ($keyword) {
+            $q->where('question', 'LIKE', "%{$keyword}%")
+                ->orWhereHas('tags', function ($q) use ($keyword) {
+                    $q->where('name', 'LIKE', "%{$keyword}%");
+                });
+        })
+            ->with('category', 'tags')
+            ->orderBy($request->orderBy,  $request->ordering)
+            ->paginate($request->itemPerPage);
     }
 }

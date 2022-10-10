@@ -28,15 +28,14 @@
               </ul>
             </li>
           </ul>
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-dark" type="submit">Search</button>
-          </form>
+          <div class="d-flex" role="search">
+            <input v-model="searchString" @keyup.enter="search" class="form-control me-2" type="search" placeholder="Search" />
+            <button @click="search" class="btn btn-dark">Search</button>
+          </div>
         </div>
       </div>
     </nav>
     <!-- NAV -->
-
 
     <div class="container-fluid">
       <div class="row">
@@ -88,6 +87,7 @@ import { useUserStore } from "../stores/user";
 import useCallApi from './composables/useCallApi';
 import sideMenu from "./partials/sideMenu.vue";
 import { useToast } from 'vue-toastification';
+import router from '../router';
 export default {
   components: { sideMenu },
   props: ["user"],
@@ -125,7 +125,16 @@ export default {
 
     getPopTags()
 
-    return { user, categories, popTags };
+    //search
+    const searchString = ref('')
+
+    const search = () => {
+      if (searchString.value.trim().length < 2) return toast.warning('The search keyword must be at least 2 characters!')
+
+      router.push({ name: "search", params: { keyword: searchString.value } });
+    }
+
+    return { user, categories, popTags, search, searchString };
   },
 };
 </script>

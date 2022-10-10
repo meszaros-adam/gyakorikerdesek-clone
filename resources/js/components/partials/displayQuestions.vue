@@ -1,7 +1,7 @@
 <template>
     <div class="container my-5 p-3 bg-dark text-light">
-        <div class="d-flex justify-content-between">
-            <h1 class="mb-3">{{title}}</h1>
+        <div class="d-flex justify-content-between mb-3">
+            <h1>Search: {{title}}</h1>
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                     <div class="text-nowrap me-3">Order By:</div>
@@ -30,7 +30,7 @@
                         </div>
                     </router-link>
                 </div>
-                <i @click="showDeleteModal(question.id, q)" title="Delete"
+                <i v-if="showDeleteButton" @click="showDeleteModal(question.id, q)" title="Delete"
                     class="bi bi-trash mb-3 mx-2 pointer-cursor"></i>
             </div>
 
@@ -104,7 +104,21 @@ export default {
             questions.value.splice(index, 1)
         }
 
-        return { questions, itemPerPage, currentPage, totalQuestions, orderBy, ordering, getQuestions, showDeleteButton, deleteId, deleteIndex, deleteModal, showDeleteModal, removeDeletedQuestion }
+        return {
+            questions,
+            itemPerPage,
+            currentPage,
+            totalQuestions,
+            orderBy,
+            ordering,
+            getQuestions,
+            showDeleteButton,
+            deleteId,
+            deleteIndex,
+            deleteModal,
+            showDeleteModal,
+            removeDeletedQuestion
+        }
 
     }
 }

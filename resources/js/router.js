@@ -8,6 +8,7 @@ import myQuestions from './components/pages/myQuestions.vue'
 import myAnsweredQuestions from './components/pages/myAnsweredQuestions.vue'
 import questionsByCategory from './components/pages/questionsByCategory.vue'
 import questionsByTag from './components/pages/questionsByTag.vue'
+import questionsBySearch from './components/pages/questionsBySearch.vue'
 
 //Admin
 import categoriesAdmin from './components/pages/admin/categoriesAdmin.vue'
@@ -62,6 +63,11 @@ const routes = [
         path: '/tag/:id/:title',
         name: 'tag',
         component: questionsByTag,
+    },
+    {
+        path: '/search/:keyword/',
+        name: 'search',
+        component: questionsBySearch,
     },
     //Admin
     {
