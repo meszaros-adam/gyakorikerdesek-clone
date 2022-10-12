@@ -4,11 +4,7 @@ import register from './components/pages/auth/register.vue'
 import lastFiveQuestions from './components/pages/lastFiveQuestions.vue'
 import questionSingle from './components/pages/questionSingle.vue'
 import messages from './components/pages/messages.vue'
-import myQuestions from './components/pages/myQuestions.vue'
-import myAnsweredQuestions from './components/pages/myAnsweredQuestions.vue'
-import questionsByCategory from './components/pages/questionsByCategory.vue'
-import questionsByTag from './components/pages/questionsByTag.vue'
-import questionsBySearch from './components/pages/questionsBySearch.vue'
+import questions from './components/pages/questions.vue'
 
 //Admin
 import categoriesAdmin from './components/pages/admin/categoriesAdmin.vue'
@@ -35,39 +31,14 @@ const routes = [
         component: questionSingle,
     },
     {
-        path: '/question/:id',
-        name: 'question',
-        component: questionSingle,
-    },
-    {
         path: '/messages',
         name: 'messages',
         component: messages,
     },
     {
-        path: '/my-questions',
-        name: 'my-questions',
-        component: myQuestions,
-    },
-    {
-        path: '/my-answered-questions',
-        name: 'my--answered-questions',
-        component: myAnsweredQuestions,
-    },
-    {
-        path: '/category/:id/:title',
-        name: 'category',
-        component: questionsByCategory,
-    },
-    {
-        path: '/tag/:id/:title',
-        name: 'tag',
-        component: questionsByTag,
-    },
-    {
-        path: '/search/:keyword/',
-        name: 'search',
-        component: questionsBySearch,
+        path: '/questions',
+        name: 'questions',
+        component: questions,
     },
     //Admin
     {

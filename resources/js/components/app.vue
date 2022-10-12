@@ -29,7 +29,8 @@
             </li>
           </ul>
           <div class="d-flex" role="search">
-            <input v-model="searchString" @keyup.enter="search" class="form-control me-2" type="search" placeholder="Search" />
+            <input v-model="searchString" @keyup.enter="search" class="form-control me-2" type="search"
+              placeholder="Search" />
             <button @click="search" class="btn btn-dark">Search</button>
           </div>
         </div>
@@ -47,9 +48,8 @@
           <div class="bg-secondary mt-5 mx-3 p-3 d-none d-lg-block">
             <h1 class="text-black">Categories</h1>
             <div v-for="(category, c)  in categories" :key="c">
-              <router-link class="router-link"
-                :to="{ name: 'category', params: { id: category.id, title: category.name } }"> {{category.name}}
-              </router-link>
+              <div @click="showQuestions.show(`/get_questions_by_category?category_id=${category.id}`,category.name)"
+                class="router-link">{{category.name}}</div>
             </div>
           </div>
           <!-- Categories -->
@@ -57,9 +57,10 @@
           <div class="bg-secondary m-5 mx-3 p-3 d-none d-lg-block">
             <h1 class="text-black">Popular Tags</h1>
             <div v-for="(tag, t)  in popTags" :key="t">
-              <router-link class="router-link" :to="{ name: 'tag', params: { id: tag.id, title: tag.name } }">
-                {{tag.name}} <span>({{tag.questions_count}})</span>
-              </router-link>
+              <div @click="showQuestions.show(`/get_questions_by_tag?tag_id=${tag.id}`, '#'+tag.name)"
+                class="router-link">
+                {{tag.name}}<span>({{tag.questions_count}})</span>
+              </div>
             </div>
           </div>
           <!-- Most Popular Tags -->
@@ -88,6 +89,7 @@ import useCallApi from './composables/useCallApi';
 import sideMenu from "./partials/sideMenu.vue";
 import { useToast } from 'vue-toastification';
 import router from '../router';
+import useShowQuestions from './composables/useShowQuestions'
 export default {
   components: { sideMenu },
   props: ["user"],
@@ -95,6 +97,7 @@ export default {
     const toast = useToast()
     const user = useUserStore();
     user.setUser(props.user);
+    const showQuestions = useShowQuestions();
 
     //categories
     const categories = ref([])
@@ -134,7 +137,7 @@ export default {
       router.push({ name: "search", params: { keyword: searchString.value } });
     }
 
-    return { user, categories, popTags, search, searchString };
+    return { user, categories, popTags, search, searchString, showQuestions };
   },
 };
 </script>

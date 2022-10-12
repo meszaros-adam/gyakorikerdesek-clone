@@ -17,13 +17,14 @@
             </li>
             <li class="pointer-cursor" @click="createQuestionModal = true">Create question</li>
             <li>
-                <router-link class="router-link" to="/my-questions">My Questions</router-link>
+                <div @click="showQuestions.show(`/get_my_questions?nothing=${'nothing'}`, 'My Questions')"
+                    class="router-link">My Questions</div>
             </li>
             <li>
                 <router-link class="router-link" to="/messages">Messages <span v-if="unreadedMessageCount.getCount > 0"
                         class="badge bg-primary">{{ unreadedMessageCount.getCount }}</span></router-link>
             </li>
-            <router-link class="router-link" to="/my-answered-questions">My Answered Questions</router-link>
+            <div @click="showQuestions.show(`/get_my_answered_questions?nothing=${'nothing'}`, 'My Anbswered Questions')" class="router-link">My Answered Questions</div>
         </ul>
         <div v-else>
             <router-link to="/login">
@@ -42,6 +43,7 @@ import useCallApi from "../composables/useCallApi";
 import { useUserStore } from "../../stores/user";
 import { useUnreadedMessageCount } from "../../stores/unreadedMessageCount";
 import createQuestionModal from "./createQuestionModal.vue";
+import useShowQuestions from '../composables/useShowQuestions'
 export default {
     components: { createQuestionModal },
     emits: ['newQuestionCreated'],
@@ -50,6 +52,7 @@ export default {
         const toast = useToast()
         const user = useUserStore();
         const unreadedMessageCount = useUnreadedMessageCount();
+        const showQuestions = useShowQuestions();
 
         //create question
         const createQuestionModal = ref(false);
@@ -69,7 +72,7 @@ export default {
 
         getUnreadedCount();
 
-        return { createQuestionModal, user, unreadedMessageCount }
+        return { createQuestionModal, user, unreadedMessageCount, showQuestions }
     }
 }
 </script>

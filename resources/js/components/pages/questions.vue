@@ -1,7 +1,7 @@
 <template>
     <div class="container my-5 p-3 bg-dark text-light">
         <div class="d-flex justify-content-between mb-3">
-            <h1>Search: {{title}}</h1>
+            <h1>{{questionsPageData.getTitle}}</h1>
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                     <div class="text-nowrap me-3">Order By:</div>
@@ -51,12 +51,13 @@ import { useToast } from "vue-toastification";
 import { useRoute } from 'vue-router'
 import { ref, watch, computed } from "vue";
 import useCallApi from '../composables/useCallApi';
+import { useQuestionsPageData } from "../../stores/questionsPageData";
 export default {
     components: { deleteModal },
-    props: ['get_url', 'title'],
     setup(props) {
         const toast = useToast();
         const route = useRoute();
+        const questionsPageData = useQuestionsPageData();
 
         //get questions
         const questions = ref([]);
@@ -72,7 +73,7 @@ export default {
         const totalQuestions = ref(0)
 
         const getQuestions = async () => {
-            const res = await useCallApi('get', `${props.get_url}&orderBy=${orderBy.value}&ordering=${ordering.value}&page=${currentPage.value}&itemPerPage=${itemPerPage.value}`)
+            const res = await useCallApi('get', `${questionsPageData.getUrl}&orderBy=${orderBy.value}&ordering=${ordering.value}&page=${currentPage.value}&itemPerPage=${itemPerPage.value}`)
 
             if (res.status == 200) {
                 questions.value = res.data.data
@@ -82,14 +83,14 @@ export default {
             }
         }
 
-        watch(() => props.get_url, () => {
+        watch(() => questionsPageData.getUrl, () => {
             getQuestions()
         })
 
         getQuestions();
 
         //delete question 
-        const showDeleteButton = computed(() => route.path == '/my-questions' ? true : false)
+        const showDeleteButton = computed(() => questionsPageData.getUrl.includes('/get_my_questions'))
         const deleteId = ref()
         const deleteIndex = ref()
         const deleteModal = ref(false)
@@ -117,9 +118,9 @@ export default {
             deleteIndex,
             deleteModal,
             showDeleteModal,
-            removeDeletedQuestion
+            removeDeletedQuestion,
+            questionsPageData
         }
-
     }
 }
 </script>

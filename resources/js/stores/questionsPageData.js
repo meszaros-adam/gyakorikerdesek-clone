@@ -6,7 +6,7 @@ export const useQuestionsPageData = defineStore('questionsPageData', {
         title: '',
     }),
     actions: {
-        setQuestionsPageData(url, title) {
+        setData(url, title) {
             this.url = url
             this.title = title
         }
