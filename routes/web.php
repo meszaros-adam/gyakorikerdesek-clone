@@ -35,6 +35,7 @@ Route::get('/get_my_questions', [App\Http\Controllers\QuestionController::class,
 Route::get('/get_my_answered_questions', [App\Http\Controllers\QuestionController::class, 'getMyAnsweredQuestions'])->middleware(LoginCheck::class);
 Route::get('/get_questions_by_category', [App\Http\Controllers\QuestionController::class, 'getByCategory']);
 Route::get('/get_questions_by_tag', [App\Http\Controllers\QuestionController::class, 'getByTag']);
+Route::get('/get_all_questions', [App\Http\Controllers\QuestionController::class, 'getAll']);
 Route::get('/search_question', [App\Http\Controllers\QuestionController::class, 'search']);
 
 //Answers

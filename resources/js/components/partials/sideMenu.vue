@@ -24,7 +24,10 @@
                 <router-link class="router-link" to="/messages">Messages <span v-if="unreadedMessageCount.getCount > 0"
                         class="badge bg-primary">{{ unreadedMessageCount.getCount }}</span></router-link>
             </li>
-            <div @click="showQuestions.show(`/get_my_answered_questions?nothing=${'nothing'}`, 'My Anbswered Questions')" class="router-link">My Answered Questions</div>
+            <div @click="showQuestions.show(`/get_my_answered_questions?nothing=${'nothing'}`, 'My Answered Questions')"
+                class="router-link">My Answered Questions</div>
+            <div @click="showQuestions.show(`/get_all_questions?nothing=${'nothing'}`, 'All Questions')"
+                class="router-link">All Questions</div>
         </ul>
         <div v-else>
             <router-link to="/login">

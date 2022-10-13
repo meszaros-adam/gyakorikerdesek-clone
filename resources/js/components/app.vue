@@ -134,7 +134,9 @@ export default {
     const search = () => {
       if (searchString.value.trim().length < 2) return toast.warning('The search keyword must be at least 2 characters!')
 
-      router.push({ name: "search", params: { keyword: searchString.value } });
+      showQuestions.show(`/search_question?keyword=${searchString.value}`, searchString.value)
+
+      searchString.value = ""
     }
 
     return { user, categories, popTags, search, searchString, showQuestions };

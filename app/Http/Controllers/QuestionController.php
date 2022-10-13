@@ -172,7 +172,7 @@ class QuestionController extends Controller
             ->leftJoin('answers', 'answers.question_id', '=', 'questions.id')
             ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
             ->groupBy('id')
-            ->with('category','tags')
+            ->with('category', 'tags')
             ->orderBy($request->orderBy,  $request->ordering)
             ->paginate($request->itemPerPage);
     }
@@ -184,7 +184,7 @@ class QuestionController extends Controller
             ->join('answers', 'answers.question_id', '=', 'questions.id')
             ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
             ->groupBy('id')
-            ->with('category','tags')
+            ->with('category', 'tags')
             ->orderBy($request->orderBy,  $request->ordering)
             ->paginate($request->itemPerPage);
     }
@@ -212,6 +212,15 @@ class QuestionController extends Controller
             ->orderBy($request->orderBy,  $request->ordering)
             ->paginate($request->itemPerPage);
     }
+    public function getAll(Request $request)
+    {
+        return Question::leftJoin('answers', 'answers.question_id', '=', 'questions.id')
+            ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
+            ->groupBy('id')
+            ->with('category', 'tags')
+            ->orderBy($request->orderBy,  $request->ordering)
+            ->paginate($request->itemPerPage);
+    }
     public function search(Request $request)
     {
         $keyword =  $request->keyword;
@@ -221,6 +230,9 @@ class QuestionController extends Controller
                     $q->where('name', 'LIKE', "%{$keyword}%");
                 });
         })
+            ->leftJoin('answers', 'questions.id', '=', 'answers.question_id')
+            ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
+            ->groupBy('id')
             ->with('category', 'tags')
             ->orderBy($request->orderBy,  $request->ordering)
             ->paginate($request->itemPerPage);
