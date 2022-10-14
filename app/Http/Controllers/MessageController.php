@@ -17,7 +17,7 @@ class MessageController extends Controller
         ]);
 
         return Message::create([
-            'subject' => $request->message,
+            'subject' => $request->subject,
             'message' => $request->message,
             'addressee_id' => $request->addressee_id,
             'sender_id' => Auth::user()->id,
