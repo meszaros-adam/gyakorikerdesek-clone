@@ -86,6 +86,7 @@
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUserStore } from "../stores/user";
 import useCallApi from './composables/useCallApi';
 import sideMenu from "./partials/sideMenu.vue";
@@ -97,6 +98,7 @@ export default {
     const toast = useToast()
     const user = useUserStore();
     user.setUser(props.user);
+    const router = useRouter()
 
     //categories
     const categories = ref([])
@@ -133,7 +135,7 @@ export default {
     const search = () => {
       if (searchString.value.trim().length < 2) return toast.warning('The search keyword must be at least 2 characters!')
 
-      //nincs befejezve
+      router.push({ name: 'questions', params: { getUrl: `search_question?keyword=${searchString.value}`, title: 'Search: ' + searchString.value } })
 
       searchString.value = ""
     }
