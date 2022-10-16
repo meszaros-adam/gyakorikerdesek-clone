@@ -17,17 +17,29 @@
             </li>
             <li class="pointer-cursor" @click="createQuestionModal = true">Create question</li>
             <li>
-                <div @click="showQuestions.show(`/get_my_questions?nothing=${'nothing'}`, 'My Questions')"
-                    class="router-link">My Questions</div>
-            </li>
-            <li>
                 <router-link class="router-link" to="/messages">Messages <span v-if="unreadedMessageCount.getCount > 0"
                         class="badge bg-primary">{{ unreadedMessageCount.getCount }}</span></router-link>
             </li>
-            <div @click="showQuestions.show(`/get_my_answered_questions?nothing=${'nothing'}`, 'My Answered Questions')"
-                class="router-link">My Answered Questions</div>
-            <div @click="showQuestions.show(`/get_all_questions?nothing=${'nothing'}`, 'All Questions')"
-                class="router-link">All Questions</div>
+            <li>
+                <router-link class="router-link"
+                    :to="{ name: 'questions', params: { getUrl: 'get_my_questions?nothing=nothing', title: 'My Questions' }}">
+                    My Questions</router-link>
+            </li>
+            <li>
+                <router-link class="router-link"
+                    :to="{ name: 'questions', params: { getUrl: 'get_my_answered_questions?nothing=nothing', title: 'My Answered Questions' }}">
+                    My Answered Questions</router-link>
+            </li>
+            <li>
+                <router-link class="router-link"
+                    :to="{ name: 'questions', params: { getUrl: 'get_all_questions?nothing=nothing', title: 'All Questions' }}">
+                    All Questions</router-link>
+            </li>
+            <li>
+                <router-link class="router-link"
+                    :to="{ name: 'questions', params: { getUrl: 'get_questions_by_watched_tags?nothing=nothing', title: 'Question by watched tags' }}">
+                    Question by watched tags</router-link>
+            </li>
         </ul>
         <div v-else>
             <router-link to="/login">
@@ -46,7 +58,6 @@ import useCallApi from "../composables/useCallApi";
 import { useUserStore } from "../../stores/user";
 import { useUnreadedMessageCount } from "../../stores/unreadedMessageCount";
 import createQuestionModal from "./createQuestionModal.vue";
-import useShowQuestions from '../composables/useShowQuestions'
 export default {
     components: { createQuestionModal },
     emits: ['newQuestionCreated'],
@@ -55,7 +66,6 @@ export default {
         const toast = useToast()
         const user = useUserStore();
         const unreadedMessageCount = useUnreadedMessageCount();
-        const showQuestions = useShowQuestions();
 
         //create question
         const createQuestionModal = ref(false);
@@ -75,7 +85,7 @@ export default {
 
         getUnreadedCount();
 
-        return { createQuestionModal, user, unreadedMessageCount, showQuestions }
+        return { createQuestionModal, user, unreadedMessageCount }
     }
 }
 </script>

@@ -3,19 +3,19 @@
         <div class="container bg-dark text-light">
             <div v-if="question" class="bg-secondary container mb-3 rounded">
                 <div class="border-bottom pt-3 pb-1">
-                    <div class="router-link"
-                        @click="showQuestions.show(`/get_questions_by_category?category_id=${question.category.id}`,question.category.name)">
+                    <router-link class="router-link"
+                        :to="{ name: 'questions', params: { getUrl: `get_questions_by_category?category_id=${question.category.id}`, title: question.category.name }}">
                         Category: {{question.category.name}}
-                    </div>
+                    </router-link>
                     <h1 class="text-center mb-3">{{ question.question }}</h1>
                     <p class="text-center">{{ question.description }}</p>
                     <div class="d-flex">
                         <div v-for="tag in question.tags" :key="tag.id">
                             <div class="me-2 px-1 bg-primary rounded fst-italic">
-                                <div class="router-link"
-                                    @click="showQuestions.show(`/get_questions_by_tag?tag_id=${tag.id}`, '#'+tag.name)">
+                                <router-link class="router-link"
+                                    :to="{ name: 'questions', params: { getUrl: `get_questions_by_tag?tag_id=${tag.id}`, title: tag.name }}">
                                     #{{tag.name}}
-                                </div>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -119,14 +119,12 @@ import messageModal from '../partials/messageModal.vue'
 import router from '../../router';
 import sideMenu from "../partials/sideMenu.vue";
 import deleteModal from "../partials/deleteModal.vue";
-import useShowQuestions from '../composables/useShowQuestions'
 export default {
     components: { messageModal, sideMenu, deleteModal },
     setup() {
         const toast = useToast()
         const question = ref(null)
         const answers = ref([])
-        const showQuestions = useShowQuestions();
 
         //get id from route param
         const route = useRoute()
@@ -261,7 +259,6 @@ export default {
             edit,
             showDeleteModal,
             removeDeletedItem,
-            showQuestions,
         }
     }
 }

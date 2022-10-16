@@ -36,10 +36,11 @@ const routes = [
         component: messages,
     },
     {
-        path: '/questions',
+        path: '/questions/:title/:getUrl',
         name: 'questions',
         component: questions,
     },
+
     //Admin
     {
         path: '/admin/categories',

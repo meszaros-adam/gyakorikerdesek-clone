@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Models\UserTag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
@@ -49,6 +51,27 @@ class TagController extends Controller
     {
         //return top 10 tags order by question count 
         return Tag::withCount('questions')->orderBy('questions_count', 'desc')->take(10)->get();
+    }
+    public function addToWatchlist(Request $request)
+    {
+        $this->validate($request, [
+            'tag_id' => 'required|numeric'
+        ]);
 
+        return UserTag::create([
+            'user_id' => Auth::user()->id,
+            'tag_id' => $request->tag_id,
+        ]);
+    }
+    public function removeFromWatchlist(Request $request)
+    {
+        $this->validate($request, [
+            'tag_id' => 'required|numeric'
+        ]);
+
+        return UserTag::where([
+            ['tag_id', '=',  $request->tag_id],
+            ['user_id', '=', Auth::user()->id],
+        ])->delete();
     }
 }

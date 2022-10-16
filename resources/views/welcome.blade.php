@@ -12,7 +12,7 @@
 <body>
     <div id="app">
         @if(Auth::check())
-        <app :user="{{Auth::user()}}"></app>
+        <app :user="{{Auth::user()->load('watchedTags')}}"></app>
         @else
         <app :user="false"></app>
         @endif

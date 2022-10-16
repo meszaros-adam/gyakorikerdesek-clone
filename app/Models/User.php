@@ -46,4 +46,7 @@ class User extends Authenticatable
     {
         return $value == 1 ? true : false;
     }
+    public function watchedTags(){
+        return $this->hasMany(UserTag::class);
+    }
 }

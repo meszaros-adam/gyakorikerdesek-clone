@@ -48,8 +48,10 @@
           <div class="bg-secondary mt-5 mx-3 p-3 d-none d-lg-block">
             <h1 class="text-black">Categories</h1>
             <div v-for="(category, c)  in categories" :key="c">
-              <div @click="showQuestions.show(`/get_questions_by_category?category_id=${category.id}`,category.name)"
-                class="router-link">{{category.name}}</div>
+              <router-link class="router-link"
+                :to="{ name: 'questions', params: { getUrl: `get_questions_by_category?category_id=${category.id}`, title: category.name }}">
+                {{category.name}}
+              </router-link>
             </div>
           </div>
           <!-- Categories -->
@@ -57,10 +59,10 @@
           <div class="bg-secondary m-5 mx-3 p-3 d-none d-lg-block">
             <h1 class="text-black">Popular Tags</h1>
             <div v-for="(tag, t)  in popTags" :key="t">
-              <div @click="showQuestions.show(`/get_questions_by_tag?tag_id=${tag.id}`, '#'+tag.name)"
-                class="router-link">
+              <router-link class="router-link"
+                :to="{ name: 'questions', params: { getUrl: `get_questions_by_tag?tag_id=${tag.id}`, title: tag.name }}">
                 {{tag.name}}<span>({{tag.questions_count}})</span>
-              </div>
+              </router-link>
             </div>
           </div>
           <!-- Most Popular Tags -->
@@ -88,8 +90,6 @@ import { useUserStore } from "../stores/user";
 import useCallApi from './composables/useCallApi';
 import sideMenu from "./partials/sideMenu.vue";
 import { useToast } from 'vue-toastification';
-import router from '../router';
-import useShowQuestions from './composables/useShowQuestions'
 export default {
   components: { sideMenu },
   props: ["user"],
@@ -97,7 +97,6 @@ export default {
     const toast = useToast()
     const user = useUserStore();
     user.setUser(props.user);
-    const showQuestions = useShowQuestions();
 
     //categories
     const categories = ref([])
@@ -134,12 +133,12 @@ export default {
     const search = () => {
       if (searchString.value.trim().length < 2) return toast.warning('The search keyword must be at least 2 characters!')
 
-      showQuestions.show(`/search_question?keyword=${searchString.value}`, searchString.value)
+      //nincs befejezve
 
       searchString.value = ""
     }
 
-    return { user, categories, popTags, search, searchString, showQuestions };
+    return { user, categories, popTags, search, searchString };
   },
 };
 </script>

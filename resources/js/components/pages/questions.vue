@@ -1,11 +1,20 @@
 <template>
     <div class="container my-5 p-3 bg-dark text-light">
         <div class="d-flex justify-content-between mb-3">
-            <h1>{{questionsPageData.getTitle}}</h1>
+            <div class="d-flex align-items-center">
+                <h1>{{route.params.title}}</h1>
+                <div v-if="showTagAddButton" class="mx-3">
+                    <i v-if="!user.getUser.watched_tags.map(tag => String(tag)).includes(tagId)"
+                        @click="addTagToWatchlist(tagId)" title="Add tag to watchlist"
+                        class="bi bi-plus-lg pointer-cursor"></i>
+                    <i v-else @click="removeTagFromWatchlist(tagId)" title="Remove tag from watchlist"
+                        class="bi bi-dash-lg pointer-cursor"></i>
+                </div>
+            </div>
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                     <div class="text-nowrap me-3">Order By:</div>
-                    <select v-model="orderBy" @change="getQuestions" class="form-select me-3"
+                    <select v-model="orderBy" @change="getQuestions" class="form-select"
                         aria-label="Default select example">
                         <option value="id">Creation time</option>
                         <option value="latest_answer_at">Last Answer</option>
@@ -13,7 +22,6 @@
                 </div>
             </div>
         </div>
-
         <div v-for="(question, q) in questions" :key="q">
             <div class="d-flex align-items-center">
                 <div class="bg-primary mb-3 rounded flex-fill">
@@ -48,16 +56,16 @@
 <script>
 import deleteModal from '../partials/deleteModal.vue'
 import { useToast } from "vue-toastification";
-import { useRoute } from 'vue-router'
+import { useUserStore } from "../../stores/user";
 import { ref, watch, computed } from "vue";
 import useCallApi from '../composables/useCallApi';
-import { useQuestionsPageData } from "../../stores/questionsPageData";
+import { useRoute } from 'vue-router'
 export default {
     components: { deleteModal },
     setup(props) {
         const toast = useToast();
-        const route = useRoute();
-        const questionsPageData = useQuestionsPageData();
+        const user = useUserStore();
+        const route = useRoute()
 
         //get questions
         const questions = ref([]);
@@ -73,7 +81,7 @@ export default {
         const totalQuestions = ref(0)
 
         const getQuestions = async () => {
-            const res = await useCallApi('get', `${questionsPageData.getUrl}&orderBy=${orderBy.value}&ordering=${ordering.value}&page=${currentPage.value}&itemPerPage=${itemPerPage.value}`)
+            const res = await useCallApi('get', `/${route.params.getUrl}&orderBy=${orderBy.value}&ordering=${ordering.value}&page=${currentPage.value}&itemPerPage=${itemPerPage.value}`)
 
             if (res.status == 200) {
                 questions.value = res.data.data
@@ -83,14 +91,12 @@ export default {
             }
         }
 
-        watch(() => questionsPageData.getUrl, () => {
-            getQuestions()
-        })
+        watch(() => route.params.getUrl, () => getQuestions())
 
         getQuestions();
 
         //delete question 
-        const showDeleteButton = computed(() => questionsPageData.getUrl.includes('/get_my_questions'))
+        const showDeleteButton = computed(() => false)
         const deleteId = ref()
         const deleteIndex = ref()
         const deleteModal = ref(false)
@@ -103,6 +109,33 @@ export default {
 
         const removeDeletedQuestion = (index) => {
             questions.value.splice(index, 1)
+        }
+
+        //tags watched list
+        const showTagAddButton = computed(() => route.path.includes('get_questions_by_tag'))
+
+        const tagId = computed(() => new URLSearchParams(String(route.params.getUrl).substring(route.params.getUrl.indexOf('?') + 1)).get('tag_id'))
+
+        const addTagToWatchlist = async (tag) => {
+            const res = await useCallApi('post', '/add_tag_to_watchlist', { tag_id: tag })
+
+            if (res.status == 201) {
+                user.addTagToWatchlist(tag)
+                toast.success('Tag added to watchlist successfully!')
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+
+        const removeTagFromWatchlist = async (tag) => {
+            const res = await useCallApi('post', '/remove_tag_from_watchlist', { tag_id: tag })
+
+            if (res.status == 200) {
+                user.removeTagFromWatchlist(tag)
+                toast.success('Tag removed from watchlist successfully!')
+            } else {
+                toast.error(res.data.message)
+            }
         }
 
         return {
@@ -119,7 +152,12 @@ export default {
             deleteModal,
             showDeleteModal,
             removeDeletedQuestion,
-            questionsPageData
+            showTagAddButton,
+            user,
+            addTagToWatchlist,
+            removeTagFromWatchlist,
+            route,
+            tagId,
         }
     }
 }

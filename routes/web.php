@@ -36,6 +36,7 @@ Route::get('/get_my_answered_questions', [App\Http\Controllers\QuestionControlle
 Route::get('/get_questions_by_category', [App\Http\Controllers\QuestionController::class, 'getByCategory']);
 Route::get('/get_questions_by_tag', [App\Http\Controllers\QuestionController::class, 'getByTag']);
 Route::get('/get_all_questions', [App\Http\Controllers\QuestionController::class, 'getAll']);
+Route::get('/get_questions_by_watched_tags', [App\Http\Controllers\QuestionController::class, 'getByWatchedTags']);
 Route::get('/search_question', [App\Http\Controllers\QuestionController::class, 'search']);
 
 //Answers
@@ -56,6 +57,8 @@ Route::get('/get_tags', [App\Http\Controllers\TagController::class, 'get']);
 Route::post('/edit_tag', [App\Http\Controllers\TagController::class, 'edit'])->middleware(AdminCheck::class);
 Route::post('/delete_tag', [App\Http\Controllers\TagController::class, 'delete'])->middleware(AdminCheck::class);
 Route::get('/get_popular_tags', [App\Http\Controllers\TagController::class, 'getPopular']);
+Route::post('/add_tag_to_watchlist', [App\Http\Controllers\TagController::class, 'addToWatchlist'])->middleware(LoginCheck::class);
+Route::post('/remove_tag_from_watchlist', [App\Http\Controllers\TagController::class, 'removeFromWatchlist'])->middleware(LoginCheck::class);
 
 
 //Message

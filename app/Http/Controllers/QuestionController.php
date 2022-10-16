@@ -237,4 +237,17 @@ class QuestionController extends Controller
             ->orderBy($request->orderBy,  $request->ordering)
             ->paginate($request->itemPerPage);
     }
+    public function getByWatchedTags(Request $request)
+    {
+        $watchedTags =  array_map(function ($watchedTag) {
+            return $watchedTag['tag_id'];
+        }, Auth::user()->watchedTags->toArray());
+
+        return Question::whereHas('tags', function ($q) use ($watchedTags) {
+            $q->whereIn('tags.id', $watchedTags);
+        })
+            ->with('category', 'tags')
+            ->orderBy($request->orderBy,  $request->ordering)
+            ->paginate($request->itemPerPage);;
+    }
 }
