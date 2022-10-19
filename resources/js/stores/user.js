@@ -5,7 +5,9 @@ export const useUserStore = defineStore("user", {
     actions: {
         setUser(user) {
             this.user = user
-            this.user.watched_tags = this.user.watched_tags.map(watched_tag => watched_tag.tag_id)
+            if (user) {
+                this.user.watched_tags = this.user.watched_tags.map(watched_tag => watched_tag.tag_id)
+            }
         },
         addTagToWatchlist(tag) {
             this.user.watched_tags.push(tag)

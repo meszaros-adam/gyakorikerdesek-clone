@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AnswerController extends Controller
 {
-    public function add(Request $request){
-        $this->validate($request,[
+    public function add(Request $request)
+    {
+        $this->validate($request, [
             "answer" => "required|min:2",
             "question_id" => "required",
         ]);
@@ -22,8 +23,9 @@ class AnswerController extends Controller
 
         return $answer->load('user');
     }
-    public function edit(Request $request){
-        $this->validate($request,[
+    public function edit(Request $request)
+    {
+        $this->validate($request, [
             "answer" => "required|min:2",
             "id" => "required|numeric",
         ]);
@@ -32,11 +34,25 @@ class AnswerController extends Controller
             'answer' => $request->answer,
         ]);
     }
-    public function delete(Request $request){
-        $this->validate($request,[
+    public function delete(Request $request)
+    {
+        $this->validate($request, [
             "id" => "required|numeric",
         ]);
 
         return Answer::where('id', $request->id)->delete();
+    }
+    public function rate(Request $request)
+    {
+        $this->validate($request, [
+            "answer_id" => "required|numeric",
+            "rating" => "required|numeric|digits_between:1,5",
+        ]);
+
+        $answer = Answer::where('id', $request->answer_id)->first();
+
+        $answer->rateOnce($request->rating);
+
+        return intval($answer->averageRating());
     }
 }

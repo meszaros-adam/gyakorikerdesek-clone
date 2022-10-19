@@ -62,8 +62,13 @@
                 </div>
                 <div class="bg-secondary px-3 rounded-bottom">
                     <p class="py-3">{{ answer.answer }}</p>
-                    <div v-if="user.getUser">
-                        <div v-if="user.getUser.admin" class="d-flex justify-content-center">
+                    <div v-if="user.getUser" class="d-flex">
+                        <div class="flex-fill">
+                            <span>Rate Answer: </span>
+                            <Rate v-model="answer.average_rating"
+                                @click="ratingAnswer(answer.average_rating, answer.id, a)" />
+                        </div>
+                        <div v-if="user.getUser.admin">
                             <i title="Edit" @click="showEditModal(answer, a)"
                                 class="bi bi-pencil pointer-cursor mx-1"></i>
                             <i title="Delete" @click="showDeleteModal(answer, a)"
@@ -235,6 +240,21 @@ export default {
             answers.value.splice(index, 1)
         }
 
+        //rating Answers
+        const ratedAnswerIndex = ref(null)
+
+        const ratingAnswer = async (rating, id, index) => {
+            ratedAnswerIndex.value = index
+            const res = await useCallApi('post', '/rate_answer', { answer_id: id, rating: rating })
+
+            if (res.status == 200) {
+                toast.success('Answer rated successfully!')
+                answers.value[ratedAnswerIndex.value].average_rating = res.data
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+
         return {
             question,
             answers,
@@ -259,6 +279,7 @@ export default {
             edit,
             showDeleteModal,
             removeDeletedItem,
+            ratingAnswer,
         }
     }
 }
