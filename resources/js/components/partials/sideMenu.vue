@@ -15,7 +15,11 @@
                     </div>
                 </div>
             </li>
-            <li class="pointer-cursor" @click="createQuestionModal = true">Create question</li>
+            <li>
+                <div class="pointer-cursor" @click="createQuestionModal = true">
+                    Create question
+                </div>
+            </li>
             <li>
                 <router-link class="router-link" to="/messages">Messages <span v-if="unreadedMessageCount.getCount > 0"
                         class="badge bg-primary">{{ unreadedMessageCount.getCount }}</span></router-link>
@@ -38,7 +42,11 @@
             <li>
                 <router-link class="router-link"
                     :to="{ name: 'questions', params: { getUrl: 'get_questions_by_watched_tags?nothing=nothing', title: 'Question by watched tags' }}">
-                    Question by watched tags</router-link>
+                    Questions by watched tags</router-link>
+            </li>
+            <li>
+                <router-link class="router-link" to="/watched-tags">
+                    My watched tags</router-link>
             </li>
         </ul>
         <div v-else>

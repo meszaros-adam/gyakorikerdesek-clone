@@ -37,7 +37,7 @@ export default {
             const res = await useCallApi('post', props.delete_url, { id: props.item_id })
 
             if (res.status == 200) {
-                toast.success(capitalizedItemName.value + ' was deleted successfuly!')
+                toast.success(capitalizedItemName.value + ' was deleted successfully!')
                 context.emit('successfulDelete', props.delete_index)
             } else {
                 toast.error('Delete failed!')

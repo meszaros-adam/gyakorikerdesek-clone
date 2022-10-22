@@ -5,6 +5,7 @@ import lastFiveQuestions from './components/pages/lastFiveQuestions.vue'
 import questionSingle from './components/pages/questionSingle.vue'
 import messages from './components/pages/messages.vue'
 import questions from './components/pages/questions.vue'
+import watchedTags from './components/pages/watchedTags.vue'
 
 //Admin
 import categoriesAdmin from './components/pages/admin/categoriesAdmin.vue'
@@ -39,6 +40,10 @@ const routes = [
         path: '/questions/:title/:getUrl',
         name: 'questions',
         component: questions,
+    },
+    {
+        path: '/watched-tags',
+        component: watchedTags,
     },
 
     //Admin

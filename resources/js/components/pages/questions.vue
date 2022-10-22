@@ -4,7 +4,7 @@
             <div class="d-flex align-items-center">
                 <h1>{{route.params.title}}</h1>
                 <div v-if="showTagAddButton" class="mx-3">
-                    <i v-if="!user.getUser.watched_tags.map(tag => String(tag)).includes(tagId)"
+                    <i v-if="!user.getUser.watched_tags.map(tag => String(tag)).includes(String(tagId))"
                         @click="addTagToWatchlist(tagId)" title="Add tag to watchlist"
                         class="bi bi-plus-lg pointer-cursor"></i>
                     <i v-else @click="removeTagFromWatchlist(tagId)" title="Remove tag from watchlist"

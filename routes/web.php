@@ -61,6 +61,8 @@ Route::post('/delete_tag', [App\Http\Controllers\TagController::class, 'delete']
 Route::get('/get_popular_tags', [App\Http\Controllers\TagController::class, 'getPopular']);
 Route::post('/add_tag_to_watchlist', [App\Http\Controllers\TagController::class, 'addToWatchlist'])->middleware(LoginCheck::class);
 Route::post('/remove_tag_from_watchlist', [App\Http\Controllers\TagController::class, 'removeFromWatchlist'])->middleware(LoginCheck::class);
+Route::get('/get_watched_tags', [App\Http\Controllers\TagController::class, 'getWatched'])->middleware(LoginCheck::class);
+Route::post('delete_watched_tag',[App\Http\Controllers\TagController::class, 'deleteWatched'])->middleware(LoginCheck::class);
 
 
 //Message

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Models\User;
 use App\Models\UserTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,6 +73,28 @@ class TagController extends Controller
         return UserTag::where([
             ['tag_id', '=',  $request->tag_id],
             ['user_id', '=', Auth::user()->id],
+        ])->delete();
+    }
+    public function getWatched(Request $request)
+    {
+        return User::where('users.id', Auth::user()->id)
+            ->join('user_tags', 'users.id', '=', 'user_tags.user_id')
+            ->join('tags', 'tags.id', '=', 'user_tags.tag_id')
+            ->selectRaw(
+                'tags.*'
+            )
+            ->orderBy($request->orderBy,  $request->ordering)
+            ->paginate($request->itemPerPage);
+    }
+    public function deleteWatched(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|numeric',
+        ]);
+
+        return UserTag::where([
+            ['tag_id', $request->id],
+            ['user_id', Auth::user()->id],
         ])->delete();
     }
 }

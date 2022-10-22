@@ -239,7 +239,7 @@ class QuestionController extends Controller
     }
     public function getByWatchedTags(Request $request)
     {
-        $watchedTags =  array_map(function ($watchedTag) {
+        $watchedTags = array_map(function ($watchedTag) {
             return $watchedTag['tag_id'];
         }, Auth::user()->watchedTags->toArray());
 
