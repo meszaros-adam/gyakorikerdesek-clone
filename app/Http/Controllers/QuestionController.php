@@ -246,6 +246,9 @@ class QuestionController extends Controller
         return Question::whereHas('tags', function ($q) use ($watchedTags) {
             $q->whereIn('tags.id', $watchedTags);
         })
+            ->leftJoin('answers', 'questions.id', '=', 'answers.question_id')
+            ->selectRaw('questions.*, Max(answers.created_at) AS latest_answer_at')
+            ->groupBy('id')
             ->with('category', 'tags')
             ->orderBy($request->orderBy,  $request->ordering)
             ->paginate($request->itemPerPage);;
