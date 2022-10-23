@@ -3,7 +3,7 @@
         <div v-for="(tag, t ) in watchedTags" :key="t">
             <div class="d-flex align-items-center  mb-3">
                 <div class="container bg-primary p-2 rounded">
-                    <router-link class="text-white"
+                    <router-link class="text-white router-link"
                         :to="{name:'questions', params:{getUrl: `get_questions_by_tag?tag_id=${tag.id}`, title: tag.name }}">
                         {{tag.name}}
                     </router-link>
