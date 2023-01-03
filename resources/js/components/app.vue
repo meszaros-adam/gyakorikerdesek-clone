@@ -49,8 +49,8 @@
             <h1 class="text-black">Categories</h1>
             <div v-for="(category, c)  in categories" :key="c">
               <router-link class="router-link"
-                :to="{ name: 'questions', params: { getUrl: `get_questions_by_category?category_id=${category.id}`, title: category.name }}">
-                {{category.name}}
+                :to="{ name: 'questions', params: { getUrl: `get_questions_by_category?category_id=${category.id}`, title: category.name } }">
+                {{ category.name }}
               </router-link>
             </div>
           </div>
@@ -60,8 +60,8 @@
             <h1 class="text-black">Popular Tags</h1>
             <div v-for="(tag, t)  in popTags" :key="t">
               <router-link class="router-link"
-                :to="{ name: 'questions', params: { getUrl: `get_questions_by_tag?tag_id=${tag.id}`, title: tag.name }}">
-                {{tag.name}}<span>({{tag.questions_count}})</span>
+                :to="{ name: 'questions', params: { getUrl: `get_questions_by_tag?tag_id=${tag.id}`, title: tag.name } }">
+                {{ tag.name }}<span>({{ tag.questions_count }})</span>
               </router-link>
             </div>
           </div>

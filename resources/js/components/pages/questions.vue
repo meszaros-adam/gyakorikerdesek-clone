@@ -41,7 +41,6 @@
                 <i v-if="showDeleteButton" @click="showDeleteModal(question.id, q)" title="Delete"
                     class="bi bi-trash mb-3 mx-2 pointer-cursor"></i>
             </div>
-
         </div>
         <!-- Pagination -->
         <b-pagination v-model="currentPage" :total-rows="totalQuestions" :per-page="itemPerPage" align="center">

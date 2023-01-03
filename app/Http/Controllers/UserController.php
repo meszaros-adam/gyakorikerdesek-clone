@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -36,15 +38,18 @@ class UserController extends Controller
             return response('Login failed', 422);
         }
     }
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
         return redirect('/login');
     }
-    public function get(Request $request){
+    public function get(Request $request)
+    {
         return User::orderBy($request->orderBy, $request->ordering)->paginate($request->itemPerPage);
     }
-    public function edit(Request $request){
-        $this->validate($request,[
+    public function edit(Request $request)
+    {
+        $this->validate($request, [
             'id' => 'required|numeric',
             'nickname' => 'required|min:3',
             'admin' => 'required|boolean',
@@ -55,11 +60,27 @@ class UserController extends Controller
             'admin' => $request->admin,
         ]);
     }
-    public function delete(Request $request){
-        $this->validate($request,[
+    public function delete(Request $request)
+    {
+        $this->validate($request, [
             'id' => 'required|numeric'
         ]);
 
         return User::where('id', $request->id)->delete();
+    }
+    public function getUserData()
+    {
+        return Auth::user();
+    }
+    public function editMyProfile(Request $request)
+    {
+        if (Hash::check($request->password, Auth::user()->password)) {
+            return User::where('id', $request->id)->update([
+                'nickname' => $request->nickname,
+                'email' => $request->email,
+            ]);
+        } else {
+            return response('Authorization failed', 401);
+        }
     }
 }

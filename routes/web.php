@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\LoginCheck;
 use App\Http\Middleware\QuestionPermissionCheck;
+use Illuminate\Auth\Events\Login;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +63,7 @@ Route::get('/get_popular_tags', [App\Http\Controllers\TagController::class, 'get
 Route::post('/add_tag_to_watchlist', [App\Http\Controllers\TagController::class, 'addToWatchlist'])->middleware(LoginCheck::class);
 Route::post('/remove_tag_from_watchlist', [App\Http\Controllers\TagController::class, 'removeFromWatchlist'])->middleware(LoginCheck::class);
 Route::get('/get_watched_tags', [App\Http\Controllers\TagController::class, 'getWatched'])->middleware(LoginCheck::class);
-Route::post('delete_watched_tag',[App\Http\Controllers\TagController::class, 'deleteWatched'])->middleware(LoginCheck::class);
+Route::post('delete_watched_tag', [App\Http\Controllers\TagController::class, 'deleteWatched'])->middleware(LoginCheck::class);
 
 
 //Message
@@ -75,7 +76,9 @@ Route::post('/set_message_to_readed', [App\Http\Controllers\MessageController::c
 //User
 Route::get('get_users', [App\Http\Controllers\UserController::class, 'get'])->middleware(AdminCheck::class);
 Route::post('edit_user', [App\Http\Controllers\UserController::class, 'edit'])->middleware(AdminCheck::class);
+Route::post('edit_my_profile', [App\Http\Controllers\UserController::class, 'editMyProfile'])->middleware(LoginCheck::class);
 Route::post('delete_user', [App\Http\Controllers\UserController::class, 'delete'])->middleware(AdminCheck::class);
+Route::get('get_user_data', [App\Http\Controllers\UserController::class, 'getUserData'])->middleware(LoginCheck::class);
 
 Route::fallback(function () {
     return view('welcome');

@@ -16,6 +16,9 @@
                 </div>
             </li>
             <li>
+                <router-link class="router-link" to="/my-profile">My Profile</router-link>
+            </li>
+            <li>
                 <div class="pointer-cursor" @click="createQuestionModal = true">
                     Create question
                 </div>
@@ -26,22 +29,22 @@
             </li>
             <li>
                 <router-link class="router-link"
-                    :to="{ name: 'questions', params: { getUrl: 'get_my_questions?nothing=nothing', title: 'My Questions' }}">
+                    :to="{ name: 'questions', params: { getUrl: 'get_my_questions?nothing=nothing', title: 'My Questions' } }">
                     My Questions</router-link>
             </li>
             <li>
                 <router-link class="router-link"
-                    :to="{ name: 'questions', params: { getUrl: 'get_my_answered_questions?nothing=nothing', title: 'My Answered Questions' }}">
+                    :to="{ name: 'questions', params: { getUrl: 'get_my_answered_questions?nothing=nothing', title: 'My Answered Questions' } }">
                     My Answered Questions</router-link>
             </li>
             <li>
                 <router-link class="router-link"
-                    :to="{ name: 'questions', params: { getUrl: 'get_all_questions?nothing=nothing', title: 'All Questions' }}">
+                    :to="{ name: 'questions', params: { getUrl: 'get_all_questions?nothing=nothing', title: 'All Questions' } }">
                     All Questions</router-link>
             </li>
             <li>
                 <router-link class="router-link"
-                    :to="{ name: 'questions', params: { getUrl: 'get_questions_by_watched_tags?nothing=nothing', title: 'Question by watched tags' }}">
+                    :to="{ name: 'questions', params: { getUrl: 'get_questions_by_watched_tags?nothing=nothing', title: 'Question by watched tags' } }">
                     Questions by watched tags</router-link>
             </li>
             <li>
