@@ -74,11 +74,12 @@ Route::get('/unreaded_messages_count', [App\Http\Controllers\MessageController::
 Route::post('/set_message_to_readed', [App\Http\Controllers\MessageController::class, 'setMessageToReaded'])->middleware(LoginCheck::class);
 
 //User
-Route::get('get_users', [App\Http\Controllers\UserController::class, 'get'])->middleware(AdminCheck::class);
-Route::post('edit_user', [App\Http\Controllers\UserController::class, 'edit'])->middleware(AdminCheck::class);
-Route::post('edit_my_profile', [App\Http\Controllers\UserController::class, 'editMyProfile'])->middleware(LoginCheck::class);
-Route::post('delete_user', [App\Http\Controllers\UserController::class, 'delete'])->middleware(AdminCheck::class);
-Route::get('get_user_data', [App\Http\Controllers\UserController::class, 'getUserData'])->middleware(LoginCheck::class);
+Route::get('/get_users', [App\Http\Controllers\UserController::class, 'get'])->middleware(AdminCheck::class);
+Route::post('/edit_user', [App\Http\Controllers\UserController::class, 'edit'])->middleware(AdminCheck::class);
+Route::post('/edit_my_profile', [App\Http\Controllers\UserController::class, 'editMyProfile'])->middleware(LoginCheck::class);
+Route::post('/delete_user', [App\Http\Controllers\UserController::class, 'delete'])->middleware(AdminCheck::class);
+Route::get('/get_user_data', [App\Http\Controllers\UserController::class, 'getUserData'])->middleware(LoginCheck::class);
+Route::post('/change_password', [App\Http\Controllers\UserController::class, 'changePassword'])->middleware(LoginCheck::class);
 
 Route::fallback(function () {
     return view('welcome');

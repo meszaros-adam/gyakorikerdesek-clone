@@ -83,4 +83,19 @@ class UserController extends Controller
             return response('Authorization failed', 401);
         }
     }
+    public function changePassword(Request $request)
+    {
+        $this->validate($request, [
+            'newPassword' => 'required|min:6|confirmed',
+            'currentPassword' => 'required|min:6',
+        ]);
+
+        if (Hash::check($request->currentPassword, Auth::user()->password)) {
+            $user = User::find(Auth::user()->id)->update([
+                'password' => bcrypt($request->newPassword),
+            ]);
+        } else {
+            return response('Authorization failed', 401);
+        }
+    }
 }
